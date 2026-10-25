@@ -18,7 +18,8 @@ git archive --format=zip -o true-shuffle-for-youtube-v1.0.0.zip HEAD manifest.js
 
 | File | Size | Used for |
 | --- | --- | --- |
-| `../icons/icon128.png` | 128×128 | Store icon (Chrome), extension logo (Edge, Opera) |
+| `store-icon.png` | 128×128 | Store icon (Chrome): 96×96 artwork with 16px transparent padding, as Google's guidelines ask |
+| `../icons/icon128.png` | 128×128 | Extension logo (Edge, Opera) |
 | `screenshot-1.png` | 1280×800 | Screenshot: the card and the Up next list |
 | `screenshot-2.png` | 1280×800 | Screenshot: the toolbar popup |
 | `screenshot-3.png` | 1280×800 | Screenshot: reading a long playlist |
@@ -32,7 +33,7 @@ Brave, Vivaldi, Arc and other Chromium browsers install from the Chrome Web Stor
 
 1. Go to the [Chrome Web Store Developer Dashboard](https://chrome.google.com/webstore/devconsole) and sign in with the Google account you want to publish under. Pay the one-time **$5** registration fee and verify your contact email. 2-Step Verification has to be on for that account.
 2. Click **New item** and upload the zip.
-3. **Store listing** tab: paste the description below, pick the category **Entertainment** and the language **English**, then upload the icon, the screenshots and the small promo tile.
+3. **Store listing** tab: paste the description below, pick the category **Entertainment** and the language **English**, then upload `store-icon.png`, the screenshots and the small promo tile. Under **Additional fields**, leave Official URL on None, set Homepage URL to `https://github.com/lorenzoGT2007/true-shuffle-for-youtube` and Support URL to `https://github.com/lorenzoGT2007/true-shuffle-for-youtube/issues`, and leave Mature content off.
 4. **Privacy** tab: fill it in from [Privacy answers](#privacy-answers) below.
 5. **Distribution** tab: **Public**, all regions.
 6. Click **Submit for review**. Review usually takes a few days. You get an email when it's published.
