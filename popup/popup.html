@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>True Shuffle</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body class="preload">
+  <header class="brand">
+    <img src="../icons/icon32.png" width="24" height="24" alt="">
+    <span>True Shuffle</span>
+  </header>
+
+  <main>
+    <section class="view" id="view-none" hidden>
+      <p class="lead">Play a video from a YouTube playlist and the shuffle turns on.</p>
+      <p class="quiet">Every video plays once, in a random order, before anything repeats.</p>
+      <div class="row"><button class="btn primary" data-act="open-playlists">Open my playlists</button></div>
+    </section>
+
+    <section class="view" id="view-reload" hidden>
+      <p class="lead">Reload this tab to switch True Shuffle on.</p>
+      <p class="quiet">YouTube was already open when the extension was installed.</p>
+      <div class="row"><button class="btn primary" data-act="reload-tab">Reload tab</button></div>
+    </section>
+
+    <section class="view" id="view-noplaylist" hidden>
+      <p class="lead" id="noplaylist-lead">Open a playlist to shuffle it.</p>
+      <p class="quiet" id="noplaylist-text">A playlist page works, and so does a video that is playing from a playlist.</p>
+    </section>
+
+    <section class="view" id="view-idle" hidden>
+      <h1 class="title" data-field="title"></h1>
+      <div id="idle-saved" hidden>
+        <p class="count"><strong data-field="saved-pos"></strong> of <span data-field="saved-total"></span> played last time</p>
+        <div class="bar"><i data-field="saved-bar"></i></div>
+        <div class="row">
+          <button class="btn primary" data-act="start">Resume shuffle</button>
+          <button class="btn" data-act="restart">Start over</button>
+        </div>
+      </div>
+      <div id="idle-new" hidden>
+        <p class="quiet">Plays every video once, in a random order, before anything repeats.</p>
+        <div class="row"><button class="btn primary" data-act="start">Shuffle this playlist</button></div>
+      </div>
+    </section>
+
+    <section class="view" id="view-loading" hidden>
+      <p class="lead">Reading the playlist</p>
+      <p class="quiet" data-field="loading-text">Getting every video, not just the first 200</p>
+      <div class="bar"><i data-field="loading-bar"></i></div>
+      <div class="row"><button class="btn" data-act="stop">Cancel</button></div>
+    </section>
+
+    <section class="view" id="view-active" hidden>
+      <h1 class="title" data-field="title"></h1>
+      <p class="count"><strong data-field="pos"></strong> of <span data-field="total"></span> played<span class="round" data-field="round"></span></p>
+      <div class="bar"><i data-field="bar"></i></div>
+      <p class="next"><span class="label">Next</span> <span data-field="next"></span></p>
+      <div class="row">
+        <button class="btn icon" data-act="prev" aria-label="Previous" title="Previous">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 5.5v13" /><path class="solid" d="M18 6.2v11.6L9.4 12z" /></svg>
+        </button>
+        <button class="btn primary" data-act="next">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.5 5.5v13" /><path class="solid" d="M6 6.2v11.6l8.6-5.8z" /></svg>
+          Next
+        </button>
+        <button class="btn" data-act="reshuffle" title="New random order for the videos not played yet">Reshuffle</button>
+        <button class="btn ghost" data-act="stop" title="Stop shuffling. Your place is kept.">Stop</button>
+      </div>
+    </section>
+
+    <section class="view" id="view-paused" hidden>
+      <h1 class="title" data-field="title"></h1>
+      <p class="lead">Shuffle paused</p>
+      <p class="quiet" data-field="paused-text"></p>
+      <div class="row">
+        <button class="btn primary" data-act="resume">Resume shuffle</button>
+        <button class="btn" data-act="switch" id="switch-btn" hidden>Shuffle this one instead</button>
+        <button class="btn ghost" data-act="stop">Stop</button>
+      </div>
+    </section>
+
+    <section class="view" id="view-finished" hidden>
+      <h1 class="title" data-field="title"></h1>
+      <p class="lead" data-field="finished-text"></p>
+      <p class="quiet">Each one exactly once.</p>
+      <div class="row">
+        <button class="btn primary" data-act="again">Shuffle again</button>
+        <button class="btn ghost" data-act="stop">Close</button>
+      </div>
+    </section>
+
+    <section class="view" id="view-error" hidden>
+      <p class="lead">Couldn&rsquo;t start the shuffle</p>
+      <p class="quiet" data-field="error"></p>
+      <div class="row">
+        <button class="btn primary" data-act="start">Try again</button>
+        <button class="btn ghost" data-act="stop">Close</button>
+      </div>
+    </section>
+  </main>
+
+  <section class="settings" aria-labelledby="settings-h">
+    <h2 id="settings-h">Settings</h2>
+
+    <label class="switch">
+      <input type="checkbox" id="set-auto">
+      <span class="track" aria-hidden="true"></span>
+      <span class="text">Turn on by itself when a playlist plays</span>
+    </label>
+
+    <label class="switch">
+      <input type="checkbox" id="set-spread">
+      <span class="track" aria-hidden="true"></span>
+      <span class="text">Don&rsquo;t play the same channel twice in a row</span>
+    </label>
+
+    <div class="field">
+      <span class="field-label" id="finish-label">When every video has played</span>
+      <div class="seg" role="radiogroup" aria-labelledby="finish-label">
+        <label><input type="radio" name="onFinish" value="reshuffle"><span>Shuffle again</span></label>
+        <label><input type="radio" name="onFinish" value="stop"><span>Stop</span></label>
+      </div>
+    </div>
+
+    <label class="switch">
+      <input type="checkbox" id="set-button">
+      <span class="track" aria-hidden="true"></span>
+      <span class="text">Show the shuffle button on YouTube</span>
+    </label>
+
+    <div class="field">
+      <span class="field-label" id="corner-label">Button position</span>
+      <div class="seg" role="radiogroup" aria-labelledby="corner-label">
+        <label><input type="radio" name="corner" value="left"><span>Bottom left</span></label>
+        <label><input type="radio" name="corner" value="right"><span>Bottom right</span></label>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>Shift+N, Shift+P, the player&rsquo;s Next and Previous buttons and your keyboard&rsquo;s media keys all follow the shuffle.</p>
+    <button class="coffee" data-act="coffee">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 9.5h11v4a5.5 5.5 0 0 1-5.5 5.5v0A5.5 5.5 0 0 1 5 13.5z" /><path d="M16 11h1.5a2.5 2.5 0 0 1 0 5H15.4" /><path d="M8.5 3.5v2.5" /><path d="M12.5 3.5v2.5" /></svg>
+      Buy me a coffee
+    </button>
+  </footer>
+
+  <script src="popup.js"></script>
+</body>
+</html>
