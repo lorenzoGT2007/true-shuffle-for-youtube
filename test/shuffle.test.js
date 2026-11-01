@@ -351,6 +351,28 @@ test('later rounds of a balanced mix keep the channel spread, across the round b
   }
 });
 
+test('an ordered session (the playlist tools\' Play) deals exactly the videos given, in order, round after round', () => {
+  const view = ['d', 'b', 'a', 'b', 'c']; // as shown on screen, a duplicate included
+  const opts = { ordered: true, spread: true, keyOf: () => 'same channel' };
+  const s = T.createSession('PL', view, opts);
+  assert.deepEqual(s.order, ['d', 'b', 'a', 'c']);
+  assert.equal(s.pos, -1);
+  const dealt = [];
+  for (let i = 0; i < 8; i++) dealt.push(T.advance(s, view, opts).id);
+  assert.deepEqual(dealt, ['d', 'b', 'a', 'c', 'd', 'b', 'a', 'c']); // no spread, no recent-video rule
+  assert.equal(s.round, 2);
+  assert.deepEqual(T.advance(s, view, { ...opts, onFinish: 'stop' }).id, null);
+});
+
+test('a shuffled view deals only its own videos, in later rounds too', () => {
+  const view = ['v3', 'v7', 'v1', 'v9'];
+  const s = T.createSession('PL', view, { spread: true, keyOf: channelOf });
+  const dealt = [];
+  for (let i = 0; i < 12; i++) dealt.push(T.advance(s, view).id);
+  assert.deepEqual([...new Set(dealt)].sort(), [...view].sort());
+  for (let r = 0; r < 3; r++) assert.deepEqual(sorted(dealt.slice(r * 4, r * 4 + 4)), sorted(view)); // each round is the whole view
+});
+
 test('peekNext, upcoming and summary describe the deck from pos', () => {
   const s = T.createSession('PL', ['a', 'b', 'c']);
   assert.equal(T.peekNext(s), s.order[0]);

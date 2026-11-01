@@ -128,7 +128,7 @@ HOW IT WORKS
 • Private playlists, Watch later and Liked videos work while you're signed in to YouTube.
 • The toolbar button shows the same controls plus settings.
 • Optional: hide the videos you've already watched on Home, Subscriptions, channels, search and playlists, with one switch or Alt+Shift+U.
-• Search and sort any playlist, Watch Later included, by title, duration, channel or unwatched first. Only the view changes, never your playlist.
+• Search and sort any playlist, Watch Later included, by title, duration, channel or unwatched first, then play or shuffle just the videos shown. Only the view changes, never your playlist.
 
 GOOD TO KNOW
 Mixes (YouTube's endless auto-generated lists) can't be shuffled. Save the songs to a playlist instead.

@@ -51,7 +51,7 @@ repo, MIT. `README.md` is the user guide, `PRIVACY.md` the privacy policy, `stor
 | `src/content.js` | Controller: state, storage, takeover (video end, autoplay, Next/Prev, Shift+N/P), popup messages, mounts the UI |
 | `src/watcher.js` | `TrueShuffleWatcher`: page type (pure `pageType`), in-page navigation and new video cards, for features |
 | `src/unwatched.js` | The unwatched filter: hides cards by progress bar width or "Watched" label |
-| `src/playlist-tools.js` | Search and sort on playlist pages: CSS `order` only, rows never move; "Load all" scrolls |
+| `src/playlist-tools.js` | Search and sort on playlist pages: CSS `order` only, rows never move; "Load all" scrolls; Play/Shuffle hand the shown ids to `content.js` `playView` |
 | `src/ui.js` | `TrueShuffleUI.create(onAction)` → `{host, render(viewModel)}`: round button, card, "Up next" list; `h()` |
 | `src/background.js` | Service worker (Firefox: event page): injects the scripts into open tabs on install/update; Alt+Shift+U |
 | `popup/` | Popup: `popup.js` fills static `popup.html`, polls the tab every 800 ms with `chrome.tabs.sendMessage({type})` (`type` = the `data-act` names: `status`, `start`, `next`…), answered by `status()` |
@@ -69,7 +69,9 @@ repo, MIT. `README.md` is the user guide, `PRIVACY.md` the privacy policy, `stor
 - **Deck** (`buildOrder`): Fisher-Yates over `crypto.getRandomValues`, the playing video first; a new round keeps the last
   `min(10, max(1, n/3))` heard off its start (`pushBack`), then `spreadInPlace` (setting `spread`) breaks up runs of one
   channel, best effort. Session `s:<listId>` = `{v: 1, listId, order, pos, round, recent, ...}`, `pos` = last dealt (-1:
-  none); `advance` deals `order[pos + 1]`, `retreat` steps back, a video you pick (`noteWatching`) is dealt next.
+  none); `advance` deals `order[pos + 1]`, `retreat` steps back, a video you pick (`noteWatching`) is dealt next. A view
+  (`s.view = {ids, ordered}`, the tools' Play/Shuffle) deals only its ids (`poolOf`), in order if `ordered`, is never
+  reconciled, and replaces the list's session; `restart` ("Shuffle whole playlist") goes back to all of it.
 - **Takeover**, only while attached (phase `active` on `/watch?v=…&list=<our list>`), never for loops or ads: 0.15 s before
   the end it pauses and deals the next video, so YouTube never sees the end; seeking to the end skips, a held time bar
   waits, a player error for 4 s skips. Player Next/Prev, Shift+N/P and media keys follow the deck.

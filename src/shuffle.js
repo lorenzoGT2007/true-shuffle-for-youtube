@@ -130,9 +130,11 @@
    * opts.spread + opts.keyOf: avoid the same channel twice in a row.
    * opts.after: the id playing just before this order, whose channel the first video shouldn't share.
    * opts.avoid: Set of ids to keep away from the start.
+   * opts.ordered: keep `ids` in the order given (the playlist tools' "Play"); the other options don't apply.
    */
   function buildOrder(ids, opts = {}) {
     const order = Array.from(new Set(ids));
+    if (opts.ordered) return order;
     shuffleInPlace(order);
     let fixed = 0;
     if (opts.first != null) {
@@ -189,7 +191,7 @@
     const n = new Set(pool).size;
     const k = Math.min(10, Math.max(1, Math.floor(n / 3))); // at least 1: a 2-video round mustn't open with the last one
     const avoid = new Set(s.recent.slice(-k));
-    s.order = buildOrder(pool, { spread: opts.spread, keyOf: opts.keyOf, avoid, after: s.recent[s.recent.length - 1] });
+    s.order = buildOrder(pool, { spread: opts.spread, keyOf: opts.keyOf, avoid, after: s.recent[s.recent.length - 1], ordered: opts.ordered });
     s.pos = -1;
     s.round += 1;
     return s;

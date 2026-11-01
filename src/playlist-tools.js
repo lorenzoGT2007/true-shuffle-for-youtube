@@ -108,10 +108,19 @@
   cursor: pointer;
 }
 .load:hover { background: #f1c877; }
+.play {
+  padding: 7px 14px;
+  border: 1px solid rgba(243, 236, 221, 0.22); border-radius: 999px;
+  background: transparent; color: inherit; font: inherit; font-weight: 600;
+  cursor: pointer;
+}
+.play:hover:not(:disabled) { background: rgba(243, 236, 221, 0.1); }
+.play:disabled { opacity: 0.45; cursor: default; }
 :focus-visible { outline: 2px solid #e2b04f; outline-offset: 2px; }
 `;
 
-  function start() {
+  /** `play(ids, ordered)`: content.js's Play/Shuffle for the videos shown (the existing shuffle engine). */
+  function start({ play } = {}) {
     const SEL = root.TrueShuffleSelectors;
     const { h } = root.TrueShuffleUI;
     const VIEW = 'data-true-shuffle-view'; // on the list while it shows a search or another order
@@ -149,7 +158,10 @@
     const sort = h('select', { class: 'sort', 'aria-label': 'Show the playlist in this order' }, ...options);
     const status = h('span', { class: 'status', role: 'status' });
     const loadBtn = h('button', { class: 'load', type: 'button', hidden: true });
-    shadow.append(css, h('div', { class: 'bar', role: 'search', 'aria-label': 'Playlist tools' }, search, sort, status, loadBtn));
+    const playBtn = h('button', { class: 'play', type: 'button', title: 'Play the videos shown, in this order' }, 'Play');
+    const shuffleBtn = h('button', { class: 'play', type: 'button', title: 'Shuffle the videos shown' }, 'Shuffle');
+    shadow.append(css, h('div', { class: 'bar', role: 'search', 'aria-label': 'Playlist tools' },
+      search, sort, playBtn, shuffleBtn, status, loadBtn));
     // YouTube's keyboard shortcuts listen on the page: what you type here stays here.
     for (const type of ['keydown', 'keypress', 'keyup']) host.addEventListener(type, (e) => e.stopPropagation());
 
@@ -221,6 +233,7 @@
       if (more && !loading && (query || sortKey !== 'original')) line += ' · only the loaded ones count';
       status.textContent = line;
       loadBtn.hidden = !more && !loading;
+      playBtn.disabled = shuffleBtn.disabled = !shown;
       loadBtn.textContent = loading ? 'Stop loading' : all ? `Load all ${fmt(all)}` : 'Load all';
     }
 
@@ -272,6 +285,18 @@
       sort.value = 'original';
       host.remove();
     }
+
+    /** The videos on screen now, top to bottom: after the search, the sort and the unwatched filter. */
+    function shownIds() {
+      const rows = rowsOf().filter((row) => getComputedStyle(row).display !== 'none');
+      if (sortKey !== 'original') rows.sort((a, b) => Number(a.style.order) - Number(b.style.order));
+      return rows.map((row) => {
+        const link = row.querySelector(SEL.cardLink);
+        try { return link ? new URL(link.getAttribute('href'), location.href).searchParams.get('v') : null; } catch (_) { return null; }
+      }).filter(Boolean);
+    }
+    playBtn.addEventListener('click', () => { if (play) play(shownIds(), true); });
+    shuffleBtn.addEventListener('click', () => { if (play) play(shownIds(), false); });
 
     search.addEventListener('input', () => { query = search.value.trim(); apply(); });
     sort.addEventListener('change', () => { sortKey = sort.value; apply(); });

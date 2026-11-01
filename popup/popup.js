@@ -54,6 +54,7 @@ function render(s) {
     case 'finished':
       setField('finished', 'title', title);
       setField('finished', 'finished-text', `All ${fmt(s.total)} videos played`);
+      document.querySelector('#view-finished [data-act="again"]').textContent = s.ordered ? 'Play again' : 'Shuffle again';
       return show('finished');
     case 'error':
       setField('error', 'error', s.error || 'Something went wrong.');

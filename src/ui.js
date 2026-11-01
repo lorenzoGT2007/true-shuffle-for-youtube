@@ -339,8 +339,8 @@ button:focus-visible { outline: 2px solid var(--brass); outline-offset: 2px; }
           h('button', { class: 'pill primary', type: 'button', dataset: { act: 'resume' } }, 'Resume shuffle'),
           refs.switchBtn));
       } else if (mode === 'finished') {
-        card.append(h('div', { class: 'actions' },
-          h('button', { class: 'pill primary', type: 'button', dataset: { act: 'again' } }, 'Shuffle again')));
+        refs.againBtn = h('button', { class: 'pill primary', type: 'button', dataset: { act: 'again' } }, 'Shuffle again');
+        card.append(h('div', { class: 'actions' }, refs.againBtn));
       } else if (mode === 'error') {
         card.append(h('div', { class: 'actions' },
           h('button', { class: 'pill primary', type: 'button', dataset: { act: 'retry' } }, 'Try again')));
@@ -356,7 +356,7 @@ button:focus-visible { outline: 2px solid var(--brass); outline-offset: 2px; }
         queueKey = '';
         return;
       }
-      const key = JSON.stringify([q.round, q.left, q.items.map((i) => i.id)]);
+      const key = JSON.stringify([q.round, q.left, q.view, q.items.map((i) => i.id)]);
       queue.hidden = false;
       if (key === queueKey) return;
       queueKey = key;
@@ -376,7 +376,8 @@ button:focus-visible { outline: 2px solid var(--brass); outline-offset: 2px; }
         q.items.length ? list : h('div', { class: 'qempty', text: 'This is the last video of the round.' }),
         h('div', { class: 'qfoot' },
           h('button', { class: 'pill', type: 'button', dataset: { act: 'reshuffle' } }, 'Reshuffle what’s left'),
-          h('button', { class: 'pill', type: 'button', dataset: { act: 'restart' } }, 'Start over')),
+          // A view (the playlist tools' Play/Shuffle) starts over as a shuffle of the whole playlist.
+          h('button', { class: 'pill', type: 'button', dataset: { act: 'restart' } }, q.view ? 'Shuffle whole playlist' : 'Start over')),
       );
     }
 
@@ -440,6 +441,7 @@ button:focus-visible { outline: 2px solid var(--brass); outline-offset: 2px; }
       } else if (mode === 'finished') {
         refs.msgTitle.textContent = `All ${fmt(vm.total)} videos played`;
         refs.msgText.textContent = 'Each one exactly once.';
+        refs.againBtn.textContent = vm.ordered ? 'Play again' : 'Shuffle again';
       } else if (mode === 'error') {
         refs.msgTitle.textContent = 'Couldn’t start the shuffle';
         refs.msgText.textContent = vm.message || 'Something went wrong.';

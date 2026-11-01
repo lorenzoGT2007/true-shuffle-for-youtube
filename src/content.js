@@ -224,6 +224,9 @@
     return (m && m.channel) || '';
   }
   const opts = () => ({ spread: !!st.settings.spread, keyOf, onFinish: st.settings.onFinish });
+  // A session from the playlist tools' Play or Shuffle (`s.view = {ids, ordered}`) only ever deals those videos.
+  const poolOf = (s) => (s.view ? s.view.ids : st.catalog ? st.catalog.ids : null);
+  const optsFor = (s) => ({ ...opts(), ordered: !!(s.view && s.view.ordered) });
 
   // ------------------------------------------------------------------ talking to page.js
 
@@ -295,8 +298,11 @@
     if (ids.length) sessionStore.set(KEY_OFF, JSON.stringify(ids)); else sessionStore.del(KEY_OFF);
   }
 
-  /** `auto`: turned on by itself, not by you. */
-  async function start(fresh, auto = false) {
+  /**
+   * `auto`: turned on by itself, not by you. `view` = {ids, ordered}: the playlist tools' Play/Shuffle,
+   * a fresh session over just those videos (in that order when `ordered`).
+   */
+  async function start(fresh, auto = false, view = null) {
     if (st.phase === 'loading') return;
     const listId = readLoc().list;
     if (!isShufflableList(listId)) return;
@@ -314,6 +320,7 @@
     render();
     try {
       let cat = await loadCatalog(listId);
+      if (cat && view && view.ids.some((id) => !cat.meta.has(id))) cat = null; // shown videos it lacks: read again
       let fetched = null; // read just now: saved once the shuffle really starts
       if (!cat) {
         fetched = await fetchCatalog(listId, (loaded, total) => {
@@ -342,8 +349,11 @@
       if (fetched) await sset({ ['c:' + listId]: fetched });
       let s = fresh ? null : await loadSession(listId);
       if (s) {
-        TS.reconcile(s, cat.ids, opts());
+        if (!s.view) TS.reconcile(s, cat.ids, opts()); // a view keeps exactly the videos you chose
         if (currentId) TS.noteWatching(s, currentId);
+      } else if (view) {
+        s = TS.createSession(listId, view.ids, { ...opts(), ordered: view.ordered });
+        s.view = view;
       } else {
         s = TS.createSession(listId, cat.ids, { ...opts(), first: currentId });
       }
@@ -457,7 +467,7 @@
       st.catalog = cat;
       await serial(async () => {
         const s = await loadSession(listId);
-        if (!s) return;
+        if (!s || s.view) return; // a view keeps exactly the videos you chose
         TS.reconcile(s, cat.ids, opts());
         await saveSession(s);
       });
@@ -480,7 +490,7 @@
       if (!st.listId) return;
       const s = await loadSession(st.listId);
       if (!s) return;
-      const r = TS.advance(s, st.catalog ? st.catalog.ids : null, opts());
+      const r = TS.advance(s, poolOf(s), optsFor(s));
       await saveSession(s);
       if (r.finished || !r.id) {
         st.phase = 'finished';
@@ -545,7 +555,7 @@
     return serial(async () => {
       const s = await loadSession(st.listId);
       if (!s) return;
-      TS.startRound(s, st.catalog ? st.catalog.ids : null, opts());
+      TS.startRound(s, poolOf(s), optsFor(s));
       await saveSession(s);
       st.phase = 'active';
     }).then(() => goNext('again'), showError);
@@ -955,7 +965,7 @@
       case 'error':
         return { ...base, mode: 'error', message: st.error };
       case 'finished':
-        return { ...base, mode: 'finished', total: sum.total };
+        return { ...base, mode: 'finished', total: sum.total, ordered: !!(s && s.view && s.view.ordered) };
       case 'paused':
         if (st.quiet) {
           return {
@@ -983,7 +993,7 @@
           onFinish: st.settings.onFinish,
           next: nextId ? meta(nextId) : null,
           queue: st.queueOpen
-            ? { round: sum.round, left: sum.left, items: TS.upcoming(s, QUEUE_SIZE).map((id, i) => ({ ...meta(id), n: sum.position + 1 + i })) }
+            ? { round: sum.round, left: sum.left, view: !!s.view, items: TS.upcoming(s, QUEUE_SIZE).map((id, i) => ({ ...meta(id), n: sum.position + 1 + i })) }
             : null,
         };
       }
@@ -1037,6 +1047,16 @@
     await start(false, auto);
   }
 
+  /**
+   * The playlist tools' Play and Shuffle: the shuffle, over exactly the videos shown (in that order when
+   * `ordered`). It takes the place of this playlist's saved shuffle; "Start over" goes back to all of it.
+   */
+  async function playView(ids, ordered) {
+    if (!ids.length || st.phase === 'loading') return;
+    if (st.listId) await stop();
+    await start(true, false, { ids, ordered });
+  }
+
   // ------------------------------------------------------------------ the toolbar popup
 
   function status() {
@@ -1053,6 +1073,7 @@
       position: sum ? sum.position : 0,
       total: sum ? sum.total : 0,
       round: sum ? sum.round : 1,
+      ordered: !!(s && s.view && s.view.ordered), // a "Play" from the playlist tools: "Play again" when it ends
       next: nextId ? meta(nextId) : null,
       loading: st.loading,
       error: st.error,
@@ -1126,7 +1147,7 @@
       videos(cards) { st.debugPage.videos += cards.length; },
     });
     st.stopUnwatched = globalThis.TrueShuffleUnwatched.start();
-    st.stopPlaylistTools = globalThis.TrueShufflePlaylistTools.start();
+    st.stopPlaylistTools = globalThis.TrueShufflePlaylistTools.start({ play: playView });
     const activeList = sessionStore.get(KEY_ACTIVE);
     if (activeList) await resumeAfterReload(activeList);
     else {
