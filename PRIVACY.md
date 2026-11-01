@@ -19,6 +19,7 @@ All of this stays on your device, in the browser's extension storage:
 
 - your settings;
 - for up to 40 playlists you shuffled: the playlist's title and video list (ids, titles, channels, durations), the shuffled order and how far you got.
+- for playlists you open (not Watch later or Liked videos): a snapshot of their videos (ids, titles, channels and the date each was last seen), so it can tell you next time which ones were removed or became private or deleted; and the list of those alerts (at most 500). The snapshots are limited in size, and the oldest are dropped first.
 
 In the YouTube tab's session storage it also notes which playlist that tab is shuffling, which playlists you switched off in that tab, and the video it is about to open. That is cleared when the tab closes.
 

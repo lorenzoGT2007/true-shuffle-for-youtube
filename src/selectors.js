@@ -66,6 +66,8 @@
     continuation: 'ytd-continuation-item-renderer, ytd-continuation-item-view-model',
     // The drag handle on rows of playlists you own: hidden while the tools show their own order.
     reorderHandle: '#reorder',
+    // The note YouTube shows over a playlist when it hides unavailable videos ("2 unavailable videos are hidden").
+    playlistAlert: 'ytd-alert-with-button-renderer, ytd-alert-renderer, yt-alert-with-actions-renderer, yt-alert-view-model',
 
     // Places inside the player that open another video (end-screen cards, the video wall, autoplay's
     // countdown, up next, suggestions). Clicking one counts as your choice, not YouTube's autoplay.

@@ -44,7 +44,7 @@
     },
     {
       "matches": ["https://www.youtube.com/*"],
-      "js": ["src/selectors.js", "src/shuffle.js", "src/ui.js", "src/watcher.js", "src/unwatched.js", "src/playlist-tools.js", "src/content.js"],
+      "js": ["src/selectors.js", "src/shuffle.js", "src/ui.js", "src/watcher.js", "src/unwatched.js", "src/playlist-tools.js", "src/removed.js", "src/content.js"],
       "run_at": "document_start"
     }
   ],

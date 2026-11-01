@@ -65,6 +65,7 @@
     stopDebugWatch: null,
     stopUnwatched: null, // the unwatched filter, started in init
     stopPlaylistTools: null, // search and sort on playlist pages, started in init
+    stopRemoved: null, // the removed-video check, started in init
     tickTimer: 0,
     retired: false,
   };
@@ -738,6 +739,7 @@
     if (st.stopDebugWatch) st.stopDebugWatch();
     if (st.stopUnwatched) st.stopUnwatched();
     if (st.stopPlaylistTools) st.stopPlaylistTools();
+    if (st.stopRemoved) st.stopRemoved();
     if (st.ui) st.ui.host.remove();
     st.ui = null;
   }
@@ -1148,6 +1150,7 @@
     });
     st.stopUnwatched = globalThis.TrueShuffleUnwatched.start();
     st.stopPlaylistTools = globalThis.TrueShufflePlaylistTools.start({ play: playView });
+    st.stopRemoved = globalThis.TrueShuffleRemoved.start();
     const activeList = sessionStore.get(KEY_ACTIVE);
     if (activeList) await resumeAfterReload(activeList);
     else {

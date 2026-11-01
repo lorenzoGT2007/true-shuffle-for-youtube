@@ -52,11 +52,12 @@ repo, MIT. `README.md` is the user guide, `PRIVACY.md` the privacy policy, `stor
 | `src/watcher.js` | `TrueShuffleWatcher`: page type (pure `pageType`), in-page navigation and new video cards, for features |
 | `src/unwatched.js` | The unwatched filter: hides cards by progress bar width or "Watched" label |
 | `src/playlist-tools.js` | Search and sort on playlist pages: CSS `order` only, rows never move; "Load all" scrolls; Play/Shuffle hand the shown ids to `content.js` `playView` |
+| `src/removed.js` | Removed-video check on playlist pages (not WL/LL): snapshot, pure `compare` (needs the whole list loaded to call a video gone; reads YouTube's "N unavailable videos are hidden"), notice, `toCsv` |
 | `src/ui.js` | `TrueShuffleUI.create(onAction)` → `{host, render(viewModel)}`: round button, card, "Up next" list; `h()` |
 | `src/background.js` | Service worker (Firefox: event page): injects the scripts into open tabs on install/update; Alt+Shift+U |
 | `popup/` | Popup: `popup.js` fills static `popup.html`, polls the tab every 800 ms with `chrome.tabs.sendMessage({type})` (`type` = the `data-act` names: `status`, `start`, `next`…), answered by `status()` |
-| `options/` | Options page: the filter's threshold slider and "partly watched" switch |
-| `test/` | `node --test`: `shuffle` (with the 1.0.0 spread as an oracle), `watcher`, `unwatched`, `playlist-tools` |
+| `options/` | Options page: the filter's threshold and "partly watched" switch; Alerts history (loads `src/removed.js`) with CSV export |
+| `test/` | `node --test`: `shuffle` (with the 1.0.0 spread as an oracle), `watcher`, `unwatched`, `playlist-tools`, `removed` |
 | `store/`, `.github/workflows/release.yml` | `pack.js` builds the zips; store guide and images (not shipped). On a `v*` tag equal to `v` + manifest version, `release.yml` runs `pack.js` and publishes a release |
 
 ## How shuffling works
@@ -87,6 +88,7 @@ repo, MIT. `README.md` is the user guide, `PRIVACY.md` the privacy policy, `stor
 | `chrome.storage.local` | `settings` | `{spread, onFinish, showButton, corner, collapsed, autoStart}` |
 | | `unwatched` | `{enabled, threshold (percent, 90), partial}`: popup, options page and the shortcut all write it |
 | | `c:<listId>`, `s:<listId>` | Catalog and session per playlist |
+| | `p:<listId>`, `snaps`, `alerts` | Snapshot `{v: 1, at, complete, hidden, videos: {id: [title, channel, seen, unavailable]}}` (≤ 2 MB each); `snaps` = `{listId: {bytes, at}}`, oldest dropped past 20 MB; alert history (≤ 500, `ack` = Seen it) |
 | | `idx` | `{listId: {title, pos (videos played), total, round, updatedAt}}`. The only eviction of `s:`/`c:`: `saveSession` keeps the 40 newest (a new per-playlist key joins that `remove`) |
 | tab `sessionStorage` | `trueShuffle.active`, `.off`, `.expect` | List this tab shuffles (resumes after a reload); lists closed in this tab; last navigation asked for (never read) |
 | `localStorage` | `trueShuffle.debug` | `'1'`: each render writes `{phase, listId, pos, round, order, expected, error}` to `<html data-true-shuffle-debug>` |
@@ -123,12 +125,10 @@ repo, MIT. `README.md` is the user guide, `PRIVACY.md` the privacy policy, `stor
 current users have. Store single purpose: organize and play your YouTube playlists and Watch Later. Chrome first, Edge and
 Firefox from the same code, Firefox for Android later; desktop youtube.com first, m.youtube.com later.
 
-**Free features:** 1. Unwatched filter (done). 2. Unwatched counter on a channel or playlist among loaded items; "Load all"
-scrolls for you, only when clicked, at human pace, and updates the count. 3. Playlist tools (done). 4. Play this view: the
-visible (filtered or sorted) videos to the existing shuffle engine, in order or shuffled. 5. Removed-video check: snapshot
-each opened playlist (id, title, channel, date seen) in storage.local; on later visits list videos that disappeared or
-became private/deleted, with saved titles; Alerts page with history and CSV export. **Pro** (later, behind a flag that
-stays off): automatic checks of chosen playlists, unlimited history, saved filters, backup export/import.
+**Free features:** 1. Unwatched filter, 3. playlist tools, 4. Play this view, 5. removed-video check with Alerts history
+and CSV export: done. 2. To do: an unwatched counter on a channel or playlist among loaded items; "Load all" scrolls for
+you, only when clicked, at human pace, and updates the count. **Pro** (later, behind a flag that stays off): automatic
+checks of chosen playlists, unlimited history, saved filters, backup export/import.
 
 **Must never break:**
 - Existing features and settings keep working; migrate any stored format that changes.

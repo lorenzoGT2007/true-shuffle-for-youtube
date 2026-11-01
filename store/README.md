@@ -129,6 +129,7 @@ HOW IT WORKS
 • The toolbar button shows the same controls plus settings.
 • Optional: hide the videos you've already watched on Home, Subscriptions, channels, search and playlists, with one switch or Alt+Shift+U.
 • Search and sort any playlist, Watch Later included, by title, duration, channel or unwatched first, then play or shuffle just the videos shown. Only the view changes, never your playlist.
+• Find out when videos vanish: next time you open a playlist, a small notice names the ones that were removed or became private or deleted, with their old titles. History and CSV export in the options.
 
 GOOD TO KNOW
 Mixes (YouTube's endless auto-generated lists) can't be shuffled. Save the songs to a playlist instead.
@@ -168,7 +169,7 @@ All JavaScript is packaged in the extension. It loads no remote scripts and uses
 **Data usage**: tick these two boxes (the store counts data handled only on the user's device too):
 
 - **Authentication information**: requests that read private playlists carry the sign-in header YouTube's page creates from the user's YouTube cookie. It is sent only to youtube.com and never stored.
-- **Website content**: playlist titles, video titles and channel names, stored on the user's device to run the shuffle.
+- **Website content**: playlist titles, video titles and channel names, stored on the user's device to run the shuffle and to tell the user when videos disappear from a playlist they open.
 
 Then tick all three certifications:
 

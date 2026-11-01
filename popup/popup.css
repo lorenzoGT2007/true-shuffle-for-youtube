@@ -80,6 +80,14 @@ button:focus-visible { outline: 2px solid var(--brass-hi); outline-offset: 2px; 
 .link:hover { color: var(--brass-hi); text-decoration: underline; }
 .range { width: 100%; accent-color: var(--brass); }
 .options .settings { border-top: 0; padding: 16px; }
+body.options { width: auto; max-width: 680px; }
+.options .settings + .settings { border-top: 1px solid var(--line); }
+.alerts { margin: 4px 0 12px; padding-left: 20px; max-height: 360px; overflow-y: auto; }
+.alert { margin: 6px 0; color: var(--ivory-2); }
+.alert a { color: var(--ivory); }
+.alert.new a:first-child { font-weight: 600; }
+.alert .what { color: var(--brass); }
+.btn:disabled { opacity: 0.45; cursor: default; }
 
 /* TEMP debug line */
 .debug { margin: 0; padding: 6px 16px; border-top: 1px solid var(--line); color: var(--ivory-2); font: 11px/1.4 Consolas, ui-monospace, monospace; }

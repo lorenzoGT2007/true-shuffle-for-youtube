@@ -9,7 +9,7 @@
 
 // Same files, same order as content_scripts in manifest.json.
 const MAIN_FILES = ['src/yt-api.js', 'src/page.js'];
-const ISOLATED_FILES = ['src/selectors.js', 'src/shuffle.js', 'src/ui.js', 'src/watcher.js', 'src/unwatched.js', 'src/playlist-tools.js', 'src/content.js'];
+const ISOLATED_FILES = ['src/selectors.js', 'src/shuffle.js', 'src/ui.js', 'src/watcher.js', 'src/unwatched.js', 'src/playlist-tools.js', 'src/removed.js', 'src/content.js'];
 
 // Alt+Shift+U (manifest "commands"; the browser lets you change the key): switches the unwatched filter.
 chrome.commands.onCommand.addListener(async (command) => {
