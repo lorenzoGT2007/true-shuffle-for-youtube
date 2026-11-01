@@ -1,0 +1,5 @@
+/* The welcome and What's new pages: only what ../popup/popup.css doesn't already have. */
+.page main > .lead { margin: 4px 0 16px; }
+.steps { margin: 4px 0 14px; padding-left: 22px; }
+.steps li { margin: 6px 0; }
+a.btn { text-decoration: none; }

@@ -1,6 +1,6 @@
 # Privacy policy
 
-**True Shuffle for YouTube** · last updated 29 October 2026
+**True Shuffle for YouTube** · last updated 2 November 2026
 
 True Shuffle does not collect, send, sell or share any of your data. It has no servers, no analytics, no ads and no tracking. Everything it does happens inside your browser, on youtube.com.
 
@@ -17,7 +17,7 @@ The extension runs only on `https://www.youtube.com/`. There it reads:
 
 All of this stays on your device, in the browser's extension storage:
 
-- your settings;
+- your settings, and whether the What's new page was already shown;
 - for up to 40 playlists you shuffled: the playlist's title and video list (ids, titles, channels, durations), the shuffled order and how far you got.
 - for playlists you open (not Watch later or Liked videos): a snapshot of their videos (ids, titles, channels and the date each was last seen), so it can tell you next time which ones were removed or became private or deleted; and the list of those alerts (at most 500). The snapshots are limited in size, and the oldest are dropped first.
 

@@ -1,9 +1,10 @@
 {
   "manifest_version": 3,
-  "name": "True Shuffle for YouTube",
-  "short_name": "True Shuffle",
+  "name": "__MSG_extName__",
+  "short_name": "__MSG_extShortName__",
   "version": "1.0.0",
-  "description": "Shuffles a whole YouTube playlist like a deck of cards: every video plays once, in a truly random order, before anything repeats.",
+  "description": "__MSG_extDescription__",
+  "default_locale": "en",
   "homepage_url": "https://github.com/lorenzoGT2007/true-shuffle-for-youtube",
   "minimum_chrome_version": "111",
   "icons": {
@@ -13,7 +14,7 @@
     "128": "icons/icon128.png"
   },
   "action": {
-    "default_title": "True Shuffle",
+    "default_title": "__MSG_extShortName__",
     "default_popup": "popup/popup.html",
     "default_icon": {
       "16": "icons/icon16.png",
@@ -21,12 +22,13 @@
     }
   },
   "options_ui": {
-    "page": "options/options.html"
+    "page": "options/options.html",
+    "open_in_tab": true
   },
   "commands": {
     "toggle-unwatched": {
       "suggested_key": { "default": "Alt+Shift+U" },
-      "description": "Hide or show watched videos"
+      "description": "__MSG_extCommandUnwatched__"
     }
   },
   "background": {
@@ -44,7 +46,7 @@
     },
     {
       "matches": ["https://www.youtube.com/*"],
-      "js": ["src/selectors.js", "src/shuffle.js", "src/ui.js", "src/watcher.js", "src/unwatched.js", "src/playlist-tools.js", "src/removed.js", "src/content.js"],
+      "js": ["src/selectors.js", "src/i18n.js", "src/shuffle.js", "src/ui.js", "src/watcher.js", "src/unwatched.js", "src/playlist-tools.js", "src/removed.js", "src/content.js"],
       "run_at": "document_start"
     }
   ],

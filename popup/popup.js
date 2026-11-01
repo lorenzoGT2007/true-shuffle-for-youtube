@@ -1,12 +1,12 @@
 'use strict';
 
-const DEFAULTS = { spread: true, onFinish: 'reshuffle', showButton: true, corner: 'right', collapsed: false, autoStart: true };
 const VIEWS = ['none', 'reload', 'noplaylist', 'idle', 'loading', 'active', 'paused', 'finished', 'error'];
 const LINKS = {
   'open-playlists': 'https://www.youtube.com/feed/playlists',
   coffee: 'https://buymeacoffee.com/lorenzogt',
 };
 const fmt = (n) => Number(n || 0).toLocaleString();
+const { t, parts } = TrueShuffleI18n;
 
 let tab = null;
 
@@ -26,13 +26,13 @@ function setBar(view, name, fraction) {
 const isYouTube = (url) => /^https:\/\/www\.youtube\.com\//.test(url || '');
 
 function render(s) {
-  const title = s.title || 'This playlist';
+  const title = s.title || t('popupThisPlaylist');
   switch (s.phase) {
     case 'loading': {
       const l = s.loading || {};
       setField('loading', 'loading-text', l.loaded
-        ? (l.total ? `${fmt(l.loaded)} of ${fmt(l.total)} videos` : `${fmt(l.loaded)} videos so far`)
-        : 'Getting every video, not just the first 200');
+        ? (l.total ? t('popupLoadingOf', fmt(l.loaded), fmt(l.total)) : t('popupLoadingSoFar', fmt(l.loaded)))
+        : t('popupLoadingStart'));
       setBar('loading', 'loading-bar', l.total ? l.loaded / l.total : 0);
       return show('loading');
     }
@@ -40,32 +40,32 @@ function render(s) {
       setField('active', 'title', title);
       setField('active', 'pos', fmt(s.position));
       setField('active', 'total', fmt(s.total));
-      setField('active', 'round', s.round > 1 ? `Round ${s.round}` : '');
+      setField('active', 'round', s.round > 1 ? t('popupRound', s.round) : '');
       setField('active', 'next', s.next
         ? (s.next.title || s.next.id) + (s.next.channel ? `, ${s.next.channel}` : '')
-        : 'A fresh shuffle of the whole playlist');
+        : t('popupNextFresh'));
       setBar('active', 'bar', s.total ? s.position / s.total : 0);
       return show('active');
     case 'paused':
       setField('paused', 'title', title);
-      setField('paused', 'paused-text', `You left the playlist. ${fmt(s.position)} of ${fmt(s.total)} played.`);
+      setField('paused', 'paused-text', t('popupPausedText', fmt(s.position), fmt(s.total)));
       document.getElementById('switch-btn').hidden = !(s.page.shufflable && s.page.list !== s.listId);
       return show('paused');
     case 'finished':
       setField('finished', 'title', title);
-      setField('finished', 'finished-text', `All ${fmt(s.total)} videos played`);
-      document.querySelector('#view-finished [data-act="again"]').textContent = s.ordered ? 'Play again' : 'Shuffle again';
+      setField('finished', 'finished-text', t('popupFinishedText', fmt(s.total)));
+      document.querySelector('#view-finished [data-act="again"]').textContent = t(s.ordered ? 'popupPlayAgain' : 'popupShuffleAgain');
       return show('finished');
     case 'error':
-      setField('error', 'error', s.error || 'Something went wrong.');
+      setField('error', 'error', s.error || t('popupErrorFallback'));
       return show('error');
     default:
       break;
   }
   if (!s.page.shufflable) {
     if (s.page.mix) {
-      document.getElementById('noplaylist-lead').textContent = 'Mixes can’t be shuffled';
-      document.getElementById('noplaylist-text').textContent = 'A Mix is an endless list YouTube keeps generating. Save the songs to a playlist and shuffle that.';
+      document.getElementById('noplaylist-lead').textContent = t('popupMixLead');
+      document.getElementById('noplaylist-text').textContent = t('popupMixText');
     }
     return show('noplaylist');
   }
@@ -122,46 +122,17 @@ async function act(type) {
   }
 }
 
-async function initSettings() {
-  const stored = (await chrome.storage.local.get('settings')).settings || {};
-  const settings = { ...DEFAULTS, ...stored };
-  const save = (patch) => {
-    Object.assign(settings, patch);
-    chrome.storage.local.set({ settings });
-  };
-  const auto = document.getElementById('set-auto');
-  const spread = document.getElementById('set-spread');
-  const button = document.getElementById('set-button');
-  auto.checked = !!settings.autoStart;
-  spread.checked = !!settings.spread;
-  button.checked = !!settings.showButton;
-  auto.addEventListener('change', () => save({ autoStart: auto.checked }));
-  spread.addEventListener('change', () => save({ spread: spread.checked }));
-  button.addEventListener('change', () => save({ showButton: button.checked }));
-  // The unwatched filter keeps its own storage key; read it fresh so the options page's values stay.
-  const unwatched = document.getElementById('set-unwatched');
-  const filter = async () => (await chrome.storage.local.get('unwatched')).unwatched || {};
-  unwatched.checked = !!(await filter()).enabled;
-  unwatched.addEventListener('change', async () => {
-    chrome.storage.local.set({ unwatched: { ...(await filter()), enabled: unwatched.checked } });
-  });
-  chrome.storage.onChanged.addListener((changes, area) => {
-    if (area === 'local' && changes.unwatched) unwatched.checked = !!(changes.unwatched.newValue || {}).enabled;
-  });
-  for (const name of ['onFinish', 'corner']) {
-    for (const input of document.querySelectorAll(`input[name="${name}"]`)) {
-      input.checked = input.value === settings[name];
-      input.addEventListener('change', () => { if (input.checked) save({ [name]: input.value }); });
-    }
-  }
-}
-
 async function init() {
   document.addEventListener('click', (e) => {
     const btn = e.target.closest('[data-act]');
     if (btn) act(btn.dataset.act);
   });
-  await initSettings();
+  TrueShuffleI18n.translate(document);
+  // The counts' numbers are elements inside the sentence, so setField() keeps finding them in any word order.
+  const field = (view, name) => document.querySelector(`#view-${view} [data-field="${name}"]`);
+  document.querySelector('#view-idle .count').replaceChildren(...parts('popupSavedCount', field('idle', 'saved-pos'), field('idle', 'saved-total')));
+  document.querySelector('#view-active .count').replaceChildren(...parts('popupActiveCount', field('active', 'pos'), field('active', 'total')), field('active', 'round'));
+  await TrueShuffleSettings.init();
   const forced = new URLSearchParams(location.search).get('tab');
   if (forced) tab = await chrome.tabs.get(Number(forced));
   else [tab] = await chrome.tabs.query({ active: true, currentWindow: true });

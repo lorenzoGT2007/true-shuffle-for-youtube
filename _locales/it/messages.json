@@ -1,0 +1,761 @@
+{
+  "lang": {
+    "message": "it"
+  },
+  "extName": {
+    "message": "True Shuffle for YouTube"
+  },
+  "extShortName": {
+    "message": "True Shuffle"
+  },
+  "extDescription": {
+    "message": "Mescola un’intera playlist di YouTube come un mazzo di carte: ogni video una volta, in ordine davvero casuale, prima di ripetersi."
+  },
+  "extCommandUnwatched": {
+    "message": "Nascondi o mostra i video guardati"
+  },
+  "setHeading": {
+    "message": "Impostazioni"
+  },
+  "setUnwatched": {
+    "message": "Nascondi i video guardati"
+  },
+  "setAuto": {
+    "message": "Attiva in automatico quando parte una playlist"
+  },
+  "setSpread": {
+    "message": "Non riprodurre lo stesso canale due volte di fila"
+  },
+  "setFinish": {
+    "message": "Quando finiscono tutti i video"
+  },
+  "setFinishReshuffle": {
+    "message": "Mescola di nuovo"
+  },
+  "setFinishStop": {
+    "message": "Interrompi"
+  },
+  "setButton": {
+    "message": "Mostra su YouTube il pulsante per mescolare"
+  },
+  "setCorner": {
+    "message": "Posizione del pulsante"
+  },
+  "setCornerLeft": {
+    "message": "In basso a sinistra"
+  },
+  "setCornerRight": {
+    "message": "In basso a destra"
+  },
+  "setAll": {
+    "message": "Tutte le impostazioni"
+  },
+  "setThreshold": {
+    "message": "Nascondi un video quando ne hai guardato il $PERCENT$",
+    "placeholders": {
+      "percent": { "content": "$1", "example": "90%" }
+    }
+  },
+  "setPartial": {
+    "message": "Nascondi anche i video che hai solo iniziato"
+  },
+  "optTitle": {
+    "message": "Opzioni di True Shuffle"
+  },
+  "optSections": {
+    "message": "Sezioni"
+  },
+  "optShuffle": {
+    "message": "Riproduzione casuale"
+  },
+  "optShuffleKeys": {
+    "message": "Shift+N, Shift+P, i pulsanti Successivo e Precedente del player e i tasti multimediali della tastiera seguono tutti la riproduzione casuale."
+  },
+  "optWatched": {
+    "message": "Video guardati"
+  },
+  "optUnwatchedNote": {
+    "message": "Funziona nella Home, nelle Iscrizioni, nella scheda Video di un canale, nei risultati di ricerca e nelle playlist, compresi i video che si caricano mentre scorri. Si attiva e disattiva anche con Alt+Shift+U e dal popup della barra degli strumenti; puoi cambiare quel tasto nelle scorciatoie da tastiera delle estensioni del browser. Il video che stai guardando non viene mai nascosto."
+  },
+  "optAlerts": {
+    "message": "Avvisi"
+  },
+  "optAlertsHeading": {
+    "message": "Avvisi: video spariti dalle tue playlist"
+  },
+  "optAlertsEmpty": {
+    "message": "Ancora niente. Quando una playlist che apri ha perso dei video dalla tua ultima visita, li trovi elencati qui. (Guarda più tardi e Video piaciuti non vengono controllati.)"
+  },
+  "optAlertsCsv": {
+    "message": "Esporta CSV"
+  },
+  "optAlertsClear": {
+    "message": "Cancella cronologia"
+  },
+  "optAlertsConfirm": {
+    "message": "Eliminare tutta la cronologia degli avvisi? Le istantanee salvate delle playlist restano."
+  },
+  "optAlertWhere": {
+    "message": "$WHEN$ in $PLAYLIST$",
+    "placeholders": {
+      "when": { "content": "$1", "example": "2026-11-01 13:05" },
+      "playlist": { "content": "$2", "example": "My road trip" }
+    }
+  },
+  "optAlertLastSeen": {
+    "message": "visto l’ultima volta: $WHEN$",
+    "placeholders": {
+      "when": { "content": "$1", "example": "2026-10-20 18:40" }
+    }
+  },
+  "optAbout": {
+    "message": "Informazioni"
+  },
+  "optVersion": {
+    "message": "Versione $VERSION$",
+    "placeholders": {
+      "version": { "content": "$1", "example": "1.1.0" }
+    }
+  },
+  "optWhatsNew": {
+    "message": "Novità"
+  },
+  "optGuide": {
+    "message": "Primi passi"
+  },
+  "optIssues": {
+    "message": "Segnala un problema o suggerisci un’idea"
+  },
+  "optCoffee": {
+    "message": "Offrimi un caffè"
+  },
+  "cardUpNext": {
+    "message": "A seguire"
+  },
+  "cardCount": {
+    "message": "$POS$ di $TOTAL$",
+    "placeholders": {
+      "pos": { "content": "$1", "example": "12" },
+      "total": { "content": "$2", "example": "1,240" }
+    }
+  },
+  "cardPrevious": {
+    "message": "Precedente (Shift+P)"
+  },
+  "cardNext": {
+    "message": "Successivo (Shift+N)"
+  },
+  "cardFoldAway": {
+    "message": "Riduci"
+  },
+  "cardStop": {
+    "message": "Interrompi la riproduzione casuale (la posizione resta salvata)"
+  },
+  "cardNextLabel": {
+    "message": "Prossimo"
+  },
+  "cardCancel": {
+    "message": "Annulla"
+  },
+  "cardClose": {
+    "message": "Chiudi"
+  },
+  "cardSwitch": {
+    "message": "Mescola questa invece"
+  },
+  "cardResume": {
+    "message": "Riprendi"
+  },
+  "cardShuffleAgain": {
+    "message": "Mescola di nuovo"
+  },
+  "cardTryAgain": {
+    "message": "Riprova"
+  },
+  "cardPlayNow": {
+    "message": "Riproduci ora"
+  },
+  "cardLeftOne": {
+    "message": "Ne resta 1 nel giro $ROUND$",
+    "placeholders": {
+      "round": { "content": "$1", "example": "2" }
+    }
+  },
+  "cardLeftMany": {
+    "message": "Ne restano $LEFT$ nel giro $ROUND$",
+    "placeholders": {
+      "left": { "content": "$1", "example": "1,203" },
+      "round": { "content": "$2", "example": "2" }
+    }
+  },
+  "cardQueueEmpty": {
+    "message": "Questo è l’ultimo video del giro."
+  },
+  "cardReshuffle": {
+    "message": "Rimescola i restanti"
+  },
+  "cardShuffleWhole": {
+    "message": "Mescola tutta la playlist"
+  },
+  "cardStartOver": {
+    "message": "Ricomincia da capo"
+  },
+  "cardNextNone": {
+    "message": "Niente. Questo è l’ultimo."
+  },
+  "cardNextFresh": {
+    "message": "Tutta la playlist, mescolata di nuovo"
+  },
+  "cardLoadingTitle": {
+    "message": "Lettura della playlist"
+  },
+  "cardLoadingCount": {
+    "message": "$LOADED$ di $TOTAL$ video",
+    "placeholders": {
+      "loaded": { "content": "$1", "example": "400" },
+      "total": { "content": "$2", "example": "1,240" }
+    }
+  },
+  "cardLoadingSoFar": {
+    "message": "$LOADED$ video finora",
+    "placeholders": {
+      "loaded": { "content": "$1", "example": "400" }
+    }
+  },
+  "cardLoadingHint": {
+    "message": "Recupero tutti i video, non solo i primi 200"
+  },
+  "cardPausedTitle": {
+    "message": "Riproduzione casuale in pausa"
+  },
+  "cardPausedText": {
+    "message": "Hai lasciato la playlist. $POSITION$ di $TOTAL$ riprodotti.",
+    "placeholders": {
+      "position": { "content": "$1", "example": "12" },
+      "total": { "content": "$2", "example": "1,240" }
+    }
+  },
+  "cardFinishedTitle": {
+    "message": "Riprodotti tutti e $TOTAL$ i video",
+    "placeholders": {
+      "total": { "content": "$1", "example": "1,240" }
+    }
+  },
+  "cardFinishedText": {
+    "message": "Ognuno esattamente una volta."
+  },
+  "cardPlayAgain": {
+    "message": "Riproduci di nuovo"
+  },
+  "cardErrorTitle": {
+    "message": "Impossibile avviare la riproduzione casuale"
+  },
+  "cardErrorText": {
+    "message": "Qualcosa è andato storto."
+  },
+  "errUpdated": {
+    "message": "True Shuffle è stato aggiornato. Ricarica questa scheda per continuare a usarlo."
+  },
+  "errNoAnswer": {
+    "message": "YouTube non ha risposto. Ricarica la pagina e riprova."
+  },
+  "errStillLoading": {
+    "message": "YouTube sta ancora caricando. Riprova tra un attimo."
+  },
+  "errNetwork": {
+    "message": "Errore di rete durante la lettura della playlist."
+  },
+  "errHttp": {
+    "message": "YouTube ha risposto con un errore ($STATUS$).",
+    "placeholders": {
+      "status": { "content": "$1", "example": "403" }
+    }
+  },
+  "errNoPlaylist": {
+    "message": "Nessuna playlist in questa pagina."
+  },
+  "errCannotOpen": {
+    "message": "YouTube non è riuscito ad aprire questa playlist."
+  },
+  "errUnknown": {
+    "message": "Qualcosa è andato storto."
+  },
+  "errNoneCanPlay": {
+    "message": "Nessuno dei video di questa playlist si può riprodurre al momento."
+  },
+  "errEmptyPlaylist": {
+    "message": "Questa playlist non contiene video."
+  },
+  "shuffleTipReading": {
+    "message": "Lettura della playlist"
+  },
+  "shuffleTipReadingOf": {
+    "message": "Lettura della playlist: $LOADED$ di $TOTAL$ video",
+    "placeholders": {
+      "loaded": { "content": "$1", "example": "1,200" },
+      "total": { "content": "$2", "example": "3,450" }
+    }
+  },
+  "shuffleTipReadingCount": {
+    "message": "Lettura della playlist: $LOADED$ video",
+    "placeholders": {
+      "loaded": { "content": "$1", "example": "1,200" }
+    }
+  },
+  "shuffleTipPaused": {
+    "message": "Riproduzione casuale in pausa: $PLAYED$ di $TOTAL$ riprodotti",
+    "placeholders": {
+      "played": { "content": "$1", "example": "12" },
+      "total": { "content": "$2", "example": "340" }
+    }
+  },
+  "shuffleTipShuffling": {
+    "message": "Riproduzione casuale: $POSITION$ di $TOTAL$",
+    "placeholders": {
+      "position": { "content": "$1", "example": "12" },
+      "total": { "content": "$2", "example": "340" }
+    }
+  },
+  "shuffleTipResume": {
+    "message": "Riprendi la riproduzione casuale: $PLAYED$ di $TOTAL$ riprodotti",
+    "placeholders": {
+      "played": { "content": "$1", "example": "12" },
+      "total": { "content": "$2", "example": "340" }
+    }
+  },
+  "shuffleTipStart": {
+    "message": "Mescola questa playlist"
+  },
+  "toolsLabel": {
+    "message": "Strumenti della playlist"
+  },
+  "toolsSearchPlaceholder": {
+    "message": "Cerca titolo o canale"
+  },
+  "toolsSearchLabel": {
+    "message": "Cerca in questa playlist per titolo o canale"
+  },
+  "toolsSortLabel": {
+    "message": "Mostra la playlist in questo ordine"
+  },
+  "toolsSortOriginal": {
+    "message": "Ordine della playlist"
+  },
+  "toolsSortTitle": {
+    "message": "Titolo (A-Z)"
+  },
+  "toolsSortDuration": {
+    "message": "Durata (prima i più brevi)"
+  },
+  "toolsSortChannel": {
+    "message": "Canale (A-Z)"
+  },
+  "toolsSortAdded": {
+    "message": "Data di aggiunta (prima i più recenti)"
+  },
+  "toolsSortUnwatched": {
+    "message": "Prima i non guardati"
+  },
+  "toolsPlay": {
+    "message": "Riproduci"
+  },
+  "toolsPlayTitle": {
+    "message": "Riproduci i video mostrati, in questo ordine"
+  },
+  "toolsShuffle": {
+    "message": "Mescola"
+  },
+  "toolsShuffleTitle": {
+    "message": "Mescola i video mostrati"
+  },
+  "toolsStatusMatch": {
+    "message": "Corrispondenze: $SHOWN$ su $LOADED$ video caricati",
+    "placeholders": {
+      "shown": { "content": "$1", "example": "12" },
+      "loaded": { "content": "$2", "example": "1,200" }
+    }
+  },
+  "toolsStatusLoadedOf": {
+    "message": "$LOADED$ di $TOTAL$ video caricati",
+    "placeholders": {
+      "loaded": { "content": "$1", "example": "100" },
+      "total": { "content": "$2", "example": "1,234" }
+    }
+  },
+  "toolsStatusLoadedMore": {
+    "message": "Video caricati: $LOADED$, altri in arrivo",
+    "placeholders": {
+      "loaded": { "content": "$1", "example": "100" }
+    }
+  },
+  "toolsStatusAll": {
+    "message": "Tutti e $COUNT$ i video",
+    "placeholders": {
+      "count": { "content": "$1", "example": "1,234" }
+    }
+  },
+  "toolsStatusOnlyLoaded": {
+    "message": "contano solo quelli caricati"
+  },
+  "toolsStopLoading": {
+    "message": "Interrompi caricamento"
+  },
+  "toolsLoadAllCount": {
+    "message": "Carica tutti ($COUNT$)",
+    "placeholders": {
+      "count": { "content": "$1", "example": "1,234" }
+    }
+  },
+  "toolsLoadAll": {
+    "message": "Carica tutti"
+  },
+  "removedWhatRemoved": {
+    "message": "rimosso dalla playlist"
+  },
+  "removedWhatHidden": {
+    "message": "diventato privato o eliminato (YouTube lo nasconde)"
+  },
+  "removedWhatUnclear": {
+    "message": "rimosso, oppure diventato privato o eliminato"
+  },
+  "removedWhatUnavailable": {
+    "message": "diventato privato o eliminato"
+  },
+  "removedCsvFound": {
+    "message": "Rilevato"
+  },
+  "removedCsvPlaylist": {
+    "message": "Playlist"
+  },
+  "removedCsvPlaylistId": {
+    "message": "ID playlist"
+  },
+  "removedCsvVideoId": {
+    "message": "ID video"
+  },
+  "removedCsvTitle": {
+    "message": "Titolo"
+  },
+  "removedCsvChannel": {
+    "message": "Canale"
+  },
+  "removedCsvLastSeen": {
+    "message": "Visto l’ultima volta"
+  },
+  "removedCsvWhat": {
+    "message": "Cosa è successo"
+  },
+  "removedCsvSeenIt": {
+    "message": "Visto"
+  },
+  "removedCsvYes": {
+    "message": "sì"
+  },
+  "removedCsvNo": {
+    "message": "no"
+  },
+  "removedRegion": {
+    "message": "Video spariti da questa playlist"
+  },
+  "removedHeadingOne": {
+    "message": "1 video è sparito da questa playlist"
+  },
+  "removedHeadingMany": {
+    "message": "$COUNT$ video sono spariti da questa playlist",
+    "placeholders": {
+      "count": { "content": "$1", "example": "3" }
+    }
+  },
+  "removedSeenIt": {
+    "message": "Visto"
+  },
+  "removedMore": {
+    "message": "e altri $COUNT$",
+    "placeholders": {
+      "count": { "content": "$1", "example": "5" }
+    }
+  },
+  "removedWhere": {
+    "message": "Cronologia ed esportazione CSV: Opzioni di True Shuffle"
+  },
+  "popupNoneLead": {
+    "message": "Fai partire un video da una playlist di YouTube e la riproduzione casuale si attiva."
+  },
+  "popupNoneText": {
+    "message": "Ogni video viene riprodotto una volta, in ordine casuale, prima che se ne ripeta uno."
+  },
+  "popupOpenPlaylists": {
+    "message": "Apri le mie playlist"
+  },
+  "popupReloadLead": {
+    "message": "Ricarica questa scheda per attivare True Shuffle."
+  },
+  "popupReloadText": {
+    "message": "YouTube era già aperto quando l’estensione è stata installata."
+  },
+  "popupReloadTab": {
+    "message": "Ricarica scheda"
+  },
+  "popupNoPlaylistLead": {
+    "message": "Apri una playlist per mescolarla."
+  },
+  "popupNoPlaylistText": {
+    "message": "Va bene la pagina di una playlist, e anche un video riprodotto da una playlist."
+  },
+  "popupMixLead": {
+    "message": "I Mix non si possono mescolare"
+  },
+  "popupMixText": {
+    "message": "Un Mix è un elenco infinito che YouTube continua a generare. Salva i brani in una playlist e mescola quella."
+  },
+  "popupThisPlaylist": {
+    "message": "Questa playlist"
+  },
+  "popupSavedCount": {
+    "message": "$POS$ di $TOTAL$ riprodotti l’ultima volta",
+    "placeholders": {
+      "pos": { "content": "$1", "example": "12" },
+      "total": { "content": "$2", "example": "340" }
+    }
+  },
+  "popupResume": {
+    "message": "Riprendi"
+  },
+  "popupStartOver": {
+    "message": "Ricomincia da capo"
+  },
+  "popupIdleNewText": {
+    "message": "Riproduce ogni video una volta, in ordine casuale, prima che se ne ripeta uno."
+  },
+  "popupShuffleThis": {
+    "message": "Mescola questa playlist"
+  },
+  "popupLoadingLead": {
+    "message": "Lettura della playlist"
+  },
+  "popupLoadingStart": {
+    "message": "Recupero tutti i video, non solo i primi 200"
+  },
+  "popupLoadingOf": {
+    "message": "$LOADED$ di $TOTAL$ video",
+    "placeholders": {
+      "loaded": { "content": "$1", "example": "1,200" },
+      "total": { "content": "$2", "example": "3,400" }
+    }
+  },
+  "popupLoadingSoFar": {
+    "message": "$LOADED$ video finora",
+    "placeholders": {
+      "loaded": { "content": "$1", "example": "1,200" }
+    }
+  },
+  "popupCancel": {
+    "message": "Annulla"
+  },
+  "popupActiveCount": {
+    "message": "$POS$ di $TOTAL$ riprodotti",
+    "placeholders": {
+      "pos": { "content": "$1", "example": "12" },
+      "total": { "content": "$2", "example": "340" }
+    }
+  },
+  "popupRound": {
+    "message": "Giro $ROUND$",
+    "placeholders": {
+      "round": { "content": "$1", "example": "2" }
+    }
+  },
+  "popupNextLabel": {
+    "message": "Prossimo"
+  },
+  "popupNextFresh": {
+    "message": "Tutta la playlist, mescolata di nuovo"
+  },
+  "popupPrevious": {
+    "message": "Precedente"
+  },
+  "popupNext": {
+    "message": "Successivo"
+  },
+  "popupReshuffleTitle": {
+    "message": "Nuovo ordine casuale per i video non ancora riprodotti"
+  },
+  "popupReshuffle": {
+    "message": "Rimescola"
+  },
+  "popupStopTitle": {
+    "message": "Interrompi la riproduzione casuale. La posizione resta salvata."
+  },
+  "popupStop": {
+    "message": "Interrompi"
+  },
+  "popupPausedLead": {
+    "message": "Riproduzione casuale in pausa"
+  },
+  "popupPausedText": {
+    "message": "Hai lasciato la playlist. $POS$ di $TOTAL$ riprodotti.",
+    "placeholders": {
+      "pos": { "content": "$1", "example": "12" },
+      "total": { "content": "$2", "example": "340" }
+    }
+  },
+  "popupSwitch": {
+    "message": "Mescola questa invece"
+  },
+  "popupFinishedText": {
+    "message": "Riprodotti tutti e $TOTAL$ i video",
+    "placeholders": {
+      "total": { "content": "$1", "example": "340" }
+    }
+  },
+  "popupFinishedNote": {
+    "message": "Ognuno esattamente una volta."
+  },
+  "popupShuffleAgain": {
+    "message": "Mescola di nuovo"
+  },
+  "popupPlayAgain": {
+    "message": "Riproduci di nuovo"
+  },
+  "popupClose": {
+    "message": "Chiudi"
+  },
+  "popupErrorLead": {
+    "message": "Impossibile avviare la riproduzione casuale"
+  },
+  "popupErrorFallback": {
+    "message": "Qualcosa è andato storto."
+  },
+  "popupTryAgain": {
+    "message": "Riprova"
+  },
+  "welcomeTitle": {
+    "message": "Ti diamo il benvenuto in True Shuffle"
+  },
+  "welcomeLead": {
+    "message": "True Shuffle mescola un’intera playlist di YouTube come un mazzo di carte: ogni video viene riprodotto una volta, in ordine davvero casuale, prima che se ne ripeta uno."
+  },
+  "welcomeStartHeading": {
+    "message": "Per iniziare"
+  },
+  "welcomeStepPlay": {
+    "message": "Fai partire un video qualsiasi da una delle tue playlist. La riproduzione casuale si attiva da sola e il pulsante rotondo in basso a destra si illumina e mostra i tuoi progressi."
+  },
+  "welcomeStepCard": {
+    "message": "Fai clic sul pulsante rotondo per aprire il riquadro: a che punto sei, cosa viene dopo e l’elenco «A seguire»."
+  },
+  "welcomeStepKeys": {
+    "message": "I pulsanti Successivo e Precedente del player, Shift+N / Shift+P e i tasti multimediali della tastiera seguono tutti la riproduzione casuale."
+  },
+  "welcomeStepPin": {
+    "message": "Fissa True Shuffle alla barra degli strumenti (dal menu con l’icona del puzzle) per avere a portata di mano i suoi comandi e le impostazioni."
+  },
+  "welcomeOpenPlaylists": {
+    "message": "Apri le mie playlist"
+  },
+  "welcomeShotCard": {
+    "message": "Il riquadro di True Shuffle nella pagina di un video di YouTube, con l’elenco «A seguire» aperto"
+  },
+  "newsShotSoon": {
+    "message": "Screenshot in arrivo"
+  },
+  "welcomeAlsoHeading": {
+    "message": "In True Shuffle trovi anche"
+  },
+  "welcomeAlsoUnwatched": {
+    "message": "Nascondi i video che hai già guardato, dal popup della barra degli strumenti o con Alt+Shift+U."
+  },
+  "welcomeAlsoTools": {
+    "message": "Cerca e ordina qualsiasi playlist, poi riproduci o mescola solo i video mostrati."
+  },
+  "welcomeAlsoRemoved": {
+    "message": "Scopri quando dei video spariscono dalle tue playlist."
+  },
+  "welcomeMoreHeading": {
+    "message": "Buono a sapersi"
+  },
+  "welcomePrivacy": {
+    "message": "Niente esce dal tuo browser: True Shuffle comunica solo con youtube.com e non ha server né tracciamento."
+  },
+  "newsTitle": {
+    "message": "Novità di True Shuffle"
+  },
+  "newsLead": {
+    "message": "Questo aggiornamento ti aiuta a gestire le tue playlist, non solo a mescolarle. E tutto resta comunque nel tuo browser."
+  },
+  "newsUnwatchedHeading": {
+    "message": "Nascondi i video guardati"
+  },
+  "newsUnwatchedWhere": {
+    "message": "I video che hai guardato spariscono dalla Home, dalle Iscrizioni, dalla scheda Video di un canale, dai risultati di ricerca e dalle playlist (anche da Guarda più tardi), compresi quelli che si caricano mentre scorri. True Shuffle li riconosce dalla barra rossa sotto la miniatura o dall’etichetta «Guardato» di YouTube."
+  },
+  "newsUnwatchedHow": {
+    "message": "Si attiva dal popup della barra degli strumenti o con Alt+Shift+U. Nelle opzioni scegli da che percentuale un video conta come guardato (di base il 90%) e puoi nascondere anche i video che hai solo iniziato. Il video che stai guardando non viene mai nascosto."
+  },
+  "newsShotUnwatched": {
+    "message": "La Home di YouTube con i video guardati nascosti"
+  },
+  "newsToolsHeading": {
+    "message": "Cerca e ordina qualsiasi playlist"
+  },
+  "newsToolsSearch": {
+    "message": "In qualsiasi pagina di playlist (anche Guarda più tardi), una casella di ricerca sopra l’elenco filtra per titolo o canale mentre scrivi. Un menu ordina per titolo, durata, canale, data di aggiunta (quando YouTube la mostra), prima i non guardati, oppure secondo l’ordine della playlist."
+  },
+  "newsToolsView": {
+    "message": "Cambia solo ciò che vedi: la tua playlist resta esattamente com’è. In una playlist lunga, premi prima «Carica tutti», così ricerca e ordinamento coprono tutti i video."
+  },
+  "newsShotTools": {
+    "message": "Una pagina di playlist con la casella di ricerca e il menu di ordinamento sopra l’elenco"
+  },
+  "newsPlayHeading": {
+    "message": "Riproduci o mescola solo ciò che vedi"
+  },
+  "newsPlayButtons": {
+    "message": "Dopo una ricerca o un ordinamento, «Riproduci» riproduce i video mostrati in quell’ordine e «Mescola» li riproduce mescolati."
+  },
+  "newsPlayWhole": {
+    "message": "Questo prende il posto della riproduzione casuale di quella playlist. Per tornare a tutta la playlist, premi «Mescola tutta la playlist» nell’elenco «A seguire»."
+  },
+  "newsShotPlay": {
+    "message": "L’elenco «A seguire» del riquadro dopo «Mescola», con il pulsante «Mescola tutta la playlist»"
+  },
+  "newsRemovedHeading": {
+    "message": "Scopri quando i video spariscono"
+  },
+  "newsRemovedNotice": {
+    "message": "Quando apri una playlist, True Shuffle ne memorizza i video. La volta dopo, se alcuni sono stati rimossi, resi privati o eliminati, un piccolo avviso sopra l’elenco li indica con i loro vecchi titoli, finché non premi «Visto»."
+  },
+  "newsRemovedMore": {
+    "message": "La cronologia, con l’esportazione CSV, è nelle opzioni. In una playlist lunga, usa «Carica tutti» così True Shuffle vede l’elenco completo. Guarda più tardi e Video piaciuti non vengono controllati, perché lì sei tu a far entrare e uscire i video."
+  },
+  "newsShotRemoved": {
+    "message": "L’avviso sopra una playlist con i video spariti"
+  },
+  "newsSettingsHeading": {
+    "message": "Tutte le impostazioni in un unico posto"
+  },
+  "newsSettingsText": {
+    "message": "La pagina delle opzioni ora raccoglie tutte le impostazioni: la riproduzione casuale, i video guardati da nascondere e la cronologia degli avvisi."
+  },
+  "newsSettingsOpen": {
+    "message": "Apri la pagina delle opzioni"
+  },
+  "newsShotOptions": {
+    "message": "La pagina delle opzioni con tutte le impostazioni di True Shuffle"
+  },
+  "newsLanguageHeading": {
+    "message": "Nella tua lingua"
+  },
+  "newsLanguageText": {
+    "message": "True Shuffle ora è disponibile in inglese, italiano, portoghese e spagnolo. Segue la lingua del tuo browser."
+  },
+  "newsShotLanguage": {
+    "message": "Il popup della barra degli strumenti in italiano"
+  },
+  "newsMoreHeading": {
+    "message": "Domande o idee?"
+  },
+  "newsMoreText": {
+    "message": "True Shuffle è gratuito e senza pubblicità. Hai trovato un problema o hai un’idea? Dimmelo su GitHub."
+  }
+}

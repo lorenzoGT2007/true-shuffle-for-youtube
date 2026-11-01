@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title data-i18n="welcomeTitle"></title>
+  <link rel="stylesheet" href="../popup/popup.css">
+  <link rel="stylesheet" href="welcome.css">
+</head>
+<body class="page">
+  <header class="brand">
+    <img src="../icons/icon32.png" width="28" height="28" alt="">
+    <h1 data-i18n="welcomeTitle"></h1>
+  </header>
+
+  <main>
+    <p class="lead" data-i18n="welcomeLead"></p>
+
+    <section class="settings" id="start" aria-labelledby="start-h">
+      <h2 id="start-h" data-i18n="welcomeStartHeading"></h2>
+      <ol class="steps">
+        <li data-i18n="welcomeStepPlay"></li>
+        <li data-i18n="welcomeStepCard"></li>
+        <li data-i18n="welcomeStepKeys"></li>
+        <li data-i18n="welcomeStepPin"></li>
+      </ol>
+      <div class="row">
+        <a class="btn primary" href="https://www.youtube.com/feed/playlists" target="_blank" rel="noopener" data-i18n="welcomeOpenPlaylists"></a>
+      </div>
+      <!-- Screenshot (for the owner): a YouTube video page playing from a playlist, with the True Shuffle card open at the bottom right and its Up next list showing. Save it as welcome/shots/card.png at 1280×800, then replace the div below with
+           <img src="shots/card.png" data-i18n-alt="welcomeShotCard" alt=""> -->
+      <figure class="shot"><div class="placeholder" role="img" data-i18n-aria-label="welcomeShotCard"><span data-i18n="newsShotSoon"></span></div></figure>
+    </section>
+
+    <section class="settings" id="also" aria-labelledby="also-h">
+      <h2 id="also-h" data-i18n="welcomeAlsoHeading"></h2>
+      <ul class="steps">
+        <li data-i18n="welcomeAlsoUnwatched"></li>
+        <li data-i18n="welcomeAlsoTools"></li>
+        <li data-i18n="welcomeAlsoRemoved"></li>
+      </ul>
+    </section>
+
+    <section class="settings" id="more" aria-labelledby="more-h">
+      <h2 id="more-h" data-i18n="welcomeMoreHeading"></h2>
+      <p data-i18n="welcomePrivacy"></p>
+      <ul class="links">
+        <li><a href="../options/options.html" data-i18n="setAll"></a></li>
+        <li><a href="whats-new.html" data-i18n="optWhatsNew"></a></li>
+      </ul>
+    </section>
+  </main>
+
+  <script src="../src/i18n.js"></script>
+  <script src="welcome.js"></script>
+</body>
+</html>

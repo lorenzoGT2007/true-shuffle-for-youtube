@@ -6,6 +6,7 @@
 (function (root) {
   'use strict';
 
+  const { t, parts } = root.TrueShuffleI18n;
   const SVG_NS = 'http://www.w3.org/2000/svg';
 
   // 24x24 stroke icons, drawn for this extension.
@@ -75,7 +76,7 @@
   const fmt = (n) => (n == null ? '' : Number(n).toLocaleString());
 
   const CSS = `
-:host { all: initial; }
+:host { all: initial; color-scheme: dark; }
 :host([hidden]) { display: none !important; }
 .stack {
   --felt: #13382c;
@@ -268,7 +269,7 @@ button:focus-visible { outline: 2px solid var(--brass); outline-offset: 2px; }
     const stack = h('div', { class: 'stack', role: 'region', 'aria-label': 'True Shuffle' });
     shadow.append(style, stack);
 
-    const queue = h('section', { class: 'queue', hidden: true, 'aria-label': 'Up next' });
+    const queue = h('section', { class: 'queue', hidden: true, 'aria-label': t('cardUpNext') });
     const card = h('div', { class: 'card', hidden: true });
     const fabRing = h('span', { class: 'ring', hidden: true });
     const fabTip = h('span', { class: 'tip' });
@@ -305,21 +306,21 @@ button:focus-visible { outline: 2px solid var(--brass); outline-offset: 2px; }
       if (mode === 'active') {
         refs.pos = h('strong');
         refs.total = document.createTextNode('');
-        refs.queueBtn = iconButton('queue', 'queue', 'Up next');
+        refs.queueBtn = iconButton('queue', 'queue', t('cardUpNext'));
         refs.nt = h('span', { class: 'nt' });
         refs.nc = h('span', { class: 'nc' });
         refs.bar = h('div', { class: 'bar' }, h('i'));
         card.append(
           h('div', { class: 'top' },
             h('div', { class: 'mark' }, icon('shuffle')),
-            h('div', { class: 'count' }, refs.pos, refs.total),
+            h('div', { class: 'count' }, ...parts('cardCount', refs.pos, refs.total)),
             h('div', { class: 'ctl' },
-              iconButton('prev', 'prev', 'Previous (Shift+P)'),
-              iconButton('next', 'next', 'Next (Shift+N)'),
+              iconButton('prev', 'prev', t('cardPrevious')),
+              iconButton('next', 'next', t('cardNext')),
               refs.queueBtn,
-              iconButton('collapse', 'collapse', 'Fold away'),
-              iconButton('stop', 'close', 'Stop shuffling (your place is kept)'))),
-          refs.sub = h('div', { class: 'sub' }, h('span', { class: 'label', text: 'Next' }), refs.nt, refs.nc),
+              iconButton('collapse', 'collapse', t('cardFoldAway')),
+              iconButton('stop', 'close', t('cardStop')))),
+          refs.sub = h('div', { class: 'sub' }, h('span', { class: 'label', text: t('cardNextLabel') }), refs.nt, refs.nc),
           refs.bar,
         );
         return;
@@ -331,19 +332,19 @@ button:focus-visible { outline: 2px solid var(--brass); outline-offset: 2px; }
       const mark = h('div', { class: mode === 'loading' ? 'mark spin' : 'mark' }, icon('shuffle'));
       const top = h('div', { class: 'top' }, mark, h('div', { class: 'msg' }, msgTitle, msgText),
         h('div', { class: 'ctl' }, iconButton(mode === 'loading' ? 'cancel' : 'stop', 'close',
-          mode === 'loading' ? 'Cancel' : 'Close')));
+          t(mode === 'loading' ? 'cardCancel' : 'cardClose'))));
       card.append(top);
       if (mode === 'paused') {
-        refs.switchBtn = h('button', { class: 'pill', type: 'button', dataset: { act: 'switch' } }, 'Shuffle this one instead');
+        refs.switchBtn = h('button', { class: 'pill', type: 'button', dataset: { act: 'switch' } }, t('cardSwitch'));
         card.append(h('div', { class: 'actions' },
-          h('button', { class: 'pill primary', type: 'button', dataset: { act: 'resume' } }, 'Resume shuffle'),
+          h('button', { class: 'pill primary', type: 'button', dataset: { act: 'resume' } }, t('cardResume')),
           refs.switchBtn));
       } else if (mode === 'finished') {
-        refs.againBtn = h('button', { class: 'pill primary', type: 'button', dataset: { act: 'again' } }, 'Shuffle again');
+        refs.againBtn = h('button', { class: 'pill primary', type: 'button', dataset: { act: 'again' } }, t('cardShuffleAgain'));
         card.append(h('div', { class: 'actions' }, refs.againBtn));
       } else if (mode === 'error') {
         card.append(h('div', { class: 'actions' },
-          h('button', { class: 'pill primary', type: 'button', dataset: { act: 'retry' } }, 'Try again')));
+          h('button', { class: 'pill primary', type: 'button', dataset: { act: 'retry' } }, t('cardTryAgain'))));
       } else if (mode === 'loading') {
         refs.bar = h('div', { class: 'bar' }, h('i'));
         card.append(refs.bar);
@@ -363,7 +364,7 @@ button:focus-visible { outline: 2px solid var(--brass); outline-offset: 2px; }
       const list = h('ol', { class: 'qlist' });
       for (const it of q.items) {
         list.appendChild(h('li', null,
-          h('button', { class: 'qitem', type: 'button', dataset: { act: 'play', id: it.id }, title: 'Play now' },
+          h('button', { class: 'qitem', type: 'button', dataset: { act: 'play', id: it.id }, title: t('cardPlayNow') },
             h('span', { class: 'qn', text: String(it.n) }),
             h('span', { class: 'qtext' },
               h('span', { class: 'qt', text: it.title || it.id }),
@@ -371,13 +372,13 @@ button:focus-visible { outline: 2px solid var(--brass); outline-offset: 2px; }
       }
       queue.replaceChildren(
         h('div', { class: 'qhead' },
-          h('strong', { text: 'Up next' }),
-          h('span', { text: q.left === 1 ? '1 left in round ' + q.round : fmt(q.left) + ' left in round ' + q.round })),
-        q.items.length ? list : h('div', { class: 'qempty', text: 'This is the last video of the round.' }),
+          h('strong', { text: t('cardUpNext') }),
+          h('span', { text: q.left === 1 ? t('cardLeftOne', q.round) : t('cardLeftMany', fmt(q.left), q.round) })),
+        q.items.length ? list : h('div', { class: 'qempty', text: t('cardQueueEmpty') }),
         h('div', { class: 'qfoot' },
-          h('button', { class: 'pill', type: 'button', dataset: { act: 'reshuffle' } }, 'Reshuffle what’s left'),
+          h('button', { class: 'pill', type: 'button', dataset: { act: 'reshuffle' } }, t('cardReshuffle')),
           // A view (the playlist tools' Play/Shuffle) starts over as a shuffle of the whole playlist.
-          h('button', { class: 'pill', type: 'button', dataset: { act: 'restart' } }, q.view ? 'Shuffle whole playlist' : 'Start over')),
+          h('button', { class: 'pill', type: 'button', dataset: { act: 'restart' } }, t(q.view ? 'cardShuffleWhole' : 'cardStartOver'))),
       );
     }
 
@@ -411,14 +412,14 @@ button:focus-visible { outline: 2px solid var(--brass); outline-offset: 2px; }
       }
       if (mode === 'active') {
         refs.pos.textContent = fmt(vm.position);
-        refs.total.textContent = ' of ' + fmt(vm.total);
+        refs.total.textContent = fmt(vm.total);
         refs.bar.style.setProperty('--p', String(vm.total ? vm.position / vm.total : 0));
         if (vm.next) {
           refs.nt.textContent = vm.next.title || vm.next.id;
           refs.nc.textContent = vm.next.channel || '';
           refs.sub.title = vm.next.channel ? `${vm.next.title} (${vm.next.channel})` : vm.next.title || '';
         } else {
-          refs.nt.textContent = vm.onFinish === 'stop' ? 'Nothing. This is the last one.' : 'A fresh shuffle of the whole playlist';
+          refs.nt.textContent = t(vm.onFinish === 'stop' ? 'cardNextNone' : 'cardNextFresh');
           refs.nc.textContent = '';
           refs.sub.title = '';
         }
@@ -428,23 +429,23 @@ button:focus-visible { outline: 2px solid var(--brass); outline-offset: 2px; }
       }
       renderQueue(null);
       if (mode === 'loading') {
-        refs.msgTitle.textContent = 'Reading the playlist';
+        refs.msgTitle.textContent = t('cardLoadingTitle');
         refs.msgText.textContent = vm.loaded
-          ? (vm.total ? `${fmt(vm.loaded)} of ${fmt(vm.total)} videos` : `${fmt(vm.loaded)} videos so far`)
-          : 'Getting every video, not just the first 200';
+          ? (vm.total ? t('cardLoadingCount', fmt(vm.loaded), fmt(vm.total)) : t('cardLoadingSoFar', fmt(vm.loaded)))
+          : t('cardLoadingHint');
         refs.bar.classList.toggle('busy', !vm.total);
         refs.bar.style.setProperty('--p', String(vm.total ? Math.min(1, vm.loaded / vm.total) : 0));
       } else if (mode === 'paused') {
-        refs.msgTitle.textContent = 'Shuffle paused';
-        refs.msgText.textContent = `You left the playlist. ${fmt(vm.position)} of ${fmt(vm.total)} played.`;
+        refs.msgTitle.textContent = t('cardPausedTitle');
+        refs.msgText.textContent = t('cardPausedText', fmt(vm.position), fmt(vm.total));
         refs.switchBtn.hidden = !vm.canSwitch;
       } else if (mode === 'finished') {
-        refs.msgTitle.textContent = `All ${fmt(vm.total)} videos played`;
-        refs.msgText.textContent = 'Each one exactly once.';
-        refs.againBtn.textContent = vm.ordered ? 'Play again' : 'Shuffle again';
+        refs.msgTitle.textContent = t('cardFinishedTitle', fmt(vm.total));
+        refs.msgText.textContent = t('cardFinishedText');
+        refs.againBtn.textContent = t(vm.ordered ? 'cardPlayAgain' : 'cardShuffleAgain');
       } else if (mode === 'error') {
-        refs.msgTitle.textContent = 'Couldn’t start the shuffle';
-        refs.msgText.textContent = vm.message || 'Something went wrong.';
+        refs.msgTitle.textContent = t('cardErrorTitle');
+        refs.msgText.textContent = vm.message || t('cardErrorText');
       }
     }
 

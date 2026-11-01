@@ -28,8 +28,8 @@ Firefox only keeps add-ons signed by Mozilla, so there it comes from Firefox Add
 - Skipping through a video with the time bar is fine. Drag it to the very end (or press End) to skip to the next shuffled video; while you hold the bar nothing changes until you let go.
 - The card shows how far you are, what plays next, and an "Up next" list you can jump around in. The arrow folds it into the small button; the × stops shuffling that playlist in this tab (your place is kept, and the round button starts it again).
 - Pick a video yourself from the playlist and it counts as played.
-- The toolbar icon shows the same controls plus settings. Switch off "Turn on by itself when a playlist plays" if you'd rather start it yourself every time.
-- **Hide watched videos** (in the toolbar popup, or Alt+Shift+U): videos you've watched at least 90% of disappear from Home, Subscriptions, channel Videos tabs, search results and playlists (Watch later too), judged by the red bar under the thumbnail or YouTube's "Watched" label, including the ones that load as you scroll. "Filter options" sets the share and can also hide videos you've only started. The video you're watching always stays.
+- The toolbar icon shows the same controls plus settings. Switch off "Turn on by itself when a playlist plays" if you'd rather start it yourself every time. "All settings" opens the options page, which has every setting in one place, the alert history, and links to the welcome and What's new pages.
+- **Hide watched videos** (in the toolbar popup, or Alt+Shift+U): videos you've watched at least 90% of disappear from Home, Subscriptions, channel Videos tabs, search results and playlists (Watch later too), judged by the red bar under the thumbnail or YouTube's "Watched" label, including the ones that load as you scroll. The options page sets the share and can also hide videos you've only started. The video you're watching always stays.
 - **On any playlist page** (Watch later too): a search box above the list filters by title or channel as you type, and a menu shows the list by title, duration, channel, date added (when YouTube shows it), unwatched first, or in the playlist's own order. It only changes what you see; your playlist stays exactly as it is. On a long playlist, "Load all" scrolls through it for you first, so search and sort cover every video. **Play** plays exactly the videos shown, in that order; **Shuffle** plays them shuffled (this takes the place of that playlist's shuffle; "Shuffle whole playlist" in Up next goes back to all of it).
 - **Videos that vanish**: when you open a playlist, True Shuffle remembers its videos. Next time, if some were removed or became private or deleted, a small notice above the list names them with their old titles ("Seen it" puts it away). For a long playlist, use "Load all" so it can see the whole list. The history, with a CSV export, is in the options. Watch later and Liked videos aren't checked, since videos come and go there because of you.
 
@@ -46,6 +46,8 @@ Firefox only keeps add-ons signed by Mozilla, so there it comes from Firefox Add
 - Mixes (YouTube's endless auto-generated lists) can't be shuffled. Save the songs to a playlist instead.
 - If you browse other pages while the miniplayer plays, YouTube's own order takes over until you come back to the video page. The card then offers "Resume shuffle".
 - Private playlists, Watch later and Liked videos work while you're signed in to YouTube.
+- True Shuffle speaks English, Italian, Portuguese (Brazil) and Spanish, following your browser's language.
+- Right after you install it, a welcome page explains the basics. After an update with new features, a What's new page opens once, in a tab behind the one you're on.
 - Nothing leaves your browser. The extension only talks to youtube.com and keeps its state in the browser's extension storage. See the [privacy policy](PRIVACY.md).
 
 ## Support

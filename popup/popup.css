@@ -66,7 +66,7 @@ main { padding: 4px 16px 16px; min-height: 64px; }
 .btn.icon { padding: 8px 10px; }
 .btn svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 .btn svg .solid { fill: currentColor; stroke: none; }
-button:focus-visible { outline: 2px solid var(--brass-hi); outline-offset: 2px; }
+button:focus-visible, .btn:focus-visible { outline: 2px solid var(--brass-hi); outline-offset: 2px; }
 
 .hint { margin-left: 6px; color: var(--ivory-2); font-size: 11.5px; }
 .link {
@@ -78,14 +78,12 @@ button:focus-visible { outline: 2px solid var(--brass-hi); outline-offset: 2px; 
   cursor: pointer;
 }
 .link:hover { color: var(--brass-hi); text-decoration: underline; }
+.settings > .link:last-child { margin: 8px 0 4px; }
 .range { width: 100%; accent-color: var(--brass); }
-.options .settings { border-top: 0; padding: 16px; }
-body.options { width: auto; max-width: 680px; }
-.options .settings + .settings { border-top: 1px solid var(--line); }
 .alerts { margin: 4px 0 12px; padding-left: 20px; max-height: 360px; overflow-y: auto; }
 .alert { margin: 6px 0; color: var(--ivory-2); }
-.alert a { color: var(--ivory); }
-.alert.new a:first-child { font-weight: 600; }
+.page .alert a { color: var(--ivory); }
+.alert.new > a:first-child { font-weight: 600; }
 .alert .what { color: var(--brass); }
 .btn:disabled { opacity: 0.45; cursor: default; }
 
@@ -139,6 +137,39 @@ footer p { margin: 0; }
 }
 .coffee:hover { color: var(--brass-hi); text-decoration: underline; }
 .coffee svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+/* Extension pages (options, welcome, What's new): the popup's look on a whole page. */
+body.page { width: auto; min-height: 100vh; padding: 0 16px 48px; font-size: 14px; }
+.page > * { max-width: 720px; margin-left: auto; margin-right: auto; }
+.page .brand { padding: 28px 0 10px; }
+.page .brand h1 { margin: 0; font-size: 22px; font-weight: 650; line-height: 1.25; }
+.page main { padding: 0; }
+.page .settings { margin: 0 0 16px; padding: 18px 20px 14px; border: 1px solid var(--line); border-radius: 16px; }
+.page .settings h2 { margin: 0 0 8px; font-size: 16px; color: var(--ivory); }
+.page .quiet { margin-top: 8px; }
+/* Text links; a link styled as a button (a.btn) keeps the button's colours and shape. */
+.page a:not(.btn) { color: var(--brass); }
+.page a:not(.btn):hover { color: var(--brass-hi); }
+a:not(.btn):focus-visible { outline: 2px solid var(--brass-hi); outline-offset: 2px; border-radius: 4px; }
+.toc { display: flex; flex-wrap: wrap; gap: 6px 18px; padding: 0 0 16px; }
+.toc a, .links a { text-decoration: none; }
+.toc a:hover, .links a:hover { text-decoration: underline; }
+.links { margin: 0; padding-left: 20px; }
+.links li { margin: 4px 0; }
+/* A picture of a feature: a dashed box until the real screenshot (an <img> in the figure) is added. */
+.shot { margin: 14px 0 4px; }
+.shot img, .shot .placeholder { display: block; width: 100%; aspect-ratio: 16 / 10; border-radius: 12px; }
+.shot img { height: auto; object-fit: cover; }
+.shot .placeholder {
+  display: grid; place-items: center; padding: 16px;
+  border: 2px dashed rgba(243, 236, 221, 0.28); background: rgba(0, 0, 0, 0.18);
+  color: var(--ivory-2); text-align: center;
+}
+.shot figcaption { margin-top: 6px; color: var(--ivory-2); font-size: 12.5px; }
+kbd {
+  padding: 1px 6px; border: 1px solid var(--line); border-radius: 6px;
+  background: rgba(0, 0, 0, 0.22); font: 12px/1.6 Consolas, ui-monospace, monospace;
+}
 
 /* No animation while the popup paints its initial state. */
 .preload *, .preload *::after { transition: none !important; }

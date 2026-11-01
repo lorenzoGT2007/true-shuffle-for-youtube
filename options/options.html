@@ -2,37 +2,111 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>True Shuffle options</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title data-i18n="optTitle"></title>
   <link rel="stylesheet" href="../popup/popup.css">
 </head>
-<body class="options">
-  <section class="settings" aria-labelledby="unwatched-h">
-    <h2 id="unwatched-h">Hide watched videos</h2>
+<body class="page">
+  <header class="brand">
+    <img src="../icons/icon32.png" width="28" height="28" alt="">
+    <h1 data-i18n="optTitle"></h1>
+  </header>
+  <nav class="toc" data-i18n-aria-label="optSections">
+    <a href="#shuffle" data-i18n="optShuffle"></a>
+    <a href="#unwatched" data-i18n="optWatched"></a>
+    <a href="#alerts" data-i18n="optAlerts"></a>
+    <a href="#about" data-i18n="optAbout"></a>
+  </nav>
 
-    <div class="field">
-      <label class="field-label" for="threshold">Hide a video once you&rsquo;ve watched <strong id="threshold-value">90%</strong> of it</label>
-      <input class="range" type="range" id="threshold" min="10" max="100" step="5" value="90">
-    </div>
+  <main>
+    <section class="settings" id="shuffle" aria-labelledby="shuffle-h">
+      <h2 id="shuffle-h" data-i18n="optShuffle"></h2>
 
-    <label class="switch">
-      <input type="checkbox" id="partial">
-      <span class="track" aria-hidden="true"></span>
-      <span class="text">Also hide videos you&rsquo;ve only started</span>
-    </label>
+      <label class="switch">
+        <input type="checkbox" id="set-auto">
+        <span class="track" aria-hidden="true"></span>
+        <span class="text" data-i18n="setAuto"></span>
+      </label>
 
-    <p class="quiet">Switch the filter on and off in the toolbar popup or with Alt+Shift+U. You can change that key in your browser&rsquo;s extension shortcuts. The video you&rsquo;re watching always stays.</p>
-  </section>
+      <label class="switch">
+        <input type="checkbox" id="set-spread">
+        <span class="track" aria-hidden="true"></span>
+        <span class="text" data-i18n="setSpread"></span>
+      </label>
 
-  <section class="settings" aria-labelledby="alerts-h">
-    <h2 id="alerts-h">Alerts: videos gone from your playlists</h2>
-    <p class="quiet" id="alerts-empty">Nothing yet. When a playlist you open has lost videos since your last visit, they&rsquo;re listed here. (Watch later and Liked videos aren&rsquo;t checked.)</p>
-    <ol class="alerts" id="alerts-list"></ol>
-    <div class="row">
-      <button class="btn primary" type="button" id="alerts-csv">Export CSV</button>
-      <button class="btn ghost" type="button" id="alerts-clear">Clear history</button>
-    </div>
-  </section>
+      <div class="field">
+        <span class="field-label" id="finish-label" data-i18n="setFinish"></span>
+        <div class="seg" role="radiogroup" aria-labelledby="finish-label">
+          <label><input type="radio" name="onFinish" value="reshuffle"><span data-i18n="setFinishReshuffle"></span></label>
+          <label><input type="radio" name="onFinish" value="stop"><span data-i18n="setFinishStop"></span></label>
+        </div>
+      </div>
+
+      <label class="switch">
+        <input type="checkbox" id="set-button">
+        <span class="track" aria-hidden="true"></span>
+        <span class="text" data-i18n="setButton"></span>
+      </label>
+
+      <div class="field">
+        <span class="field-label" id="corner-label" data-i18n="setCorner"></span>
+        <div class="seg" role="radiogroup" aria-labelledby="corner-label">
+          <label><input type="radio" name="corner" value="left"><span data-i18n="setCornerLeft"></span></label>
+          <label><input type="radio" name="corner" value="right"><span data-i18n="setCornerRight"></span></label>
+        </div>
+      </div>
+
+      <p class="quiet" data-i18n="optShuffleKeys"></p>
+    </section>
+
+    <section class="settings" id="unwatched" aria-labelledby="unwatched-h">
+      <h2 id="unwatched-h" data-i18n="optWatched"></h2>
+
+      <label class="switch">
+        <input type="checkbox" id="set-unwatched">
+        <span class="track" aria-hidden="true"></span>
+        <span class="text"><span data-i18n="setUnwatched"></span> <span class="hint">Alt+Shift+U</span></span>
+      </label>
+
+      <div class="field">
+        <label class="field-label" for="threshold" id="threshold-label"></label>
+        <input class="range" type="range" id="threshold" min="10" max="100" step="5" value="90">
+      </div>
+
+      <label class="switch">
+        <input type="checkbox" id="set-partial">
+        <span class="track" aria-hidden="true"></span>
+        <span class="text" data-i18n="setPartial"></span>
+      </label>
+
+      <p class="quiet" data-i18n="optUnwatchedNote"></p>
+    </section>
+
+    <section class="settings" id="alerts" aria-labelledby="alerts-h">
+      <h2 id="alerts-h" data-i18n="optAlertsHeading"></h2>
+      <p class="quiet" id="alerts-empty" data-i18n="optAlertsEmpty"></p>
+      <ol class="alerts" id="alerts-list"></ol>
+      <div class="row">
+        <button class="btn primary" type="button" id="alerts-csv" data-i18n="optAlertsCsv"></button>
+        <button class="btn ghost" type="button" id="alerts-clear" data-i18n="optAlertsClear"></button>
+      </div>
+    </section>
+
+    <section class="settings" id="about" aria-labelledby="about-h">
+      <h2 id="about-h" data-i18n="optAbout"></h2>
+      <p class="quiet" id="version"></p>
+      <ul class="links">
+        <li><a href="../welcome/whats-new.html" target="_blank" data-i18n="optWhatsNew"></a></li>
+        <li><a href="../welcome/welcome.html" target="_blank" data-i18n="optGuide"></a></li>
+        <li><a href="https://github.com/lorenzoGT2007/true-shuffle-for-youtube/issues" target="_blank" rel="noopener" data-i18n="optIssues"></a></li>
+        <li><a href="https://buymeacoffee.com/lorenzogt" target="_blank" rel="noopener" data-i18n="optCoffee"></a></li>
+      </ul>
+    </section>
+  </main>
+
+  <script src="../src/i18n.js"></script>
   <script src="../src/removed.js"></script>
+  <script src="../popup/settings.js"></script>
   <script src="options.js"></script>
 </body>
 </html>

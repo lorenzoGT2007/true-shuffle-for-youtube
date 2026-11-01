@@ -13,7 +13,7 @@ const path = require('node:path');
 const git = (...args) => execFileSync('git', args, { encoding: 'utf8' });
 const root = git('rev-parse', '--show-toplevel').trim();
 const out = path.resolve(process.argv[2] || root);
-const shipped = ['icons', 'options', 'popup', 'src']; // everything the extension needs besides manifest.json
+const shipped = ['_locales', 'icons', 'options', 'popup', 'src', 'welcome']; // everything the extension needs besides manifest.json
 const manifest = JSON.parse(git('-C', root, 'show', 'HEAD:manifest.json'));
 const zip = (suffix) => path.join(out, `true-shuffle-for-youtube${suffix}-v${manifest.version}.zip`);
 

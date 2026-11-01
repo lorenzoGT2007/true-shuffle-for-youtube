@@ -15,7 +15,7 @@
 })(typeof globalThis !== 'undefined' ? globalThis : this, function (root) {
   'use strict';
 
-  const DEFAULTS = { enabled: false, threshold: 90, partial: false }; // also in options/options.js
+  const DEFAULTS = { enabled: false, threshold: 90, partial: false }; // also in popup/settings.js
   // Where it filters (the project brief): not the watch page, so nothing next to your video changes.
   const PAGES = ['home', 'subscriptions', 'channelVideos', 'search', 'playlist', 'watchLater'];
   const ATTR = 'data-true-shuffle-watched'; // on the cards this filter hides

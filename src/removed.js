@@ -26,11 +26,12 @@
   const SETTLE_MS = 2000; // check once the rows stop arriving
   const SKIP = /^(WL|LL|RD|TL)/; // Watch Later, Liked videos, mixes and temporary lists
 
+  // Message keys, translated on use: Node loads this file without chrome.i18n.
   const WHAT = {
-    removed: 'removed from the playlist',
-    hidden: 'became private or deleted (YouTube hides it)',
-    unclear: 'removed, or became private or deleted',
-    unavailable: 'became private or deleted',
+    removed: 'removedWhatRemoved',
+    hidden: 'removedWhatHidden',
+    unclear: 'removedWhatUnclear',
+    unavailable: 'removedWhatUnavailable',
   };
 
   // ---------------------------------------------------------------- pure helpers
@@ -119,18 +120,19 @@
     return /[",\r\n]|^\s|\s$/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s;
   }
 
-  /** The alert history as CSV, newest first. */
-  function toCsv(alerts) {
-    const head = ['Found', 'Playlist', 'Playlist ID', 'Video ID', 'Title', 'Channel', 'Last seen', 'What happened', 'Seen it'];
+  /** The alert history as CSV, newest first; t translates a message key (TrueShuffleI18n.t). */
+  function toCsv(alerts, t) {
+    const head = ['removedCsvFound', 'removedCsvPlaylist', 'removedCsvPlaylistId', 'removedCsvVideoId', 'removedCsvTitle',
+      'removedCsvChannel', 'removedCsvLastSeen', 'removedCsvWhat', 'removedCsvSeenIt'].map((key) => field(t(key)));
     const lines = [...(alerts || [])].reverse().map((a) => [stamp(a.at), a.listTitle, a.list, a.id, a.title, a.channel,
-      a.seen ? stamp(a.seen) : '', WHAT[a.kind] || a.kind, a.ack ? 'yes' : 'no'].map(field).join(','));
+      a.seen ? stamp(a.seen) : '', WHAT[a.kind] ? t(WHAT[a.kind]) : a.kind, t(a.ack ? 'removedCsvYes' : 'removedCsvNo')].map(field).join(','));
     return [head.join(','), ...lines].join('\r\n') + '\r\n';
   }
 
   // ---------------------------------------------------------------- on the page
 
   const CSS = `
-:host { all: initial; display: block; margin: 8px 0; }
+:host { all: initial; color-scheme: dark; display: block; margin: 8px 0; }
 .note {
   padding: 12px 14px; border-radius: 12px;
   background: #3a2a0b; color: #f3ecdd; border: 1px solid rgba(226, 176, 79, 0.45);
@@ -153,6 +155,7 @@ button:hover { background: #f1c877; }
   function start() {
     const SEL = root.TrueShuffleSelectors;
     const { h } = root.TrueShuffleUI;
+    const { t } = root.TrueShuffleI18n;
     let timer = 0;
     let stopped = false;
     let listId = null;
@@ -214,19 +217,19 @@ button:hover { background: #f1c877; }
       const items = mine.slice(-SHOWN).reverse().map((a) => h('li', null,
         h('strong', { text: a.title || a.id }),
         a.channel ? ` (${a.channel})` : '',
-        h('span', { class: 'what', text: ` · ${WHAT[a.kind] || a.kind}${a.seen ? ' · last seen ' + new Date(a.seen).toLocaleDateString() : ''}` })));
-      const seenBtn = h('button', { type: 'button' }, 'Seen it');
+        h('span', { class: 'what', text: ` · ${WHAT[a.kind] ? t(WHAT[a.kind]) : a.kind}${a.seen ? ' · ' + t('optAlertLastSeen', new Date(a.seen).toLocaleDateString()) : ''}` })));
+      const seenBtn = h('button', { type: 'button' }, t('removedSeenIt'));
       seenBtn.addEventListener('click', async () => {
         const all = ((await sget('alerts')) || []).map((a) => (a.list === listId ? { ...a, ack: true } : a));
         await chrome.storage.local.set({ alerts: all });
         host.remove();
       });
-      const note = h('section', { class: 'note', role: 'region', 'aria-label': 'Videos gone from this playlist' },
-        h('h2', { text: mine.length === 1 ? '1 video left this playlist' : `${mine.length} videos left this playlist` }),
+      const note = h('section', { class: 'note', role: 'region', 'aria-label': t('removedRegion') },
+        h('h2', { text: mine.length === 1 ? t('removedHeadingOne') : t('removedHeadingMany', mine.length) }),
         h('ul', null, ...items),
         h('div', { class: 'row' }, seenBtn,
-          mine.length > SHOWN ? h('span', { class: 'more', text: `and ${mine.length - SHOWN} more` }) : null,
-          h('span', { class: 'where', text: 'History and CSV export: True Shuffle options' })));
+          mine.length > SHOWN ? h('span', { class: 'more', text: t('removedMore', mine.length - SHOWN) }) : null,
+          h('span', { class: 'where', text: t('removedWhere') })));
       [...shadow.children].filter((el) => el !== css).forEach((el) => el.remove());
       shadow.append(note);
       const anchor = list.closest(SEL.playlistList) || list;

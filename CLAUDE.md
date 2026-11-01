@@ -23,18 +23,19 @@ repo, MIT. `README.md` is the user guide, `PRIVACY.md` the privacy policy, `stor
 6. **Pure logic stays pure and UMD** (`shuffle.js`, `yt-api.js`, the helpers above `start()` in feature modules), so
    `node --test` can `require()` it. New logic gets a test in `test/`.
 7. **DOM:** build with `h()`/`icon()` from `ui.js` (createElement, textContent), never `innerHTML` (YouTube enforces
-   Trusted Types). Injected UI lives in shadow roots. The floating card's clicks must not take focus (Space pauses the
-   video); a toolbar with a text box stops key events at its host, or YouTube's shortcuts fire while you type.
+   Trusted Types). Injected UI: shadow roots, always dark (`color-scheme: dark`). The floating card's clicks must not take
+   focus (Space pauses the video); a toolbar with a text box stops key events at its host, or YouTube's shortcuts fire.
 8. **`serial()` is a per-tab queue** (no lock across tabs). Inside a `serial()` callback never await `serial`, `move` or
    anything using them (`goNext`, `commitWatching`, `syncCatalog`): the chain waits on itself and every later move hangs.
    Anything that navigates goes through `move()`, whose `st.dealing` tells `onLocationChange` the navigation is ours.
 9. **Stored data outlives code.** `c:` items are unversioned tuples `[id, title, channel, seconds]`: only append. `s:` loads
    only if `isSession` passes; bumping `SESSION_VERSION` silently drops everyone's saved place.
-10. **Kept in sync by hand:** both `DEFAULTS` pairs (`content.js`/`popup.js`, `unwatched.js`/`options.js`); the host pattern
+10. **Kept in sync by hand:** `DEFAULTS` (`content.js` and `unwatched.js` vs `popup/settings.js`); the host pattern
     (manifest, `background.js`, `popup.js` `isYouTube`); `store/pack.js`'s shipped folders (miss one and Chrome refuses it).
 11. **Docs follow the code:** a new permission, or reading or storing something new, updates `PRIVACY.md` and the store
-    answers in `store/README.md`; a behaviour change updates `README.md` and the store description. UI strings use
-    typographic apostrophes (`’`, `&rsquo;` in HTML), README/PRIVACY/store text plain `'`. Comments give the reason.
+    answers in `store/README.md`; a behaviour change updates `README.md` and the store description. Comments give the reason.
+    **Visible strings are messages** in `_locales/{en,it,es,pt_BR}/messages.json` (`t()`/`parts()` of `src/i18n.js`, `data-i18n*`
+    in pages), each in all four with the same placeholders (`test/i18n.test.js`); they use `’`, README/PRIVACY/store plain `'`.
 12. **Features hook in through `TrueShuffleWatcher.watch({pages, enter, videos, changed, leave})`**, never their own
     observers or location listeners, and `content.js` starts and stops them (so they retire with it). The popup's
     "Debug:" line is temporary: every piece is marked `TEMP debug`.
@@ -45,6 +46,7 @@ repo, MIT. `README.md` is the user guide, `PRIVACY.md` the privacy policy, `stor
 |---|---|
 | `manifest.json` | The one manifest for every browser; `version` is the release version |
 | `src/selectors.js` | `TrueShuffleSelectors`: every YouTube DOM selector, loaded first in the isolated world |
+| `src/i18n.js`, `_locales/` | `TrueShuffleI18n` `{t, parts, translate}` over the browser's language (English the default); loaded second |
 | `src/shuffle.js` | `TrueShuffle`: the deck engine (pure) |
 | `src/yt-api.js` | `TrueShuffleYT`: parses `/youtubei/v1/browse`, builds the sign-in header (pure) |
 | `src/page.js` | Page world: downloads the playlist, navigates with `yt-navigate`, takes over the media keys |
@@ -54,10 +56,10 @@ repo, MIT. `README.md` is the user guide, `PRIVACY.md` the privacy policy, `stor
 | `src/playlist-tools.js` | Search and sort on playlist pages: CSS `order` only, rows never move; "Load all" scrolls; Play/Shuffle hand the shown ids to `content.js` `playView` |
 | `src/removed.js` | Removed-video check on playlist pages (not WL/LL): snapshot, pure `compare` (needs the whole list loaded to call a video gone; reads YouTube's "N unavailable videos are hidden"), notice, `toCsv` |
 | `src/ui.js` | `TrueShuffleUI.create(onAction)` → `{host, render(viewModel)}`: round button, card, "Up next" list; `h()` |
-| `src/background.js` | Service worker (Firefox: event page): injects the scripts into open tabs on install/update; Alt+Shift+U |
-| `popup/` | Popup: `popup.js` fills static `popup.html`, polls the tab every 800 ms with `chrome.tabs.sendMessage({type})` (`type` = the `data-act` names: `status`, `start`, `next`…), answered by `status()` |
-| `options/` | Options page: the filter's threshold and "partly watched" switch; Alerts history (loads `src/removed.js`) with CSV export |
-| `test/` | `node --test`: `shuffle` (with the 1.0.0 spread as an oracle), `watcher`, `unwatched`, `playlist-tools`, `removed` |
+| `src/background.js` | Service worker (Firefox: event page): injects the scripts into open tabs on install/update; Alt+Shift+U; opens `welcome/welcome.html` on install, `whats-new.html` (background tab) once per `WHATS_NEW` |
+| `popup/` | Popup: `popup.js` fills static `popup.html`, polls the tab every 800 ms with `chrome.tabs.sendMessage({type})` (`type` = the `data-act` names: `status`, `start`, `next`…), answered by `status()`. `settings.js` binds the settings controls of the popup and options page; `popup.css` styles every extension page (`body.page`) |
+| `options/` (opens in a tab), `welcome/` | Options page: every setting; Alerts history (loads `src/removed.js`) with CSV export; About. Welcome and What's new pages (`.shot` placeholders await screenshots) |
+| `test/` | `node --test`: `shuffle` (with the 1.0.0 spread as an oracle), `watcher`, `unwatched`, `playlist-tools`, `removed`, `i18n` |
 | `store/`, `.github/workflows/release.yml` | `pack.js` builds the zips; store guide and images (not shipped). On a `v*` tag equal to `v` + manifest version, `release.yml` runs `pack.js` and publishes a release |
 
 ## How shuffling works
@@ -85,7 +87,7 @@ repo, MIT. `README.md` is the user guide, `PRIVACY.md` the privacy policy, `stor
 
 | Where | Key | What |
 |---|---|---|
-| `chrome.storage.local` | `settings` | `{spread, onFinish, showButton, corner, collapsed, autoStart}` |
+| `chrome.storage.local` | `settings` | `{spread, onFinish, showButton, corner, collapsed, autoStart}`; `whatsNew`: the What's new edition shown |
 | | `unwatched` | `{enabled, threshold (percent, 90), partial}`: popup, options page and the shortcut all write it |
 | | `c:<listId>`, `s:<listId>` | Catalog and session per playlist |
 | | `p:<listId>`, `snaps`, `alerts` | Snapshot `{v: 1, at, complete, hidden, videos: {id: [title, channel, seen, unavailable]}}` (≤ 2 MB each); `snaps` = `{listId: {bytes, at}}`, oldest dropped past 20 MB; alert history (≤ 500, `ack` = Seen it) |
@@ -114,8 +116,8 @@ repo, MIT. `README.md` is the user guide, `PRIVACY.md` the privacy policy, `stor
 - **Build:** `node store/pack.js` packs the last commit into `true-shuffle-for-youtube-vX.Y.Z.zip` (Chrome, Edge, Opera:
   manifest minus `background.scripts` and `browser_specific_settings`, which Edge's store rejects) and the `-firefox` zip
   (`npx addons-linter@10.15.0 <zip>`: 0 errors, 2 known warnings).
-- **Release:** raise `version` in `manifest.json` and the zip name in `README.md`, commit, `git tag vX.Y.Z`, `git push
-  origin main --tags`; `release.yml` publishes both zips. Store uploads are by hand (`store/README.md`).
+- **Release:** raise `version` in `manifest.json` and the zip name in `README.md` (and `WHATS_NEW` when `whats-new.html` has
+  news), commit, `git tag vX.Y.Z`, `git push origin main --tags`; `release.yml` publishes both zips. Stores: by hand.
 - **When YouTube breaks something,** check first: `src/selectors.js`; events `yt-navigate`, `yt-navigate-start`/`-finish`;
   `ytcfg` keys (`INNERTUBE_*`, `LOGGED_IN`, session ids), the `SAPISID` cookies; `yt-api.js`'s `continuationCommand.token`.
 
@@ -137,8 +139,8 @@ checks of chosen playlists, unlimited history, saved filters, backup export/impo
 - Never use YouTube's private APIs and never automate clicks on YouTube's menus: read the page, filter what's shown, scroll
   only when asked. (The shuffle's playlist read through `/youtubei/v1/browse` predates this: ask before extending it.)
 - Selectors per rule 5, watch progress read more than one way; SPA navigation and infinite scroll per rule 12, debounced,
-  no visible lag on long pages. Shadow DOM UI, accessible (keyboard, labels). Strings in i18n files, English first, then
-  Italian, Portuguese, Spanish (not done yet: still inline English).
+  no visible lag on long pages. Shadow DOM UI, accessible (keyboard, labels). Strings in i18n files (rule 11): English,
+  Italian, Portuguese (Brazil), Spanish.
 - Keep the stack unless approved. Unit tests for logic (the brief names Vitest; the repo uses `node --test`, no install:
   Vitest is over the 100 KB dependency limit, so ask first).
 

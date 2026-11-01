@@ -18,12 +18,12 @@
 
   const PAGES = ['playlist', 'watchLater'];
   const SORTS = [
-    ['original', 'Playlist order'],
-    ['title', 'Title (A to Z)'],
-    ['duration', 'Duration (shortest first)'],
-    ['channel', 'Channel (A to Z)'],
-    ['added', 'Date added (newest first)'],
-    ['unwatched', 'Unwatched first'],
+    ['original', 'toolsSortOriginal'],
+    ['title', 'toolsSortTitle'],
+    ['duration', 'toolsSortDuration'],
+    ['channel', 'toolsSortChannel'],
+    ['added', 'toolsSortAdded'],
+    ['unwatched', 'toolsSortUnwatched'],
   ];
   const STEP_MS = 1000; // "Load all": one scroll every second or so, like someone reading down the list
   const GIVE_UP_STEPS = 6; // that many scrolls with no new rows: YouTube has nothing more to give
@@ -85,7 +85,7 @@
   // ---------------------------------------------------------------- on the page
 
   const CSS = `
-:host { all: initial; display: block; margin: 8px 0 12px; }
+:host { all: initial; color-scheme: dark; display: block; margin: 8px 0 12px; }
 [hidden] { display: none !important; }
 .bar {
   display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px;
@@ -123,6 +123,7 @@
   function start({ play } = {}) {
     const SEL = root.TrueShuffleSelectors;
     const { h } = root.TrueShuffleUI;
+    const { t } = root.TrueShuffleI18n;
     const VIEW = 'data-true-shuffle-view'; // on the list while it shows a search or another order
     const LOADING = 'data-true-shuffle-loading'; // on the list while "Load all" runs
     const MISS = 'data-true-shuffle-search'; // on the rows the search hides
@@ -150,17 +151,17 @@
     const css = document.createElement('style');
     css.textContent = CSS;
     const search = h('input', {
-      class: 'search', type: 'search', placeholder: 'Search title or channel',
-      'aria-label': 'Search this playlist by title or channel', autocomplete: 'off', spellcheck: 'false',
+      class: 'search', type: 'search', placeholder: t('toolsSearchPlaceholder'),
+      'aria-label': t('toolsSearchLabel'), autocomplete: 'off', spellcheck: 'false',
     });
-    const options = SORTS.map(([value, label]) => h('option', { value }, label));
+    const options = SORTS.map(([value, label]) => h('option', { value }, t(label)));
     const addedOption = options[SORTS.findIndex(([value]) => value === 'added')];
-    const sort = h('select', { class: 'sort', 'aria-label': 'Show the playlist in this order' }, ...options);
+    const sort = h('select', { class: 'sort', 'aria-label': t('toolsSortLabel') }, ...options);
     const status = h('span', { class: 'status', role: 'status' });
     const loadBtn = h('button', { class: 'load', type: 'button', hidden: true });
-    const playBtn = h('button', { class: 'play', type: 'button', title: 'Play the videos shown, in this order' }, 'Play');
-    const shuffleBtn = h('button', { class: 'play', type: 'button', title: 'Shuffle the videos shown' }, 'Shuffle');
-    shadow.append(css, h('div', { class: 'bar', role: 'search', 'aria-label': 'Playlist tools' },
+    const playBtn = h('button', { class: 'play', type: 'button', title: t('toolsPlayTitle') }, t('toolsPlay'));
+    const shuffleBtn = h('button', { class: 'play', type: 'button', title: t('toolsShuffleTitle') }, t('toolsShuffle'));
+    shadow.append(css, h('div', { class: 'bar', role: 'search', 'aria-label': t('toolsLabel') },
       search, sort, playBtn, shuffleBtn, status, loadBtn));
     // YouTube's keyboard shortcuts listen on the page: what you type here stays here.
     for (const type of ['keydown', 'keypress', 'keyup']) host.addEventListener(type, (e) => e.stopPropagation());
@@ -227,14 +228,14 @@
       addedOption.hidden = !infos.some((it) => it.added != null); // only when YouTube shows it
       const more = !!moreToLoad();
       const all = total();
-      let line = query ? `${fmt(shown)} of ${fmt(rows.length)} loaded videos match`
-        : more ? (all ? `${fmt(rows.length)} of ${fmt(all)} videos loaded` : `${fmt(rows.length)} videos loaded, more to come`)
-          : `All ${fmt(rows.length)} videos`;
-      if (more && !loading && (query || sortKey !== 'original')) line += ' · only the loaded ones count';
+      let line = query ? t('toolsStatusMatch', fmt(shown), fmt(rows.length))
+        : more ? (all ? t('toolsStatusLoadedOf', fmt(rows.length), fmt(all)) : t('toolsStatusLoadedMore', fmt(rows.length)))
+          : t('toolsStatusAll', fmt(rows.length));
+      if (more && !loading && (query || sortKey !== 'original')) line += ' · ' + t('toolsStatusOnlyLoaded');
       status.textContent = line;
       loadBtn.hidden = !more && !loading;
       playBtn.disabled = shuffleBtn.disabled = !shown;
-      loadBtn.textContent = loading ? 'Stop loading' : all ? `Load all ${fmt(all)}` : 'Load all';
+      loadBtn.textContent = loading ? t('toolsStopLoading') : all ? t('toolsLoadAllCount', fmt(all)) : t('toolsLoadAll');
     }
 
     /** Scrolls to YouTube's spinner, a step at a time, until the whole playlist is in (or you stop it). */

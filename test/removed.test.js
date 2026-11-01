@@ -106,13 +106,14 @@ test('budget: a too-big snapshot isn\'t saved; the oldest snapshots go when all 
 test('toCsv: newest first, quoted where needed, formulas defused', () => {
   const at = new Date(2026, 10, 1, 13, 5).getTime();
   const seen = new Date(2026, 9, 3, 9, 0).getTime();
+  const t = (key, ...v) => [key, ...v].join(' ');
   const csv = R.toCsv([
     { at, list: 'PL1', listTitle: 'Mix, vol. 2', id: 'v1', title: 'Say "hi"', channel: 'Chan', seen, kind: 'removed', ack: true },
     { at, list: 'PL1', listTitle: 'Mix', id: 'v2', title: '=HYPERLINK("x")', channel: '+Band', seen: null, kind: 'hidden', ack: false },
-  ]);
+  ], t);
   const lines = csv.split('\r\n');
-  assert.equal(lines[0], 'Found,Playlist,Playlist ID,Video ID,Title,Channel,Last seen,What happened,Seen it');
-  assert.equal(lines[1], `2026-11-01 13:05,Mix,PL1,v2,"'=HYPERLINK(""x"")",'+Band,,became private or deleted (YouTube hides it),no`);
-  assert.equal(lines[2], '2026-11-01 13:05,"Mix, vol. 2",PL1,v1,"Say ""hi""",Chan,2026-10-03 09:00,removed from the playlist,yes');
+  assert.equal(lines[0], 'removedCsvFound,removedCsvPlaylist,removedCsvPlaylistId,removedCsvVideoId,removedCsvTitle,removedCsvChannel,removedCsvLastSeen,removedCsvWhat,removedCsvSeenIt');
+  assert.equal(lines[1], `2026-11-01 13:05,Mix,PL1,v2,"'=HYPERLINK(""x"")",'+Band,,removedWhatHidden,removedCsvNo`);
+  assert.equal(lines[2], '2026-11-01 13:05,"Mix, vol. 2",PL1,v1,"Say ""hi""",Chan,2026-10-03 09:00,removedWhatRemoved,removedCsvYes');
   assert.equal(lines[3], '');
 });

@@ -4,7 +4,7 @@ Everything needed to put the extension on the browser stores: how to build the p
 
 ## 1. Build the packages
 
-There are two zips, each holding `manifest.json`, `icons/`, `options/`, `popup/` and `src/`, nothing else:
+There are two zips, each holding `manifest.json`, `_locales/`, `icons/`, `options/`, `popup/`, `src/` and `welcome/`, nothing else:
 
 - `true-shuffle-for-youtube-vX.Y.Z.zip` for the Chrome Web Store, Edge Add-ons and Opera. Its manifest leaves out the two Firefox-only keys: Edge's store rejects `background.scripts`, and Chrome before 121 refuses to load it.
 - `true-shuffle-for-youtube-firefox-vX.Y.Z.zip` for Firefox Add-ons, with `manifest.json` exactly as it is in the repo.
@@ -36,7 +36,7 @@ Brave, Vivaldi, Arc and other Chromium browsers install from the Chrome Web Stor
 
 1. Go to the [Chrome Web Store Developer Dashboard](https://chrome.google.com/webstore/devconsole) and sign in with the Google account you want to publish under. Pay the one-time **$5** registration fee and verify your contact email. 2-Step Verification has to be on for that account.
 2. Click **New item** and upload the zip.
-3. **Store listing** tab: paste the description below, pick the category **Entertainment** and the language **English**, then upload `store-icon.png`, the screenshots and the small promo tile. Under **Additional fields**, leave Official URL on None, set Homepage URL to `https://github.com/lorenzoGT2007/true-shuffle-for-youtube` and Support URL to `https://github.com/lorenzoGT2007/true-shuffle-for-youtube/issues`, and leave Mature content off.
+3. **Store listing** tab: paste the description below, pick the category **Entertainment** and the language **English** (the package also has Italian, Portuguese (Brazil) and Spanish: the name and summary come translated from it, and the dashboard lets you add a description per language), then upload `store-icon.png`, the screenshots and the small promo tile. Under **Additional fields**, leave Official URL on None, set Homepage URL to `https://github.com/lorenzoGT2007/true-shuffle-for-youtube` and Support URL to `https://github.com/lorenzoGT2007/true-shuffle-for-youtube/issues`, and leave Mature content off.
 4. **Privacy** tab: fill it in from [Privacy answers](#privacy-answers) below.
 5. **Distribution** tab: **Public**, all regions.
 6. Click **Submit for review**. Review usually takes a few days. You get an email when it's published.
@@ -130,6 +130,8 @@ HOW IT WORKS
 • Optional: hide the videos you've already watched on Home, Subscriptions, channels, search and playlists, with one switch or Alt+Shift+U.
 • Search and sort any playlist, Watch Later included, by title, duration, channel or unwatched first, then play or shuffle just the videos shown. Only the view changes, never your playlist.
 • Find out when videos vanish: next time you open a playlist, a small notice names the ones that were removed or became private or deleted, with their old titles. History and CSV export in the options.
+• Every setting in one place on the options page.
+• In English, Italian, Portuguese and Spanish.
 
 GOOD TO KNOW
 Mixes (YouTube's endless auto-generated lists) can't be shuffled. Save the songs to a playlist instead.

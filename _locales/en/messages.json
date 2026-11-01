@@ -1,0 +1,978 @@
+{
+  "lang": {
+    "message": "en",
+    "description": "This file's language code, for the lang attribute of the extension's pages (en, it, es, pt-BR). Not shown."
+  },
+  "extName": {
+    "message": "True Shuffle for YouTube",
+    "description": "The extension's name, in the store and the browser's extension list. A brand name: keep it in English."
+  },
+  "extShortName": {
+    "message": "True Shuffle",
+    "description": "The short name: the toolbar button's tooltip, the popup's title and its header. A brand name: keep it in English."
+  },
+  "extDescription": {
+    "message": "Shuffles a whole YouTube playlist like a deck of cards: every video plays once, in a truly random order, before anything repeats.",
+    "description": "The extension's summary in the store and the extension list. At most 132 characters."
+  },
+  "extCommandUnwatched": {
+    "message": "Hide or show watched videos",
+    "description": "The keyboard shortcut's name, in the browser's extension shortcuts page."
+  },
+  "setHeading": {
+    "message": "Settings",
+    "description": "Popup: heading above the settings."
+  },
+  "setUnwatched": {
+    "message": "Hide watched videos",
+    "description": "Popup and options page: switch that hides the videos you've already watched on YouTube."
+  },
+  "setAuto": {
+    "message": "Turn on by itself when a playlist plays",
+    "description": "Popup and options page: switch. On: playing a video from a playlist starts the shuffle by itself."
+  },
+  "setSpread": {
+    "message": "Don’t play the same channel twice in a row",
+    "description": "Popup and options page: switch. The shuffle avoids two videos of one channel in a row."
+  },
+  "setFinish": {
+    "message": "When every video has played",
+    "description": "Popup and options page: label of a two-choice control (Shuffle again / Stop)."
+  },
+  "setFinishReshuffle": {
+    "message": "Shuffle again",
+    "description": "Popup and options page: choice under 'When every video has played'. Short."
+  },
+  "setFinishStop": {
+    "message": "Stop",
+    "description": "Popup and options page: choice under 'When every video has played'. Short."
+  },
+  "setButton": {
+    "message": "Show the shuffle button on YouTube",
+    "description": "Popup and options page: switch for the round floating button on YouTube's pages."
+  },
+  "setCorner": {
+    "message": "Button position",
+    "description": "Popup and options page: label of a two-choice control (Bottom left / Bottom right)."
+  },
+  "setCornerLeft": {
+    "message": "Bottom left",
+    "description": "Popup and options page: where the round button sits. Short."
+  },
+  "setCornerRight": {
+    "message": "Bottom right",
+    "description": "Popup and options page: where the round button sits. Short."
+  },
+  "setAll": {
+    "message": "All settings",
+    "description": "Popup (at the end of the settings) and welcome page: link that opens the options page with every setting."
+  },
+  "setThreshold": {
+    "message": "Hide a video once you’ve watched $PERCENT$ of it",
+    "description": "Options page: label above a slider. PERCENT is shown in bold and changes as you move the slider.",
+    "placeholders": {
+      "percent": { "content": "$1", "example": "90%" }
+    }
+  },
+  "setPartial": {
+    "message": "Also hide videos you’ve only started",
+    "description": "Options page: switch. On: any video with some watch progress is hidden too."
+  },
+  "optTitle": {
+    "message": "True Shuffle options",
+    "description": "Options page: the tab title and the page heading."
+  },
+  "optSections": {
+    "message": "Sections",
+    "description": "Options page: screen-reader name of the row of links to the page's sections."
+  },
+  "optShuffle": {
+    "message": "Shuffle",
+    "description": "Options page: section heading (the shuffle's settings), and its link at the top."
+  },
+  "optShuffleKeys": {
+    "message": "Shift+N, Shift+P, the player’s Next and Previous buttons and your keyboard’s media keys all follow the shuffle.",
+    "description": "Toolbar popup footer and options page: what follows the shuffle. Next and Previous are the YouTube player's buttons: use YouTube's own names for them in your language. Keep the key names as they are."
+  },
+  "optWatched": {
+    "message": "Watched videos",
+    "description": "Options page: section heading (the filter that hides watched videos), and its link at the top."
+  },
+  "optUnwatchedNote": {
+    "message": "Works on Home, Subscriptions, a channel’s Videos tab, search results and playlists, including the videos that load as you scroll. Alt+Shift+U and the toolbar popup switch it too; you can change that key in your browser’s extension shortcuts. The video you’re watching always stays.",
+    "description": "Options page: note under the watched-videos filter. Use YouTube's own names for Home, Subscriptions and Videos in your language."
+  },
+  "optAlerts": {
+    "message": "Alerts",
+    "description": "Options page: link at the top to the alert history."
+  },
+  "optAlertsHeading": {
+    "message": "Alerts: videos gone from your playlists",
+    "description": "Options page: section heading of the history of videos that disappeared from playlists."
+  },
+  "optAlertsEmpty": {
+    "message": "Nothing yet. When a playlist you open has lost videos since your last visit, they’re listed here. (Watch later and Liked videos aren’t checked.)",
+    "description": "Options page: shown while the alert history is empty. Use YouTube's own names for Watch later and Liked videos."
+  },
+  "optAlertsCsv": {
+    "message": "Export CSV",
+    "description": "Options page: button that downloads the alert history as a CSV file (for spreadsheets)."
+  },
+  "optAlertsClear": {
+    "message": "Clear history",
+    "description": "Options page: button that deletes the alert history."
+  },
+  "optAlertsConfirm": {
+    "message": "Delete the whole alert history? The saved playlist snapshots stay.",
+    "description": "Options page: confirmation before the alert history is deleted."
+  },
+  "optAlertWhere": {
+    "message": "$WHEN$ in $PLAYLIST$",
+    "description": "Options page, in each alert: when it was found and in which playlist (a link).",
+    "placeholders": {
+      "when": { "content": "$1", "example": "2026-11-01 13:05" },
+      "playlist": { "content": "$2", "example": "My road trip" }
+    }
+  },
+  "optAlertLastSeen": {
+    "message": "last seen $WHEN$",
+    "description": "When the video was last seen in the playlist: in each alert on the options page and in the removed-video notice on YouTube's playlist page. WHEN is a date (with the time on the options page). Lowercase: it follows a ' · '.",
+    "placeholders": {
+      "when": { "content": "$1", "example": "2026-10-20 18:40" }
+    }
+  },
+  "optAbout": {
+    "message": "About",
+    "description": "Options page: section heading (version and links), and its link at the top."
+  },
+  "optVersion": {
+    "message": "Version $VERSION$",
+    "description": "Options page and What's new page: the extension's version number.",
+    "placeholders": {
+      "version": { "content": "$1", "example": "1.1.0" }
+    }
+  },
+  "optWhatsNew": {
+    "message": "What’s new",
+    "description": "Options page and welcome page: link to the page about the latest update's new features."
+  },
+  "optGuide": {
+    "message": "Getting started",
+    "description": "Options page: link to the welcome page that explains how the extension works."
+  },
+  "optIssues": {
+    "message": "Report a problem or suggest an idea",
+    "description": "Options page and What's new page: link to the project's issue tracker on GitHub."
+  },
+  "optCoffee": {
+    "message": "Buy me a coffee",
+    "description": "Toolbar popup footer (button), options page and What's new page (links): opens the developer's donation page (Buy Me a Coffee). Short."
+  },
+  "cardUpNext": {
+    "message": "Up next",
+    "description": "Floating card on YouTube: the button that opens the list of the next videos in the shuffle (tooltip and screen-reader name), that list's heading, and its screen-reader name. Short."
+  },
+  "cardCount": {
+    "message": "$POS$ of $TOTAL$",
+    "description": "Floating card on YouTube, top left: where you are in the shuffle. POS (in bold, larger) is the number of the video playing now, TOTAL the number of videos in the round.",
+    "placeholders": {
+      "pos": { "content": "$1", "example": "12" },
+      "total": { "content": "$2", "example": "1,240" }
+    }
+  },
+  "cardPrevious": {
+    "message": "Previous (Shift+P)",
+    "description": "Floating card on YouTube: tooltip and screen-reader name of the button that goes back to the previous video of the shuffle. Keep Shift+P as it is."
+  },
+  "cardNext": {
+    "message": "Next (Shift+N)",
+    "description": "Floating card on YouTube: tooltip and screen-reader name of the button that skips to the next video of the shuffle. Keep Shift+N as it is."
+  },
+  "cardFoldAway": {
+    "message": "Fold away",
+    "description": "Floating card on YouTube: tooltip and screen-reader name of the button that shrinks the card into a small round button (the shuffle keeps going). Short."
+  },
+  "cardStop": {
+    "message": "Stop shuffling (your place is kept)",
+    "description": "Floating card on YouTube: tooltip and screen-reader name of the X button that stops the shuffle; it can be resumed later from the same video."
+  },
+  "cardNextLabel": {
+    "message": "Next",
+    "description": "Floating card on YouTube: small label before the title of the video that plays after this one. Very short (one word)."
+  },
+  "cardCancel": {
+    "message": "Cancel",
+    "description": "Floating card on YouTube: tooltip and screen-reader name of the X button that stops reading the playlist before the shuffle starts. Short."
+  },
+  "cardClose": {
+    "message": "Close",
+    "description": "Floating card on YouTube: tooltip and screen-reader name of the X button that closes the card (shown when the shuffle is paused, finished or failed). Short."
+  },
+  "cardSwitch": {
+    "message": "Shuffle this one instead",
+    "description": "Floating card on YouTube, while the shuffle is paused because you opened a video of another playlist: button that shuffles that playlist instead. Short."
+  },
+  "cardResume": {
+    "message": "Resume shuffle",
+    "description": "Floating card on YouTube, while the shuffle is paused: main button that goes back to the shuffle where you left it. Short."
+  },
+  "cardShuffleAgain": {
+    "message": "Shuffle again",
+    "description": "Floating card on YouTube, after every video has played: main button that starts a new shuffle of the same videos. Short."
+  },
+  "cardTryAgain": {
+    "message": "Try again",
+    "description": "Floating card on YouTube, after the shuffle failed to start: button that tries once more. Short."
+  },
+  "cardPlayNow": {
+    "message": "Play now",
+    "description": "Up next list on YouTube: tooltip on each video in the list; clicking it plays that video now. Short."
+  },
+  "cardLeftOne": {
+    "message": "1 left in round $ROUND$",
+    "description": "Up next list on YouTube, next to the heading: exactly one video is still to play in this round. ROUND is the round's number (1 for the first time through the playlist, 2 after a reshuffle...). Short.",
+    "placeholders": {
+      "round": { "content": "$1", "example": "2" }
+    }
+  },
+  "cardLeftMany": {
+    "message": "$LEFT$ left in round $ROUND$",
+    "description": "Up next list on YouTube, next to the heading: how many videos are still to play in this round (used for any number but 1). LEFT is that number, ROUND the round's number (1 for the first time through the playlist, 2 after a reshuffle...). Short.",
+    "placeholders": {
+      "left": { "content": "$1", "example": "1,203" },
+      "round": { "content": "$2", "example": "2" }
+    }
+  },
+  "cardQueueEmpty": {
+    "message": "This is the last video of the round.",
+    "description": "Up next list on YouTube: shown instead of the list when no video is left after the one playing."
+  },
+  "cardReshuffle": {
+    "message": "Reshuffle what’s left",
+    "description": "Up next list on YouTube: button that shuffles again the videos not played yet in this round. Short."
+  },
+  "cardShuffleWhole": {
+    "message": "Shuffle whole playlist",
+    "description": "Up next list on YouTube, when only some videos are playing (a search or sort from the playlist tools): button that drops that selection and shuffles every video of the playlist. Short."
+  },
+  "cardStartOver": {
+    "message": "Start over",
+    "description": "Up next list on YouTube: button that starts a brand-new shuffle of the whole playlist from the first video. Short."
+  },
+  "cardNextNone": {
+    "message": "Nothing. This is the last one.",
+    "description": "Floating card on YouTube, after the 'Next' label: shown when the video playing is the last one and the shuffle stops at the end (setting 'When every video has played: Stop')."
+  },
+  "cardNextFresh": {
+    "message": "A fresh shuffle of the whole playlist",
+    "description": "Floating card on YouTube, after the 'Next' label: shown when the video playing is the last one and a new shuffle starts at the end (setting 'When every video has played: Shuffle again')."
+  },
+  "cardLoadingTitle": {
+    "message": "Reading the playlist",
+    "description": "Floating card on YouTube: title while the extension downloads the playlist's list of videos before shuffling."
+  },
+  "cardLoadingCount": {
+    "message": "$LOADED$ of $TOTAL$ videos",
+    "description": "Floating card on YouTube, under 'Reading the playlist': progress of the download. LOADED is how many videos are read so far, TOTAL how many the playlist has.",
+    "placeholders": {
+      "loaded": { "content": "$1", "example": "400" },
+      "total": { "content": "$2", "example": "1,240" }
+    }
+  },
+  "cardLoadingSoFar": {
+    "message": "$LOADED$ videos so far",
+    "description": "Floating card on YouTube, under 'Reading the playlist': progress of the download when the playlist's size isn't known. LOADED is how many videos are read so far.",
+    "placeholders": {
+      "loaded": { "content": "$1", "example": "400" }
+    }
+  },
+  "cardLoadingHint": {
+    "message": "Getting every video, not just the first 200",
+    "description": "Floating card on YouTube, under 'Reading the playlist', before the first videos arrive: unlike YouTube's own shuffle, the extension reads the whole playlist."
+  },
+  "cardPausedTitle": {
+    "message": "Shuffle paused",
+    "description": "Floating card on YouTube: title when you left the shuffled playlist (opened another video or page)."
+  },
+  "cardPausedText": {
+    "message": "You left the playlist. $POSITION$ of $TOTAL$ played.",
+    "description": "Floating card on YouTube, under 'Shuffle paused'. POSITION is how many videos of the round have played, TOTAL how many the round has.",
+    "placeholders": {
+      "position": { "content": "$1", "example": "12" },
+      "total": { "content": "$2", "example": "1,240" }
+    }
+  },
+  "cardFinishedTitle": {
+    "message": "All $TOTAL$ videos played",
+    "description": "Floating card on YouTube: title when every video of the round has played. TOTAL is the number of videos.",
+    "placeholders": {
+      "total": { "content": "$1", "example": "1,240" }
+    }
+  },
+  "cardFinishedText": {
+    "message": "Each one exactly once.",
+    "description": "Floating card on YouTube, under 'All N videos played': no video was repeated or skipped."
+  },
+  "cardPlayAgain": {
+    "message": "Play again",
+    "description": "Floating card on YouTube, after every video has played in their shown order (the playlist tools' Play): main button that plays them again in the same order. Short."
+  },
+  "cardErrorTitle": {
+    "message": "Couldn’t start the shuffle",
+    "description": "Floating card on YouTube: title when the shuffle failed to start; the reason is shown under it."
+  },
+  "cardErrorText": {
+    "message": "Something went wrong.",
+    "description": "Floating card on YouTube, under 'Couldn’t start the shuffle': shown when no more specific reason is known."
+  },
+  "errUpdated": {
+    "message": "True Shuffle was updated. Reload this tab to keep using it.",
+    "description": "Error on True Shuffle's floating card on YouTube and in the popup, when the extension was updated or reloaded while this YouTube tab stayed open. 'True Shuffle' is the brand name: keep it."
+  },
+  "errNoAnswer": {
+    "message": "YouTube didn’t answer. Reload the page and try again.",
+    "description": "Error on True Shuffle's floating card on YouTube and in the popup, when the YouTube page stopped answering the extension."
+  },
+  "errStillLoading": {
+    "message": "YouTube is still loading. Try again in a moment.",
+    "description": "Error on True Shuffle's floating card on YouTube and in the popup, when the shuffle was started before YouTube's page had finished loading."
+  },
+  "errNetwork": {
+    "message": "Network error while reading the playlist.",
+    "description": "Error on True Shuffle's floating card on YouTube and in the popup, when the connection failed while the extension was downloading the playlist's video list."
+  },
+  "errHttp": {
+    "message": "YouTube answered with an error ($STATUS$).",
+    "description": "Error on True Shuffle's floating card on YouTube and in the popup, when YouTube refused to send the playlist's video list. STATUS is the HTTP status number (like 403 or 500): keep it as it is.",
+    "placeholders": {
+      "status": { "content": "$1", "example": "403" }
+    }
+  },
+  "errNoPlaylist": {
+    "message": "No playlist on this page.",
+    "description": "Error on True Shuffle's floating card on YouTube and in the popup, when the shuffle was asked for on a page without a playlist."
+  },
+  "errCannotOpen": {
+    "message": "YouTube could not open this playlist.",
+    "description": "Error on the floating card on YouTube and in the popup, when YouTube refused to show the playlist (for example private or deleted) without giving a reason."
+  },
+  "errUnknown": {
+    "message": "Something went wrong.",
+    "description": "Error on True Shuffle's floating card on YouTube and in the popup, when the cause isn't known."
+  },
+  "errNoneCanPlay": {
+    "message": "None of the videos in this playlist can be played right now.",
+    "description": "Error on True Shuffle's floating card on YouTube and in the popup, when every video in the playlist is private, deleted or blocked."
+  },
+  "errEmptyPlaylist": {
+    "message": "This playlist has no videos.",
+    "description": "Error on True Shuffle's floating card on YouTube and in the popup, when the playlist is empty."
+  },
+  "shuffleTipReading": {
+    "message": "Reading the playlist",
+    "description": "Tooltip and screen-reader label of the small round shuffle button on YouTube, while the extension starts downloading the playlist's video list. Short."
+  },
+  "shuffleTipReadingOf": {
+    "message": "Reading the playlist: $LOADED$ of $TOTAL$ videos",
+    "description": "Tooltip and screen-reader label of the small round shuffle button on YouTube, while the playlist's video list downloads. LOADED is how many videos are read so far, TOTAL how many the playlist has (both already formatted numbers). Short.",
+    "placeholders": {
+      "loaded": { "content": "$1", "example": "1,200" },
+      "total": { "content": "$2", "example": "3,450" }
+    }
+  },
+  "shuffleTipReadingCount": {
+    "message": "Reading the playlist: $LOADED$ videos",
+    "description": "Tooltip and screen-reader label of the small round shuffle button on YouTube, while the playlist's video list downloads and its total isn't known yet. LOADED is how many videos are read so far (an already formatted number). Short.",
+    "placeholders": {
+      "loaded": { "content": "$1", "example": "1,200" }
+    }
+  },
+  "shuffleTipPaused": {
+    "message": "Shuffle paused: $PLAYED$ of $TOTAL$ played",
+    "description": "Tooltip and screen-reader label of the small round shuffle button on YouTube, while the shuffle is paused. PLAYED is how many videos have played in this round, TOTAL how many the shuffle has (both already formatted numbers). Short.",
+    "placeholders": {
+      "played": { "content": "$1", "example": "12" },
+      "total": { "content": "$2", "example": "340" }
+    }
+  },
+  "shuffleTipShuffling": {
+    "message": "Shuffling: $POSITION$ of $TOTAL$",
+    "description": "Tooltip and screen-reader label of the small round shuffle button on YouTube, while the shuffle plays. POSITION is the number of the video playing now in this round, TOTAL how many the shuffle has (both already formatted numbers). Short.",
+    "placeholders": {
+      "position": { "content": "$1", "example": "12" },
+      "total": { "content": "$2", "example": "340" }
+    }
+  },
+  "shuffleTipResume": {
+    "message": "Resume shuffle: $PLAYED$ of $TOTAL$ played",
+    "description": "Tooltip and screen-reader label of the round shuffle button on a YouTube playlist that has a saved shuffle; clicking it carries on. PLAYED is how many videos had played, TOTAL how many the shuffle has (both already formatted numbers). Short.",
+    "placeholders": {
+      "played": { "content": "$1", "example": "12" },
+      "total": { "content": "$2", "example": "340" }
+    }
+  },
+  "shuffleTipStart": {
+    "message": "Shuffle this playlist",
+    "description": "Tooltip and screen-reader label of the round shuffle button on a YouTube playlist; clicking it starts the shuffle. Short."
+  },
+  "toolsLabel": {
+    "message": "Playlist tools",
+    "description": "Playlist page: screen-reader name of the toolbar above the list (search box, sort menu, Play, Shuffle, Load all)."
+  },
+  "toolsSearchPlaceholder": {
+    "message": "Search title or channel",
+    "description": "Playlist page toolbar: grey hint inside the empty search box. Short."
+  },
+  "toolsSearchLabel": {
+    "message": "Search this playlist by title or channel",
+    "description": "Playlist page toolbar: screen-reader name of the search box that filters the playlist's videos as you type."
+  },
+  "toolsSortLabel": {
+    "message": "Show the playlist in this order",
+    "description": "Playlist page toolbar: screen-reader name of the sort menu. It only changes the order on screen, never the real playlist."
+  },
+  "toolsSortOriginal": {
+    "message": "Playlist order",
+    "description": "Playlist page toolbar: sort menu choice, the playlist's own order (the default). Short."
+  },
+  "toolsSortTitle": {
+    "message": "Title (A to Z)",
+    "description": "Playlist page toolbar: sort menu choice, alphabetical by video title. Short."
+  },
+  "toolsSortDuration": {
+    "message": "Duration (shortest first)",
+    "description": "Playlist page toolbar: sort menu choice, by video length, shortest first. Short."
+  },
+  "toolsSortChannel": {
+    "message": "Channel (A to Z)",
+    "description": "Playlist page toolbar: sort menu choice, alphabetical by channel name. Short."
+  },
+  "toolsSortAdded": {
+    "message": "Date added (newest first)",
+    "description": "Playlist page toolbar: sort menu choice, by when the video was added to the playlist, most recent first (only offered when YouTube shows that date). Short."
+  },
+  "toolsSortUnwatched": {
+    "message": "Unwatched first",
+    "description": "Playlist page toolbar: sort menu choice, videos you haven't watched first, then partly watched, then fully watched. Short."
+  },
+  "toolsPlay": {
+    "message": "Play",
+    "description": "Playlist page toolbar: button that plays the videos shown (after the search and sort), in the order shown. Short."
+  },
+  "toolsPlayTitle": {
+    "message": "Play the videos shown, in this order",
+    "description": "Playlist page toolbar: tooltip of the Play button."
+  },
+  "toolsShuffle": {
+    "message": "Shuffle",
+    "description": "Playlist page toolbar: button that shuffles only the videos shown (after the search). Short."
+  },
+  "toolsShuffleTitle": {
+    "message": "Shuffle the videos shown",
+    "description": "Playlist page toolbar: tooltip of the Shuffle button."
+  },
+  "toolsStatusMatch": {
+    "message": "$SHOWN$ of $LOADED$ loaded videos match",
+    "description": "Playlist page toolbar: status line while searching. SHOWN is how many videos match the search, LOADED how many of the playlist's videos are on the page so far (both already formatted numbers).",
+    "placeholders": {
+      "shown": { "content": "$1", "example": "12" },
+      "loaded": { "content": "$2", "example": "1,200" }
+    }
+  },
+  "toolsStatusLoadedOf": {
+    "message": "$LOADED$ of $TOTAL$ videos loaded",
+    "description": "Playlist page toolbar: status line while YouTube hasn't loaded the whole playlist yet. LOADED is how many videos are on the page so far, TOTAL how many the playlist has (both already formatted numbers).",
+    "placeholders": {
+      "loaded": { "content": "$1", "example": "100" },
+      "total": { "content": "$2", "example": "1,234" }
+    }
+  },
+  "toolsStatusLoadedMore": {
+    "message": "$LOADED$ videos loaded, more to come",
+    "description": "Playlist page toolbar: status line while YouTube hasn't loaded the whole playlist yet and its total isn't known. LOADED is how many videos are on the page so far (an already formatted number).",
+    "placeholders": {
+      "loaded": { "content": "$1", "example": "100" }
+    }
+  },
+  "toolsStatusAll": {
+    "message": "All $COUNT$ videos",
+    "description": "Playlist page toolbar: status line once the whole playlist is on the page. COUNT is how many videos it has (an already formatted number).",
+    "placeholders": {
+      "count": { "content": "$1", "example": "1,234" }
+    }
+  },
+  "toolsStatusOnlyLoaded": {
+    "message": "only the loaded ones count",
+    "description": "Playlist page toolbar: added after the status line, following a ' · ', while a search or sort is on and part of the playlist isn't loaded yet: the search and sort only see the videos already on the page. Lowercase: it follows the ' · '."
+  },
+  "toolsStopLoading": {
+    "message": "Stop loading",
+    "description": "Playlist page toolbar: the Load all button while it is loading the rest of the playlist; clicking it stops. Short."
+  },
+  "toolsLoadAllCount": {
+    "message": "Load all $COUNT$",
+    "description": "Playlist page toolbar: button that scrolls down the list until the whole playlist is on the page. COUNT is how many videos the playlist has (an already formatted number). Short.",
+    "placeholders": {
+      "count": { "content": "$1", "example": "1,234" }
+    }
+  },
+  "toolsLoadAll": {
+    "message": "Load all",
+    "description": "Playlist page toolbar: button that scrolls down the list until the whole playlist is on the page, when its total isn't known. Short."
+  },
+  "removedWhatRemoved": {
+    "message": "removed from the playlist",
+    "description": "What happened to a video that left a playlist: in the notice on YouTube's playlist page, the options page's Alert history and the CSV export. Lowercase: it follows the video's title and a ' · '."
+  },
+  "removedWhatHidden": {
+    "message": "became private or deleted (YouTube hides it)",
+    "description": "What happened to a video that left a playlist: it became private or was deleted, and YouTube now hides it from the list. In the notice on the playlist page, the Alert history and the CSV export. Lowercase: it follows the video's title and a ' · '."
+  },
+  "removedWhatUnclear": {
+    "message": "removed, or became private or deleted",
+    "description": "What happened to a video that left a playlist, when the extension can't tell which: removed by the playlist's owner, or made private or deleted. In the notice on the playlist page, the Alert history and the CSV export. Lowercase: it follows the video's title and a ' · '."
+  },
+  "removedWhatUnavailable": {
+    "message": "became private or deleted",
+    "description": "What happened to a video still in a playlist that YouTube now shows as a private or deleted video. In the notice on the playlist page, the Alert history and the CSV export. Lowercase: it follows the video's title and a ' · '."
+  },
+  "removedCsvFound": {
+    "message": "Found",
+    "description": "CSV export of the alert history: column header, the date and time the change was found. Short."
+  },
+  "removedCsvPlaylist": {
+    "message": "Playlist",
+    "description": "CSV export of the alert history: column header, the playlist's name. Short."
+  },
+  "removedCsvPlaylistId": {
+    "message": "Playlist ID",
+    "description": "CSV export of the alert history: column header, the playlist's YouTube ID (the code after list= in its address). Short."
+  },
+  "removedCsvVideoId": {
+    "message": "Video ID",
+    "description": "CSV export of the alert history: column header, the video's YouTube ID (the code after v= in its address). Short."
+  },
+  "removedCsvTitle": {
+    "message": "Title",
+    "description": "CSV export of the alert history: column header, the video's title. Short."
+  },
+  "removedCsvChannel": {
+    "message": "Channel",
+    "description": "CSV export of the alert history: column header, the video's YouTube channel. Short."
+  },
+  "removedCsvLastSeen": {
+    "message": "Last seen",
+    "description": "CSV export of the alert history: column header, when the video was last seen in the playlist. Short."
+  },
+  "removedCsvWhat": {
+    "message": "What happened",
+    "description": "CSV export of the alert history: column header, what happened to the video (removed, became private or deleted...). Short."
+  },
+  "removedCsvSeenIt": {
+    "message": "Seen it",
+    "description": "CSV export of the alert history: column header, whether you pressed the notice's 'Seen it' button (removedSeenIt): use the same words as that button. Short."
+  },
+  "removedCsvYes": {
+    "message": "yes",
+    "description": "CSV export of the alert history: value in the 'Seen it' column when you pressed the notice's 'Seen it' button. Lowercase, short."
+  },
+  "removedCsvNo": {
+    "message": "no",
+    "description": "CSV export of the alert history: value in the 'Seen it' column when you haven't pressed the notice's 'Seen it' button yet. Lowercase, short."
+  },
+  "removedRegion": {
+    "message": "Videos gone from this playlist",
+    "description": "Screen-reader name of the notice shown on YouTube's playlist page that lists the videos gone since your last visit. Not shown."
+  },
+  "removedHeadingOne": {
+    "message": "1 video left this playlist",
+    "description": "Heading of the notice on YouTube's playlist page, when exactly one video is gone from the playlist since your last visit."
+  },
+  "removedHeadingMany": {
+    "message": "$COUNT$ videos left this playlist",
+    "description": "Heading of the notice on YouTube's playlist page, when two or more videos are gone from the playlist since your last visit. COUNT is how many.",
+    "placeholders": {
+      "count": { "content": "$1", "example": "3" }
+    }
+  },
+  "removedSeenIt": {
+    "message": "Seen it",
+    "description": "Button in the notice on YouTube's playlist page: marks the listed gone videos as seen, and the notice closes. Short."
+  },
+  "removedMore": {
+    "message": "and $COUNT$ more",
+    "description": "In the notice on YouTube's playlist page, after its list of the first 10 gone videos: how many more are not listed (they are in the options page's history). Lowercase: it follows the 'Seen it' button.",
+    "placeholders": {
+      "count": { "content": "$1", "example": "5" }
+    }
+  },
+  "removedWhere": {
+    "message": "History and CSV export: True Shuffle options",
+    "description": "In the notice on YouTube's playlist page: where to find the full history and its CSV export. 'True Shuffle options' is the options page's name (optTitle): use the same words."
+  },
+  "popupNoneLead": {
+    "message": "Play a video from a YouTube playlist and the shuffle turns on.",
+    "description": "Toolbar popup, shown when the current tab isn't YouTube: the main line explaining how to start."
+  },
+  "popupNoneText": {
+    "message": "Every video plays once, in a random order, before anything repeats.",
+    "description": "Toolbar popup, shown when the current tab isn't YouTube: small line under the main one, what the shuffle does."
+  },
+  "popupOpenPlaylists": {
+    "message": "Open my playlists",
+    "description": "Toolbar popup, shown when the current tab isn't YouTube: button that opens your playlists page on YouTube. Short."
+  },
+  "popupReloadLead": {
+    "message": "Reload this tab to switch True Shuffle on.",
+    "description": "Toolbar popup, on a YouTube tab that was open before the extension was installed: the main line. True Shuffle is a brand name: keep it in English."
+  },
+  "popupReloadText": {
+    "message": "YouTube was already open when the extension was installed.",
+    "description": "Toolbar popup: small line under 'Reload this tab to switch True Shuffle on.', explaining why."
+  },
+  "popupReloadTab": {
+    "message": "Reload tab",
+    "description": "Toolbar popup: button that reloads the YouTube tab. Short."
+  },
+  "popupNoPlaylistLead": {
+    "message": "Open a playlist to shuffle it.",
+    "description": "Toolbar popup, on a YouTube page that isn't a playlist: the main line."
+  },
+  "popupNoPlaylistText": {
+    "message": "A playlist page works, and so does a video that is playing from a playlist.",
+    "description": "Toolbar popup: small line under 'Open a playlist to shuffle it.', which pages work."
+  },
+  "popupMixLead": {
+    "message": "Mixes can’t be shuffled",
+    "description": "Toolbar popup, on a YouTube Mix: the main line. Use YouTube's own name for Mix in your language."
+  },
+  "popupMixText": {
+    "message": "A Mix is an endless list YouTube keeps generating. Save the songs to a playlist and shuffle that.",
+    "description": "Toolbar popup: small line under 'Mixes can’t be shuffled', why and what to do instead. Use YouTube's own name for Mix in your language."
+  },
+  "popupThisPlaylist": {
+    "message": "This playlist",
+    "description": "Toolbar popup: the heading in place of the playlist's name while its name isn't known yet."
+  },
+  "popupSavedCount": {
+    "message": "$POS$ of $TOTAL$ played last time",
+    "description": "Toolbar popup, on a playlist you shuffled before: how far you got last time. POS (shown in bold) is the number of videos played, TOTAL the number of videos in the playlist.",
+    "placeholders": {
+      "pos": { "content": "$1", "example": "12" },
+      "total": { "content": "$2", "example": "340" }
+    }
+  },
+  "popupResume": {
+    "message": "Resume shuffle",
+    "description": "Toolbar popup: button that carries on a saved or paused shuffle from where it was. Short."
+  },
+  "popupStartOver": {
+    "message": "Start over",
+    "description": "Toolbar popup, next to 'Resume shuffle': button that throws away the saved place and starts a new shuffle of the whole playlist. Short."
+  },
+  "popupIdleNewText": {
+    "message": "Plays every video once, in a random order, before anything repeats.",
+    "description": "Toolbar popup, on a playlist never shuffled before: small line above the 'Shuffle this playlist' button."
+  },
+  "popupShuffleThis": {
+    "message": "Shuffle this playlist",
+    "description": "Toolbar popup: button that starts shuffling the playlist open in the tab. Short."
+  },
+  "popupLoadingLead": {
+    "message": "Reading the playlist",
+    "description": "Toolbar popup: main line while the extension downloads the playlist's list of videos."
+  },
+  "popupLoadingStart": {
+    "message": "Getting every video, not just the first 200",
+    "description": "Toolbar popup, under 'Reading the playlist', before any video has been read: the extension gets the whole list, not only the first 200 videos YouTube shows."
+  },
+  "popupLoadingOf": {
+    "message": "$LOADED$ of $TOTAL$ videos",
+    "description": "Toolbar popup, under 'Reading the playlist': progress when the playlist's size is known. LOADED is the number of videos read so far, TOTAL the playlist's size.",
+    "placeholders": {
+      "loaded": { "content": "$1", "example": "1,200" },
+      "total": { "content": "$2", "example": "3,400" }
+    }
+  },
+  "popupLoadingSoFar": {
+    "message": "$LOADED$ videos so far",
+    "description": "Toolbar popup, under 'Reading the playlist': progress when the playlist's size isn't known. LOADED is the number of videos read so far.",
+    "placeholders": {
+      "loaded": { "content": "$1", "example": "1,200" }
+    }
+  },
+  "popupCancel": {
+    "message": "Cancel",
+    "description": "Toolbar popup: button that stops reading the playlist. Short."
+  },
+  "popupActiveCount": {
+    "message": "$POS$ of $TOTAL$ played",
+    "description": "Toolbar popup, while shuffling: how far the shuffle is. POS (shown in bold) is the number of videos played, TOTAL the number of videos being shuffled. The round number ('Round 2') follows it.",
+    "placeholders": {
+      "pos": { "content": "$1", "example": "12" },
+      "total": { "content": "$2", "example": "340" }
+    }
+  },
+  "popupRound": {
+    "message": "Round $ROUND$",
+    "description": "Toolbar popup, while shuffling, after 'N of N played': which pass through the whole playlist this is (shown from the second one). ROUND is that number. Short.",
+    "placeholders": {
+      "round": { "content": "$1", "example": "2" }
+    }
+  },
+  "popupNextLabel": {
+    "message": "Next",
+    "description": "Toolbar popup, while shuffling: small label before the title of the video that plays next (as in 'Up next'). Short."
+  },
+  "popupNextFresh": {
+    "message": "A fresh shuffle of the whole playlist",
+    "description": "Toolbar popup, after the 'Next' label when the last video is playing: what comes next is a new random order of the whole playlist."
+  },
+  "popupPrevious": {
+    "message": "Previous",
+    "description": "Toolbar popup, while shuffling: tooltip and screen-reader name of the icon button that goes back to the previous video. Short."
+  },
+  "popupNext": {
+    "message": "Next",
+    "description": "Toolbar popup, while shuffling: button that skips to the next video of the shuffle. Short."
+  },
+  "popupReshuffleTitle": {
+    "message": "New random order for the videos not played yet",
+    "description": "Toolbar popup: tooltip of the 'Reshuffle' button."
+  },
+  "popupReshuffle": {
+    "message": "Reshuffle",
+    "description": "Toolbar popup, while shuffling: button that shuffles again the videos not played yet. Short."
+  },
+  "popupStopTitle": {
+    "message": "Stop shuffling. Your place is kept.",
+    "description": "Toolbar popup: tooltip of the 'Stop' button while shuffling."
+  },
+  "popupStop": {
+    "message": "Stop",
+    "description": "Toolbar popup: button that stops the shuffle (while shuffling or paused). Short."
+  },
+  "popupPausedLead": {
+    "message": "Shuffle paused",
+    "description": "Toolbar popup: main line when you left the shuffled playlist (another page or video)."
+  },
+  "popupPausedText": {
+    "message": "You left the playlist. $POS$ of $TOTAL$ played.",
+    "description": "Toolbar popup, under 'Shuffle paused'. POS is the number of videos played, TOTAL the number of videos being shuffled.",
+    "placeholders": {
+      "pos": { "content": "$1", "example": "12" },
+      "total": { "content": "$2", "example": "340" }
+    }
+  },
+  "popupSwitch": {
+    "message": "Shuffle this one instead",
+    "description": "Toolbar popup, while paused on another playlist: button that shuffles the playlist now open instead. Short."
+  },
+  "popupFinishedText": {
+    "message": "All $TOTAL$ videos played",
+    "description": "Toolbar popup: main line when every video of the shuffle has played. TOTAL is the number of videos.",
+    "placeholders": {
+      "total": { "content": "$1", "example": "340" }
+    }
+  },
+  "popupFinishedNote": {
+    "message": "Each one exactly once.",
+    "description": "Toolbar popup: small line under 'All N videos played'."
+  },
+  "popupShuffleAgain": {
+    "message": "Shuffle again",
+    "description": "Toolbar popup, when every video has played: button that starts a new random order. Short."
+  },
+  "popupPlayAgain": {
+    "message": "Play again",
+    "description": "Toolbar popup, when every video of an in-order list (the playlist tools' Play) has played: button that plays it again from the start. Short."
+  },
+  "popupClose": {
+    "message": "Close",
+    "description": "Toolbar popup, when the shuffle has finished or couldn't start: button that ends it. Short."
+  },
+  "popupErrorLead": {
+    "message": "Couldn’t start the shuffle",
+    "description": "Toolbar popup: main line when reading the playlist or starting the shuffle failed."
+  },
+  "popupErrorFallback": {
+    "message": "Something went wrong.",
+    "description": "Toolbar popup, under 'Couldn’t start the shuffle', when there's no more precise reason to show."
+  },
+  "popupTryAgain": {
+    "message": "Try again",
+    "description": "Toolbar popup, after an error: button that tries to start the shuffle again. Short."
+  },
+  "welcomeTitle": {
+    "message": "Welcome to True Shuffle",
+    "description": "Welcome page (opens once, after install): the tab title and the page heading."
+  },
+  "welcomeLead": {
+    "message": "True Shuffle shuffles a whole YouTube playlist like a deck of cards: every video plays once, in a truly random order, before anything repeats.",
+    "description": "Welcome page: the one-line introduction under the heading."
+  },
+  "welcomeStartHeading": {
+    "message": "Get started",
+    "description": "Welcome page: heading of the numbered steps. Short."
+  },
+  "welcomeStepPlay": {
+    "message": "Play any video from one of your playlists. The shuffle turns on by itself, and the round button at the bottom right lights up with your progress.",
+    "description": "Welcome page, step 1. The round button is the extension's floating button on YouTube's pages."
+  },
+  "welcomeStepCard": {
+    "message": "Click the round button to open the card: how far you are, what plays next, and the Up next list.",
+    "description": "Welcome page, step 2. 'Up next' is the name of the card's list of coming videos: use the same words as the card."
+  },
+  "welcomeStepKeys": {
+    "message": "The player’s Next and Previous buttons, Shift+N / Shift+P and your keyboard’s media keys all follow the shuffle.",
+    "description": "Welcome page, step 3. Next and Previous are the YouTube player's buttons: use YouTube's own names for them in your language. Keep the key names Shift+N and Shift+P as they are."
+  },
+  "welcomeStepPin": {
+    "message": "Pin True Shuffle to your toolbar (from the puzzle-piece menu) to reach its controls and settings.",
+    "description": "Welcome page, step 4. The puzzle-piece menu is the browser's Extensions button next to the address bar."
+  },
+  "welcomeOpenPlaylists": {
+    "message": "Open my playlists",
+    "description": "Welcome page: button that opens the user's playlists page on YouTube. Short."
+  },
+  "welcomeShotCard": {
+    "message": "The True Shuffle card on a YouTube video page, with the Up next list open",
+    "description": "Welcome page: screen-reader description of a screenshot. 'Up next' is the card's list: use the same words as the card."
+  },
+  "newsShotSoon": {
+    "message": "Screenshot coming soon",
+    "description": "Welcome and What's new pages: shown in an empty box where a screenshot will go. Short."
+  },
+  "welcomeAlsoHeading": {
+    "message": "Also in True Shuffle",
+    "description": "Welcome page: heading of a short list of the extension's other features."
+  },
+  "welcomeAlsoUnwatched": {
+    "message": "Hide the videos you’ve already watched, from the toolbar popup or with Alt+Shift+U.",
+    "description": "Welcome page, list of other features. Keep the key name Alt+Shift+U as it is."
+  },
+  "welcomeAlsoTools": {
+    "message": "Search and sort any playlist, then play or shuffle just the videos shown.",
+    "description": "Welcome page, list of other features."
+  },
+  "welcomeAlsoRemoved": {
+    "message": "Find out when videos vanish from your playlists.",
+    "description": "Welcome page, list of other features: the notice about videos removed, made private or deleted."
+  },
+  "welcomeMoreHeading": {
+    "message": "Good to know",
+    "description": "Welcome page: heading of the last section (privacy and links). Short."
+  },
+  "welcomePrivacy": {
+    "message": "Nothing leaves your browser: True Shuffle only talks to youtube.com, and it has no servers and no tracking.",
+    "description": "Welcome page: the privacy note. Keep youtube.com as it is."
+  },
+  "newsTitle": {
+    "message": "What’s new in True Shuffle",
+    "description": "What's new page (opens once, after this update): the tab title and the page heading."
+  },
+  "newsLead": {
+    "message": "This update helps you manage your playlists, not just shuffle them. Everything still stays in your browser.",
+    "description": "What's new page: the short introduction under the heading."
+  },
+  "newsUnwatchedHeading": {
+    "message": "Hide watched videos",
+    "description": "What's new page: section heading about the filter that hides the videos you've watched."
+  },
+  "newsUnwatchedWhere": {
+    "message": "Videos you’ve watched disappear from Home, Subscriptions, a channel’s Videos tab, search results and playlists (Watch later too), including the ones that load as you scroll. True Shuffle can tell from the red bar under the thumbnail or YouTube’s “Watched” label.",
+    "description": "What's new page, hide watched videos. Use YouTube's own names in your language for Home, Subscriptions, the Videos tab, Watch later and the Watched label; use your language's quotation marks."
+  },
+  "newsUnwatchedHow": {
+    "message": "Switch it on in the toolbar popup or with Alt+Shift+U. In the options you choose how much counts as watched (90% by default), and you can also hide videos you’ve only started. The video you’re watching always stays.",
+    "description": "What's new page, hide watched videos. Keep the key name Alt+Shift+U as it is; write 90% the way your language writes percentages."
+  },
+  "newsShotUnwatched": {
+    "message": "YouTube’s Home page with the watched videos hidden",
+    "description": "What's new page: screen-reader description of a screenshot. Use YouTube's own name for Home in your language."
+  },
+  "newsToolsHeading": {
+    "message": "Search and sort any playlist",
+    "description": "What's new page: section heading about the search box and sort menu on playlist pages."
+  },
+  "newsToolsSearch": {
+    "message": "On any playlist page (Watch later too), a search box above the list filters by title or channel as you type. A menu sorts by title, duration, channel, date added (when YouTube shows it), unwatched first, or the playlist’s own order.",
+    "description": "What's new page, search and sort. Use YouTube's own name for Watch later in your language; use the same words for the sort choices as the sort menu."
+  },
+  "newsToolsView": {
+    "message": "Only what you see changes: your playlist stays exactly as it is. On a long playlist, press “Load all” first, so search and sort cover every video.",
+    "description": "What's new page, search and sort. 'Load all' is the name of the playlist tools' button: use the same words as that button, and your language's quotation marks."
+  },
+  "newsShotTools": {
+    "message": "A playlist page with the search box and the sort menu above the list",
+    "description": "What's new page: screen-reader description of a screenshot."
+  },
+  "newsPlayHeading": {
+    "message": "Play or shuffle just what you see",
+    "description": "What's new page: section heading about the Play and Shuffle buttons of the playlist tools."
+  },
+  "newsPlayButtons": {
+    "message": "After a search or a sort, Play plays the videos shown in that order, and Shuffle plays them shuffled.",
+    "description": "What's new page, play what you see. Play and Shuffle are the names of the playlist tools' buttons: use the same words as those buttons."
+  },
+  "newsPlayWhole": {
+    "message": "This takes the place of that playlist’s shuffle. To go back to all of it, press “Shuffle whole playlist” in Up next.",
+    "description": "What's new page, play what you see. 'Shuffle whole playlist' is a button in the card's 'Up next' list: use the same words as the card, and your language's quotation marks."
+  },
+  "newsShotPlay": {
+    "message": "The card’s Up next list after Shuffle, with the Shuffle whole playlist button",
+    "description": "What's new page: screen-reader description of a screenshot. Use the card's own words for Up next and Shuffle whole playlist."
+  },
+  "newsRemovedHeading": {
+    "message": "Find out when videos vanish",
+    "description": "What's new page: section heading about the notice for videos gone from a playlist."
+  },
+  "newsRemovedNotice": {
+    "message": "When you open a playlist, True Shuffle remembers its videos. Next time, if some were removed, made private or deleted, a small notice above the list names them with their old titles, until you press “Seen it”.",
+    "description": "What's new page, vanished videos. 'Seen it' is the notice's button: use the same words as that button, and your language's quotation marks."
+  },
+  "newsRemovedMore": {
+    "message": "The history, with a CSV export, is in the options. On a long playlist, use “Load all” so True Shuffle sees the whole list. Watch later and Liked videos aren’t checked, since videos come and go there because of you.",
+    "description": "What's new page, vanished videos. 'Load all' is the playlist tools' button: use the same words. Use YouTube's own names for Watch later and Liked videos in your language."
+  },
+  "newsShotRemoved": {
+    "message": "The notice above a playlist naming the videos that vanished",
+    "description": "What's new page: screen-reader description of a screenshot."
+  },
+  "newsSettingsHeading": {
+    "message": "All settings in one place",
+    "description": "What's new page: section heading about the options page."
+  },
+  "newsSettingsText": {
+    "message": "The options page now gathers every setting: the shuffle, hiding watched videos and the alert history.",
+    "description": "What's new page, options page section."
+  },
+  "newsSettingsOpen": {
+    "message": "Open the options page",
+    "description": "What's new page: link that opens the extension's options page. Short."
+  },
+  "newsShotOptions": {
+    "message": "The options page with all of True Shuffle’s settings",
+    "description": "What's new page: screen-reader description of a screenshot."
+  },
+  "newsLanguageHeading": {
+    "message": "In your language",
+    "description": "What's new page: section heading about the translations. Short."
+  },
+  "newsLanguageText": {
+    "message": "True Shuffle now comes in English, Italian, Portuguese and Spanish. It follows your browser’s language.",
+    "description": "What's new page, translations. Write the language names the way your language does."
+  },
+  "newsShotLanguage": {
+    "message": "The toolbar popup in Italian",
+    "description": "What's new page: screen-reader description of a screenshot (the popup shown in Italian, whatever your language)."
+  },
+  "newsMoreHeading": {
+    "message": "Questions or ideas?",
+    "description": "What's new page: heading of the last section (feedback and donation links, version). Short."
+  },
+  "newsMoreText": {
+    "message": "True Shuffle is free and has no ads. Found a bug or have an idea? Tell me on GitHub.",
+    "description": "What's new page, last section, above the links to GitHub and Buy me a coffee. Keep GitHub as it is."
+  }
+}

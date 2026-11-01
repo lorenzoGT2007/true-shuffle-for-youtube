@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title data-i18n="newsTitle"></title>
+  <link rel="stylesheet" href="../popup/popup.css">
+  <link rel="stylesheet" href="welcome.css">
+</head>
+<body class="page">
+  <header class="brand">
+    <img src="../icons/icon32.png" width="28" height="28" alt="">
+    <h1 data-i18n="newsTitle"></h1>
+  </header>
+
+  <main>
+    <p class="lead" data-i18n="newsLead"></p>
+
+    <section class="settings" id="unwatched" aria-labelledby="unwatched-h">
+      <h2 id="unwatched-h" data-i18n="newsUnwatchedHeading"></h2>
+      <p data-i18n="newsUnwatchedWhere"></p>
+      <p data-i18n="newsUnwatchedHow"></p>
+      <!-- Screenshot (for the owner): YouTube's Home page with Hide watched videos switched on, the toolbar popup open beside it showing the switch. Save it as welcome/shots/unwatched.png at 1280×800, then replace the div below with
+           <img src="shots/unwatched.png" data-i18n-alt="newsShotUnwatched" alt=""> -->
+      <figure class="shot"><div class="placeholder" role="img" data-i18n-aria-label="newsShotUnwatched"><span data-i18n="newsShotSoon"></span></div></figure>
+    </section>
+
+    <section class="settings" id="tools" aria-labelledby="tools-h">
+      <h2 id="tools-h" data-i18n="newsToolsHeading"></h2>
+      <p data-i18n="newsToolsSearch"></p>
+      <p data-i18n="newsToolsView"></p>
+      <!-- Screenshot (for the owner): a playlist page with a word typed in True Shuffle's search box and the sort menu open, the list below filtered. Save it as welcome/shots/tools.png at 1280×800, then replace the div below with
+           <img src="shots/tools.png" data-i18n-alt="newsShotTools" alt=""> -->
+      <figure class="shot"><div class="placeholder" role="img" data-i18n-aria-label="newsShotTools"><span data-i18n="newsShotSoon"></span></div></figure>
+    </section>
+
+    <section class="settings" id="play-view" aria-labelledby="play-view-h">
+      <h2 id="play-view-h" data-i18n="newsPlayHeading"></h2>
+      <p data-i18n="newsPlayButtons"></p>
+      <p data-i18n="newsPlayWhole"></p>
+      <!-- Screenshot (for the owner): a video playing after Shuffle on a searched playlist, with the card's Up next list open and its Shuffle whole playlist button showing. Save it as welcome/shots/play-view.png at 1280×800, then replace the div below with
+           <img src="shots/play-view.png" data-i18n-alt="newsShotPlay" alt=""> -->
+      <figure class="shot"><div class="placeholder" role="img" data-i18n-aria-label="newsShotPlay"><span data-i18n="newsShotSoon"></span></div></figure>
+    </section>
+
+    <section class="settings" id="removed" aria-labelledby="removed-h">
+      <h2 id="removed-h" data-i18n="newsRemovedHeading"></h2>
+      <p data-i18n="newsRemovedNotice"></p>
+      <p data-i18n="newsRemovedMore"></p>
+      <!-- Screenshot (for the owner): a playlist page with True Shuffle's notice above the list, naming a video that was removed, with its Seen it button. Save it as welcome/shots/removed.png at 1280×800, then replace the div below with
+           <img src="shots/removed.png" data-i18n-alt="newsShotRemoved" alt=""> -->
+      <figure class="shot"><div class="placeholder" role="img" data-i18n-aria-label="newsShotRemoved"><span data-i18n="newsShotSoon"></span></div></figure>
+    </section>
+
+    <section class="settings" id="settings" aria-labelledby="settings-h">
+      <h2 id="settings-h" data-i18n="newsSettingsHeading"></h2>
+      <p data-i18n="newsSettingsText"></p>
+      <p><a href="../options/options.html" data-i18n="newsSettingsOpen"></a></p>
+      <!-- Screenshot (for the owner): the options page, scrolled to the top so the Shuffle and Watched videos sections show. Save it as welcome/shots/options.png at 1280×800, then replace the div below with
+           <img src="shots/options.png" data-i18n-alt="newsShotOptions" alt=""> -->
+      <figure class="shot"><div class="placeholder" role="img" data-i18n-aria-label="newsShotOptions"><span data-i18n="newsShotSoon"></span></div></figure>
+    </section>
+
+    <section class="settings" id="language" aria-labelledby="language-h">
+      <h2 id="language-h" data-i18n="newsLanguageHeading"></h2>
+      <p data-i18n="newsLanguageText"></p>
+      <!-- Screenshot (for the owner): the toolbar popup over a YouTube video, with the browser set to Italian. Save it as welcome/shots/language.png at 1280×800, then replace the div below with
+           <img src="shots/language.png" data-i18n-alt="newsShotLanguage" alt=""> -->
+      <figure class="shot"><div class="placeholder" role="img" data-i18n-aria-label="newsShotLanguage"><span data-i18n="newsShotSoon"></span></div></figure>
+    </section>
+
+    <section class="settings" id="about" aria-labelledby="about-h">
+      <h2 id="about-h" data-i18n="newsMoreHeading"></h2>
+      <p data-i18n="newsMoreText"></p>
+      <ul class="links">
+        <li><a href="https://github.com/lorenzoGT2007/true-shuffle-for-youtube/issues" target="_blank" rel="noopener" data-i18n="optIssues"></a></li>
+        <li><a href="https://buymeacoffee.com/lorenzogt" target="_blank" rel="noopener" data-i18n="optCoffee"></a></li>
+      </ul>
+      <p class="quiet" id="version"></p>
+    </section>
+  </main>
+
+  <script src="../src/i18n.js"></script>
+  <script src="welcome.js"></script>
+</body>
+</html>

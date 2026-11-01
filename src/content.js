@@ -19,6 +19,8 @@
 
   const TS = globalThis.TrueShuffle;
   const SEL = globalThis.TrueShuffleSelectors;
+  const { t } = globalThis.TrueShuffleI18n;
+  const UPDATED_TEXT = t('errUpdated'); // looked up now: it's shown once the extension (and chrome.i18n) is gone
   const MARK = '__trueShuffle';
   const KEY_ACTIVE = 'trueShuffle.active'; // sessionStorage: which playlist this tab is shuffling
   const KEY_EXPECT = 'trueShuffle.expect';
@@ -28,7 +30,7 @@
   const LATE_AUTOPLAY_MS = 3000;
   const QUEUE_SIZE = 30;
   const MAX_SAVED_PLAYLISTS = 40;
-  const DEFAULTS = { spread: true, onFinish: 'reshuffle', showButton: true, corner: 'right', collapsed: false, autoStart: true };
+  const DEFAULTS = { spread: true, onFinish: 'reshuffle', showButton: true, corner: 'right', collapsed: false, autoStart: true }; // also in popup/settings.js
 
   const st = {
     settings: { ...DEFAULTS },
@@ -121,11 +123,18 @@
     try { return !!(chrome.runtime && chrome.runtime.id); } catch (_) { return false; }
   }
 
+  /** page.js's errors are matched on its English (an old copy can outlive an update); others pass through. */
   function friendly(err) {
     const m = String((err && err.message) || err || '');
-    if (/context invalidated|Extension context/i.test(m) || !extensionAlive()) return 'True Shuffle was updated. Reload this tab to keep using it.';
-    if (/did not answer/i.test(m)) return 'YouTube didn’t answer. Reload the page and try again.';
-    return m || 'Something went wrong.';
+    if (/context invalidated|Extension context/i.test(m) || !extensionAlive()) return UPDATED_TEXT;
+    if (/did not answer/i.test(m)) return t('errNoAnswer');
+    if (/^YouTube is still loading\./.test(m)) return t('errStillLoading');
+    if (/^Network error while reading the playlist\./.test(m)) return t('errNetwork');
+    const http = /^YouTube answered with an error \((\d+)\)\.$/.exec(m);
+    if (http) return t('errHttp', http[1]);
+    if (/^No playlist on this page\./.test(m)) return t('errNoPlaylist');
+    if (/^YouTube could not open this playlist\.$/.test(m)) return t('errCannotOpen'); // yt-api.js, page world too
+    return m || t('errUnknown');
   }
 
   const sessionStore = {
@@ -333,7 +342,7 @@
       }
       if (token !== st.startToken) return; // cancelled meanwhile
       if (!cat.ids.length) {
-        throw new Error(cat.skipped ? 'None of the videos in this playlist can be played right now.' : 'This playlist has no videos.');
+        throw new Error(cat.skipped ? t('errNoneCanPlay') : t('errEmptyPlaylist'));
       }
       st.catalog = cat;
       const here = readLoc();
@@ -958,7 +967,8 @@
         if (st.quiet) {
           return {
             ...base, mode: 'mini',
-            tip: loaded ? `Reading the playlist: ${fmt(loaded)}${total ? ' of ' + fmt(total) : ''} videos` : 'Reading the playlist',
+            tip: !loaded ? t('shuffleTipReading')
+              : total ? t('shuffleTipReadingOf', fmt(loaded), fmt(total)) : t('shuffleTipReadingCount', fmt(loaded)),
             progress: total ? Math.min(1, loaded / total) : 0,
           };
         }
@@ -972,7 +982,7 @@
         if (st.quiet) {
           return {
             ...base, mode: 'mini', paused: true,
-            tip: `Shuffle paused: ${fmt(sum.position)} of ${fmt(sum.total)} played`,
+            tip: t('shuffleTipPaused', fmt(sum.position), fmt(sum.total)),
             progress: sum.total ? sum.position / sum.total : 0,
           };
         }
@@ -985,7 +995,7 @@
         if (st.settings.collapsed || st.quiet) {
           return {
             ...base, mode: 'mini',
-            tip: `Shuffling: ${fmt(sum.position)} of ${fmt(sum.total)}`,
+            tip: t('shuffleTipShuffling', fmt(sum.position), fmt(sum.total)),
             progress: sum.total ? sum.position / sum.total : 0,
           };
         }
@@ -1004,7 +1014,7 @@
         const saved = st.saved;
         return {
           ...base, mode: 'fab',
-          tip: saved ? `Resume shuffle: ${fmt(saved.pos)} of ${fmt(saved.total)} played` : 'Shuffle this playlist',
+          tip: saved ? t('shuffleTipResume', fmt(saved.pos), fmt(saved.total)) : t('shuffleTipStart'),
           progress: saved ? saved.pos / saved.total : null,
         };
       }

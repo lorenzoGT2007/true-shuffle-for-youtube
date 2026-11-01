@@ -1,25 +1,11 @@
 'use strict';
 
-const DEFAULTS = { enabled: false, threshold: 90, partial: false }; // also in src/unwatched.js
-
-async function current() {
-  return { ...DEFAULTS, ...((await chrome.storage.local.get('unwatched')).unwatched || {}) };
-}
+const { t, parts, translate } = TrueShuffleI18n;
 
 async function init() {
-  const threshold = document.getElementById('threshold');
-  const value = document.getElementById('threshold-value');
-  const partial = document.getElementById('partial');
-  const cfg = await current();
-  threshold.value = String(cfg.threshold);
-  value.textContent = cfg.threshold + '%';
-  partial.checked = !!cfg.partial;
-
-  // Read again before writing: the popup or Alt+Shift+U may have switched the filter meanwhile.
-  const save = async (patch) => chrome.storage.local.set({ unwatched: { ...(await current()), ...patch } });
-  threshold.addEventListener('input', () => { value.textContent = threshold.value + '%'; });
-  threshold.addEventListener('change', () => save({ threshold: Number(threshold.value) })); // on release, not every step
-  partial.addEventListener('change', () => save({ partial: partial.checked }));
+  translate(document);
+  document.getElementById('version').textContent = t('optVersion', chrome.runtime.getManifest().version);
+  await TrueShuffleSettings.init(); // ../popup/settings.js: every switch on this page
   await initAlerts();
 }
 
@@ -38,13 +24,15 @@ async function initAlerts() {
     const alerts = await load();
     list.replaceChildren(...[...alerts].reverse().map((a) => {
       const li = el('li', a.ack ? 'alert' : 'alert new');
+      const where = el('span', 'meta', ' · ');
+      where.append(...parts('optAlertWhere', R.stamp(a.at),
+        link('https://www.youtube.com/playlist?list=' + encodeURIComponent(a.list), a.listTitle || a.list)));
       li.append(
         link('https://www.youtube.com/watch?v=' + encodeURIComponent(a.id), a.title || a.id),
         a.channel ? ` (${a.channel})` : '',
-        el('span', 'what', ` ${R.WHAT[a.kind] || a.kind}`),
-        el('span', 'meta', ` · ${R.stamp(a.at)} in `),
-        link('https://www.youtube.com/playlist?list=' + encodeURIComponent(a.list), a.listTitle || a.list),
-        a.seen ? el('span', 'meta', ` · last seen ${R.stamp(a.seen)}`) : '');
+        el('span', 'what', ` ${R.WHAT[a.kind] ? t(R.WHAT[a.kind]) : a.kind}`),
+        where,
+        a.seen ? el('span', 'meta', ' · ' + t('optAlertLastSeen', R.stamp(a.seen))) : '');
       return li;
     }));
     empty.hidden = alerts.length > 0;
@@ -52,7 +40,7 @@ async function initAlerts() {
   }
 
   csv.addEventListener('click', async () => {
-    const url = URL.createObjectURL(new Blob(['﻿' + R.toCsv(await load())], { type: 'text/csv' })); // BOM: spreadsheets read UTF-8
+    const url = URL.createObjectURL(new Blob(['﻿' + R.toCsv(await load(), t)], { type: 'text/csv' })); // BOM: spreadsheets read UTF-8
     const a = Object.assign(document.createElement('a'), { href: url, download: 'true-shuffle-alerts.csv' });
     document.body.append(a);
     a.click();
@@ -60,7 +48,7 @@ async function initAlerts() {
     setTimeout(() => URL.revokeObjectURL(url), 10000);
   });
   clear.addEventListener('click', async () => {
-    if (!confirm('Delete the whole alert history? The saved playlist snapshots stay.')) return;
+    if (!confirm(t('optAlertsConfirm'))) return;
     await chrome.storage.local.set({ alerts: [] });
   });
   chrome.storage.onChanged.addListener((changes, area) => { if (area === 'local' && changes.alerts) render(); });
