@@ -54,43 +54,61 @@
    * Breaks up runs of the same channel in arr[from..], in place.
    * arr[from - 1] (if any) is treated as fixed, so the item after the one
    * that is playing right now is also checked. Videos without a channel are left alone.
+   * lock = { ids, until }: those ids are never moved to an index below `until`.
    */
-  function spreadInPlace(arr, keyOf, from = 0) {
+  function spreadInPlace(arr, keyOf, from = 0, lock = null) {
     const start = Math.max(from, 1);
+    const blocked = (id, i) => !!lock && i < lock.until && lock.ids.has(id);
     // Forward pass: pull the nearest video from another channel into the gap.
+    // After a pull, everything up to where the video came from is the gap's channel, so the
+    // next search for that channel starts past it (same result, no rescans).
+    const pulledFrom = new Map(); // channel -> index the last video was pulled from
     for (let i = start; i < arr.length; i++) {
       const prev = keyOf(arr[i - 1]);
       if (!prev || keyOf(arr[i]) !== prev) continue;
-      let j = i + 1;
-      while (j < arr.length && keyOf(arr[j]) === prev) j++;
+      const free = !lock || i >= lock.until; // below `until`, locked videos are skipped too
+      let j = Math.max(i, (free && pulledFrom.get(prev)) || 0) + 1;
+      while (j < arr.length && (keyOf(arr[j]) === prev || blocked(arr[j], i))) j++;
       if (j >= arr.length) break; // the rest is all one channel; the pass below handles it
+      if (free) pulledFrom.set(prev, j);
       const t = arr[i]; arr[i] = arr[j]; arr[j] = t;
     }
     // Backward pass: a leftover same-channel pair near the end gets one of its videos
     // tucked into an earlier spot whose neighbours are both from other channels.
+    // Spots ruled out for a channel stay ruled out until something moves, so its next search
+    // starts where the last one stopped: a list that is mostly one channel stays linear.
+    let moves = 0;
+    const ruledOut = new Map(); // channel -> [moves, upTo]: no spot in [start, upTo)
     for (let i = start; i < arr.length; i++) {
       const c = keyOf(arr[i]);
       if (!c || keyOf(arr[i - 1]) !== c) continue;
+      const free = !lock || !lock.ids.has(arr[i]); // locked ids have fewer spots: never remembered
+      const known = free && ruledOut.get(c);
       let p = -1;
-      for (let q = start; q < i; q++) {
-        if (keyOf(arr[q - 1]) !== c && keyOf(arr[q]) !== c) { p = q; break; }
+      for (let q = known && known[0] === moves ? known[1] : start; q < i; q++) {
+        if (keyOf(arr[q - 1]) !== c && keyOf(arr[q]) !== c && !blocked(arr[i], q)) { p = q; break; }
       }
-      if (p < 0) continue; // nowhere to put it: this channel simply dominates the rest
+      if (p < 0) { // nowhere to put it: this channel simply dominates the rest
+        if (free) ruledOut.set(c, [moves, i]);
+        continue;
+      }
       const [moved] = arr.splice(i, 1);
       arr.splice(p, 0, moved);
+      moves++;
     }
     return arr;
   }
 
-  /**
-   * Keeps the ids in `avoid` out of the first positions of arr[from..].
-   * The protected window is as large as it can be while staying solvable.
-   */
-  function pushBack(arr, avoid, from = 0) {
+  /** How many slots from `from` on can be kept free of `avoid`: as many as stays solvable. */
+  function avoidWindow(arr, avoid, from) {
     let count = 0;
     for (let i = from; i < arr.length; i++) if (avoid.has(arr[i])) count++;
-    const free = arr.length - from;
-    const window = Math.min(count, free - count);
+    return Math.min(count, arr.length - from - count);
+  }
+
+  /** Keeps the ids in `avoid` out of the first positions of arr[from..] (see avoidWindow). */
+  function pushBack(arr, avoid, from = 0) {
+    const window = avoidWindow(arr, avoid, from);
     if (window <= 0) return arr;
     const end = from + window;
     const spots = [];
@@ -110,6 +128,7 @@
    * A freshly shuffled order of `ids` (duplicates removed).
    * opts.first: put this id first (it is already playing).
    * opts.spread + opts.keyOf: avoid the same channel twice in a row.
+   * opts.after: the id playing just before this order, whose channel the first video shouldn't share.
    * opts.avoid: Set of ids to keep away from the start.
    */
   function buildOrder(ids, opts = {}) {
@@ -124,8 +143,17 @@
         fixed = 1;
       }
     }
-    if (opts.spread && typeof opts.keyOf === 'function') spreadInPlace(order, opts.keyOf, fixed);
-    if (opts.avoid && opts.avoid.size) pushBack(order, opts.avoid, fixed);
+    const avoid = opts.avoid && opts.avoid.size ? opts.avoid : null;
+    const end = avoid ? fixed + avoidWindow(order, avoid, fixed) : 0;
+    if (avoid) pushBack(order, avoid, fixed);
+    if (opts.spread && typeof opts.keyOf === 'function') {
+      // The spread comes last so nothing undoes it, and it may not undo pushBack. `after`
+      // stands in front while it runs, so the first video is checked against it too.
+      const lead = !fixed && opts.after != null ? 1 : 0;
+      if (lead) order.unshift(opts.after);
+      spreadInPlace(order, opts.keyOf, fixed + lead, avoid && { ids: avoid, until: end + lead });
+      if (lead) order.shift();
+    }
     return order;
   }
 
@@ -159,9 +187,9 @@
   function startRound(s, ids, opts = {}) {
     const pool = ids && ids.length ? ids : s.order;
     const n = new Set(pool).size;
-    const k = Math.min(10, Math.floor(n / 3));
-    const avoid = new Set(k > 0 ? s.recent.slice(-k) : []);
-    s.order = buildOrder(pool, { spread: opts.spread, keyOf: opts.keyOf, avoid });
+    const k = Math.min(10, Math.max(1, Math.floor(n / 3))); // at least 1: a 2-video round mustn't open with the last one
+    const avoid = new Set(s.recent.slice(-k));
+    s.order = buildOrder(pool, { spread: opts.spread, keyOf: opts.keyOf, avoid, after: s.recent[s.recent.length - 1] });
     s.pos = -1;
     s.round += 1;
     return s;

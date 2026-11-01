@@ -1,6 +1,6 @@
 # Privacy policy
 
-**True Shuffle for YouTube** · last updated 25 October 2026
+**True Shuffle for YouTube** · last updated 29 October 2026
 
 True Shuffle does not collect, send, sell or share any of your data. It has no servers, no analytics, no ads and no tracking. Everything it does happens inside your browser, on youtube.com.
 
@@ -9,7 +9,8 @@ True Shuffle does not collect, send, sell or share any of your data. It has no s
 The extension runs only on `https://www.youtube.com/`. There it reads:
 
 - **The page you're on**: which playlist and which video are playing, so it can pick the next video.
-- **The playlist's contents**: video ids, titles, channel names and durations. To get every video (not just the first 200 YouTube loads), it asks YouTube for the rest of the playlist with the same requests YouTube's own page makes. These requests go only to youtube.com.
+- **How much of each video on the page you've watched**, from YouTube's red progress bars and "Watched" labels, only while "Hide watched videos" is on, so it can hide those videos. This is never stored.
+- **The playlist's contents**: video ids, titles, channel names and durations. To get every video (not just the first 200 YouTube loads), it asks YouTube for the rest of the playlist with the same requests YouTube's own page makes. These requests go only to youtube.com. On a playlist page, the search box and sort menu read the same details from the page itself and keep nothing.
 - **Your YouTube sign-in**: so that private playlists, Watch later and Liked videos work, those requests carry the same sign-in header YouTube's page creates from your YouTube cookie. That happens inside the YouTube tab. The header goes only to youtube.com, and the cookie is never stored or sent anywhere else.
 
 ## What it stores
@@ -19,9 +20,9 @@ All of this stays on your device, in the browser's extension storage:
 - your settings;
 - for up to 40 playlists you shuffled: the playlist's title and video list (ids, titles, channels, durations), the shuffled order and how far you got.
 
-In the YouTube tab's session storage it also notes which playlist that tab is shuffling. That is cleared when the tab closes.
+In the YouTube tab's session storage it also notes which playlist that tab is shuffling, which playlists you switched off in that tab, and the video it is about to open. That is cleared when the tab closes.
 
-Removing the extension deletes everything it stored.
+Removing the extension deletes everything it stored in the browser's extension storage. The notes in a YouTube tab's session storage go when that tab closes.
 
 ## What it shares
 

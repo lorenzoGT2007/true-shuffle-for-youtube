@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>True Shuffle options</title>
+  <link rel="stylesheet" href="../popup/popup.css">
+</head>
+<body class="options">
+  <section class="settings" aria-labelledby="unwatched-h">
+    <h2 id="unwatched-h">Hide watched videos</h2>
+
+    <div class="field">
+      <label class="field-label" for="threshold">Hide a video once you&rsquo;ve watched <strong id="threshold-value">90%</strong> of it</label>
+      <input class="range" type="range" id="threshold" min="10" max="100" step="5" value="90">
+    </div>
+
+    <label class="switch">
+      <input type="checkbox" id="partial">
+      <span class="track" aria-hidden="true"></span>
+      <span class="text">Also hide videos you&rsquo;ve only started</span>
+    </label>
+
+    <p class="quiet">Switch the filter on and off in the toolbar popup or with Alt+Shift+U. You can change that key in your browser&rsquo;s extension shortcuts. The video you&rsquo;re watching always stays.</p>
+  </section>
+  <script src="options.js"></script>
+</body>
+</html>

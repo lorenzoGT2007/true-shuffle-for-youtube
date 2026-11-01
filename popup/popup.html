@@ -101,8 +101,17 @@
     </section>
   </main>
 
+  <p class="debug" id="debug-page" hidden></p><!-- TEMP debug: the page watcher's view of the tab -->
+
   <section class="settings" aria-labelledby="settings-h">
     <h2 id="settings-h">Settings</h2>
+
+    <label class="switch">
+      <input type="checkbox" id="set-unwatched">
+      <span class="track" aria-hidden="true"></span>
+      <span class="text">Hide watched videos <span class="hint">Alt+Shift+U</span></span>
+    </label>
+    <button class="link" data-act="options">Filter options</button>
 
     <label class="switch">
       <input type="checkbox" id="set-auto">

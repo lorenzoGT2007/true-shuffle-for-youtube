@@ -8,15 +8,17 @@ Shuffles a YouTube playlist like a deck of cards: every video plays exactly once
 
 ## Install
 
-Works in Chrome, Edge, Brave, Opera, Vivaldi and other Chromium browsers (version 111 or newer).
+Works in Chrome, Edge, Brave, Opera, Vivaldi and other Chromium browsers (version 111 or newer), and in Firefox 140 or newer.
 
-Store listings are on their way. Until then, install it by hand:
+Store listings are on their way. Until then, install it by hand in a Chromium browser:
 
 1. Download `true-shuffle-for-youtube-v1.0.0.zip` from the [latest release](https://github.com/lorenzoGT2007/true-shuffle-for-youtube/releases/latest) and unzip it somewhere permanent (for example `Documents\True Shuffle`). The browser loads the extension from there, so leave it in place.
 2. Open the extensions page: `chrome://extensions`, `edge://extensions` or `brave://extensions`.
 3. Switch on **Developer mode**.
 4. Click **Load unpacked** and choose the folder that contains `manifest.json`.
 5. YouTube tabs that were already open pick it up by themselves. If one doesn't, reload it.
+
+Firefox only keeps add-ons signed by Mozilla, so there it comes from Firefox Add-ons once the listing is up. To try it before that, unzip the `-firefox` zip from the latest release, open `about:debugging#/runtime/this-firefox`, click **Load Temporary Add-on…** and pick its `manifest.json`. It stays until Firefox closes.
 
 ## Use
 
@@ -27,6 +29,8 @@ Store listings are on their way. Until then, install it by hand:
 - The card shows how far you are, what plays next, and an "Up next" list you can jump around in. The arrow folds it into the small button; the × stops shuffling that playlist in this tab (your place is kept, and the round button starts it again).
 - Pick a video yourself from the playlist and it counts as played.
 - The toolbar icon shows the same controls plus settings. Switch off "Turn on by itself when a playlist plays" if you'd rather start it yourself every time.
+- **Hide watched videos** (in the toolbar popup, or Alt+Shift+U): videos you've watched at least 90% of disappear from Home, Subscriptions, channel Videos tabs, search results and playlists (Watch later too), judged by the red bar under the thumbnail or YouTube's "Watched" label, including the ones that load as you scroll. "Filter options" sets the share and can also hide videos you've only started. The video you're watching always stays.
+- **On any playlist page** (Watch later too): a search box above the list filters by title or channel as you type, and a menu shows the list by title, duration, channel, date added (when YouTube shows it), unwatched first, or in the playlist's own order. It only changes what you see; your playlist stays exactly as it is. On a long playlist, "Load all" scrolls through it for you first, so search and sort cover every video.
 
 ## Why it's more random than YouTube's shuffle
 

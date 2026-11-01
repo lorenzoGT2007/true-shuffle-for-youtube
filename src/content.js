@@ -18,6 +18,7 @@
   document.addEventListener(RETIRE_EVENT, () => retire());
 
   const TS = globalThis.TrueShuffle;
+  const SEL = globalThis.TrueShuffleSelectors;
   const MARK = '__trueShuffle';
   const KEY_ACTIVE = 'trueShuffle.active'; // sessionStorage: which playlist this tab is shuffling
   const KEY_EXPECT = 'trueShuffle.expect';
@@ -56,10 +57,14 @@
     scrubbing: false, // you're holding the time bar
     held: null, // { id, play }: video kept short of its end until you let go of the time bar
     queueOpen: false,
-    syncing: false,
+    syncing: null, // the quiet re-read of the playlist in progress (a promise)
     startToken: 0,
-    mediaOn: false,
+    mediaOn: null, // unknown at first: page.js may still hold the media keys for a copy from before an update
     ui: null,
+    debugPage: { type: null, videos: 0 }, // TEMP debug: the popup's page line (see init)
+    stopDebugWatch: null,
+    stopUnwatched: null, // the unwatched filter, started in init
+    stopPlaylistTools: null, // search and sort on playlist pages, started in init
     tickTimer: 0,
     retired: false,
   };
@@ -80,17 +85,17 @@
   const isAttached = () => st.phase === 'active' && onOurWatchPage(readLoc());
 
   function isAd(player) {
-    return player.classList.contains('ad-showing') || player.classList.contains('ad-interrupting');
+    return player.matches(SEL.ad);
   }
 
   function mainVideo() {
-    return document.querySelector('#movie_player video.html5-main-video') || document.querySelector('#movie_player video');
+    return document.querySelector(SEL.video) || document.querySelector(SEL.videoFallback);
   }
 
   /** The player around a media event's target, when that's YouTube's video playing (not an ad). */
   function playerOf(v) {
     if (!v || v.tagName !== 'VIDEO') return null;
-    const player = v.closest('#movie_player');
+    const player = v.closest(SEL.player);
     return player && !isAd(player) ? player : null;
   }
 
@@ -105,10 +110,10 @@
   }
 
   function playerErrorVisible() {
-    const p = document.getElementById('movie_player');
-    if (p && visible(p.querySelector('.ytp-error'))) return true;
-    const screen = document.querySelector('ytd-watch-flexy #error-screen');
-    return !!screen && visible(screen) && visible(screen.querySelector('yt-playability-error-supported-renderers'));
+    const p = document.querySelector(SEL.player);
+    if (p && visible(p.querySelector(SEL.playerError))) return true;
+    const screen = document.querySelector(SEL.errorScreen);
+    return !!screen && visible(screen) && visible(screen.querySelector(SEL.errorScreenMessage));
   }
 
   function extensionAlive() {
@@ -157,23 +162,32 @@
       meta.set(id, { title, channel, duration });
       ids.push(id);
     }
-    return { listId: c.listId, title: c.title, total: c.total, fetchedAt: c.fetchedAt, skipped: c.skipped || 0, ids, meta };
+    return {
+      listId: c.listId, title: c.title, total: c.total, fetchedAt: c.fetchedAt, skipped: c.skipped || 0,
+      partial: c.partial || null, ids, meta,
+    };
   }
 
+  // An empty copy is never reused (1.0.0 could save one, and then every start failed on it).
   async function loadCatalog(listId) {
     const c = await sget('c:' + listId);
-    return c && Array.isArray(c.items) ? hydrate(c) : null;
+    return c && Array.isArray(c.items) && c.items.length ? hydrate(c) : null;
   }
 
+  /**
+   * Reads the playlist through page.js. Not saved here: only a shuffle that uses it saves it,
+   * so reads that go nowhere (cancelled, empty, abandoned) leave nothing behind in storage.
+   */
   async function fetchCatalog(listId, onProgress) {
     const r = await pageCall('fetchPlaylist', { listId }, { timeout: 45000, onProgress });
-    const c = {
+    return {
       listId, title: r.title || null, total: r.total ?? null, fetchedAt: Date.now(),
       items: r.items, skipped: r.skipped || 0, partial: r.partial || null,
     };
-    await sset({ ['c:' + listId]: c });
-    return hydrate(c);
   }
+
+  // A read that stopped partway (`partial`) is due for another try as soon as it's used again.
+  const isStale = (cat) => !!cat.partial || Date.now() - cat.fetchedAt > CATALOG_FRESH_MS;
 
   async function loadSession(listId) {
     const s = await sget('s:' + listId);
@@ -300,13 +314,14 @@
     render();
     try {
       let cat = await loadCatalog(listId);
-      const fromCache = !!cat;
+      let fetched = null; // read just now: saved once the shuffle really starts
       if (!cat) {
-        cat = await fetchCatalog(listId, (loaded, total) => {
+        fetched = await fetchCatalog(listId, (loaded, total) => {
           if (token !== st.startToken) return;
           st.loading = { loaded, total };
           render();
         });
+        cat = hydrate(fetched);
       }
       if (token !== st.startToken) return; // cancelled meanwhile
       if (!cat.ids.length) {
@@ -324,6 +339,7 @@
         autoStart();
         return;
       }
+      if (fetched) await sset({ ['c:' + listId]: fetched });
       let s = fresh ? null : await loadSession(listId);
       if (s) {
         TS.reconcile(s, cat.ids, opts());
@@ -340,13 +356,14 @@
       // Started by itself on a video the saved copy of the playlist doesn't have yet: keep it on.
       if (!currentId && auto) await commitWatching(here.v);
       else if (!currentId) await goNext('start');
-      if (fromCache && Date.now() - cat.fetchedAt > CATALOG_FRESH_MS) syncCatalog(listId);
+      if (!fetched && isStale(cat)) syncCatalog(listId);
     } catch (err) {
       if (token !== st.startToken) return;
       if (auto) st.autoFailed.add(listId);
       st.listId = null;
       st.phase = 'error';
       st.error = friendly(err);
+      syncMediaKeys();
       render();
     }
   }
@@ -399,7 +416,7 @@
     }
     syncMediaKeys();
     render();
-    if (Date.now() - cat.fetchedAt > CATALOG_FRESH_MS) syncCatalog(listId);
+    if (isStale(cat)) syncCatalog(listId);
     autoStart();
   }
 
@@ -416,13 +433,27 @@
     if (st.listId) switchToThisPlaylist(true); else start(false, true);
   }
 
-  /** Re-reads the playlist quietly and folds additions/removals into the shuffle. */
-  async function syncCatalog(listId) {
-    if (st.syncing) return;
-    st.syncing = true;
+  /**
+   * Re-reads the playlist quietly and folds additions/removals into the shuffle.
+   * A caller that comes while a re-read runs gets that one, so it can wait for the new copy.
+   */
+  function syncCatalog(listId) {
+    if (!st.syncing) st.syncing = resync(listId).finally(() => { st.syncing = null; });
+    return st.syncing;
+  }
+
+  async function resync(listId) {
     try {
-      const cat = await fetchCatalog(listId);
-      if (st.listId !== listId || !cat.ids.length) return;
+      const fetched = await fetchCatalog(listId);
+      const cat = hydrate(fetched);
+      // An empty read, or a cut-short one shorter than what we have, would drop videos from the shuffle.
+      if (!cat.ids.length) return;
+      if (cat.partial) {
+        const saved = await loadCatalog(listId);
+        if (saved && (!saved.partial || saved.ids.length >= cat.ids.length)) return;
+      }
+      await sset({ ['c:' + listId]: fetched });
+      if (st.listId !== listId) return;
       st.catalog = cat;
       await serial(async () => {
         const s = await loadSession(listId);
@@ -433,8 +464,6 @@
       render();
     } catch (_) {
       /* keep using the copy we have */
-    } finally {
-      st.syncing = false;
     }
   }
 
@@ -546,6 +575,7 @@
   function showError(err) {
     st.phase = 'error';
     st.error = friendly(err);
+    syncMediaKeys(); // media keys go back to YouTube while the error shows
     render();
   }
 
@@ -569,7 +599,7 @@
     const tries = st.expected && st.expected.id === id ? st.expected.tries : 0;
     st.expected = { id, at, tries };
     sessionStore.set(KEY_EXPECT, JSON.stringify({ id, list: st.listId, t: Date.now() }));
-    pageCall('navigate', { videoId: id, listId: st.listId }, { timeout: 3000 })
+    pageCall('navigate', { videoId: id, listId: st.listId, app: SEL.app }, { timeout: 3000 })
       .then((r) => { if (!r || r.method !== 'spa') hardNavigate(id); })
       .catch(() => hardNavigate(id));
     clearTimeout(st.navTimer);
@@ -694,6 +724,10 @@
     clearTimeout(st.navTimer);
     clearInterval(st.tickTimer);
     cancelTakeover();
+    syncMediaKeys(); // page.js outlives this copy: give the media keys back
+    if (st.stopDebugWatch) st.stopDebugWatch();
+    if (st.stopUnwatched) st.stopUnwatched();
+    if (st.stopPlaylistTools) st.stopPlaylistTools();
     if (st.ui) st.ui.host.remove();
     st.ui = null;
   }
@@ -789,7 +823,7 @@
   window.addEventListener('pointerdown', (e) => {
     if (!e.isTrusted || e.button !== 0) return;
     const el = e.composedPath()[0];
-    if (el instanceof Element && el.closest('#movie_player .ytp-progress-bar-container, #movie_player .ytp-progress-bar')) st.scrubbing = true;
+    if (el instanceof Element && el.closest(SEL.timeBar)) st.scrubbing = true;
   }, true);
   window.addEventListener('pointerup', letGo, true);
   window.addEventListener('pointercancel', letGo, true);
@@ -837,11 +871,11 @@
     if (e.button !== 0 || e.ctrlKey || e.metaKey || e.shiftKey || e.altKey) return;
     const t = e.target instanceof Element ? e.target : null;
     if (!t) return;
-    const btn = t.closest('.ytp-next-button, .ytp-prev-button');
-    if (!btn || !btn.closest('#movie_player') || !isAttached()) return;
+    const btn = t.closest(`${SEL.nextButton}, ${SEL.prevButton}`);
+    if (!btn || !btn.closest(SEL.player) || !isAttached()) return;
     e.preventDefault();
     e.stopImmediatePropagation();
-    if (btn.classList.contains('ytp-next-button')) goNext('button'); else goPrev();
+    if (btn.matches(SEL.nextButton)) goNext('button'); else goPrev();
   }, true);
 
   // YouTube's keyboard shortcuts for next / previous.
@@ -856,7 +890,6 @@
 
   // Remember when you last clicked or typed something that can open a video, to tell your choices
   // apart from YouTube's autoplay. Working the player (time bar, its buttons, seek keys) doesn't count.
-  const PLAYER_LINKS = '.ytp-ce-element, .ytp-videowall-still, .ytp-autonav-endscreen, .ytp-upnext, .ytp-suggestion-set';
 
   /** A timestamp or chapter link into the video on screen: it only seeks. */
   function seeksHere(link) {
@@ -873,7 +906,7 @@
     if (e.type === 'keydown' && e.key !== 'Enter' && !(e.key === ' ' && el.closest('button, [role="button"]'))) return false;
     const link = el.closest('a[href]');
     if (link) return !seeksHere(link);
-    return !el.closest('#movie_player') || !!el.closest(PLAYER_LINKS);
+    return !el.closest(SEL.player) || !!el.closest(SEL.playerLinks);
   }
 
   const markGesture = (e) => {
@@ -1025,6 +1058,7 @@
       error: st.error,
       saved: st.listId ? null : st.saved,
       settings: st.settings,
+      debugPage: { ...st.debugPage }, // TEMP debug
     };
   }
 
@@ -1085,6 +1119,14 @@
     st.ui = globalThis.TrueShuffleUI.create(onUiAction);
     document.documentElement.appendChild(st.ui.host);
     hideStrays();
+    // TEMP debug: follows the page watcher for the popup's debug line. Remove this, st.debugPage,
+    // st.stopDebugWatch, debugPage in status() and #debug-page in the popup together.
+    st.stopDebugWatch = globalThis.TrueShuffleWatcher.watch({
+      enter(page) { st.debugPage = { type: page.type, videos: 0 }; },
+      videos(cards) { st.debugPage.videos += cards.length; },
+    });
+    st.stopUnwatched = globalThis.TrueShuffleUnwatched.start();
+    st.stopPlaylistTools = globalThis.TrueShufflePlaylistTools.start();
     const activeList = sessionStore.get(KEY_ACTIVE);
     if (activeList) await resumeAfterReload(activeList);
     else {
@@ -1092,7 +1134,9 @@
       render();
       autoStart();
     }
-    if (!st.retired) st.tickTimer = setInterval(tick, 1000);
+    if (st.retired) return;
+    syncMediaKeys(); // the first sync, whatever path init took (mediaOn starts unknown)
+    st.tickTimer = setInterval(tick, 1000);
   }
 
   init();

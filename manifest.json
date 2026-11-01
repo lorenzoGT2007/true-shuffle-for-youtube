@@ -20,8 +20,18 @@
       "32": "icons/icon32.png"
     }
   },
+  "options_ui": {
+    "page": "options/options.html"
+  },
+  "commands": {
+    "toggle-unwatched": {
+      "suggested_key": { "default": "Alt+Shift+U" },
+      "description": "Hide or show watched videos"
+    }
+  },
   "background": {
-    "service_worker": "src/background.js"
+    "service_worker": "src/background.js",
+    "scripts": ["src/background.js"]
   },
   "permissions": ["storage", "unlimitedStorage", "scripting"],
   "host_permissions": ["https://www.youtube.com/*"],
@@ -34,8 +44,17 @@
     },
     {
       "matches": ["https://www.youtube.com/*"],
-      "js": ["src/shuffle.js", "src/ui.js", "src/content.js"],
+      "js": ["src/selectors.js", "src/shuffle.js", "src/ui.js", "src/watcher.js", "src/unwatched.js", "src/playlist-tools.js", "src/content.js"],
       "run_at": "document_start"
     }
-  ]
+  ],
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "true-shuffle-for-youtube@lorenzogt2007",
+      "strict_min_version": "140.0",
+      "data_collection_permissions": {
+        "required": ["none"]
+      }
+    }
+  }
 }

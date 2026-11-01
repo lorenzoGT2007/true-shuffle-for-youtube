@@ -2,16 +2,19 @@
 
 Everything needed to put the extension on the browser stores: how to build the package, the images, and the text to paste into each form.
 
-## 1. Build the package
+## 1. Build the packages
 
-Every store takes the same zip: `manifest.json`, `icons/`, `popup/` and `src/`, nothing else.
+There are two zips, each holding `manifest.json`, `icons/`, `options/`, `popup/` and `src/`, nothing else:
 
-**Easiest:** download `true-shuffle-for-youtube-vX.Y.Z.zip` from the [Releases page](https://github.com/lorenzoGT2007/true-shuffle-for-youtube/releases). The release workflow builds it each time you push a version tag.
+- `true-shuffle-for-youtube-vX.Y.Z.zip` for the Chrome Web Store, Edge Add-ons and Opera. Its manifest leaves out the two Firefox-only keys: Edge's store rejects `background.scripts`, and Chrome before 121 refuses to load it.
+- `true-shuffle-for-youtube-firefox-vX.Y.Z.zip` for Firefox Add-ons, with `manifest.json` exactly as it is in the repo.
 
-**By hand**, from the repo folder (PowerShell or Git Bash):
+**Easiest:** download both from the [Releases page](https://github.com/lorenzoGT2007/true-shuffle-for-youtube/releases). The release workflow builds them each time you push a version tag.
+
+**By hand**, from the repo folder (needs Node and Git). It packs the last commit, so commit first:
 
 ```sh
-git archive --format=zip -o true-shuffle-for-youtube-v1.0.0.zip HEAD manifest.json icons popup src
+node store/pack.js
 ```
 
 ## 2. Images
@@ -41,7 +44,7 @@ Brave, Vivaldi, Arc and other Chromium browsers install from the Chrome Web Stor
 
 ## 4. Microsoft Edge Add-ons
 
-Free, and it takes the same zip.
+Free, and it takes the same zip as the Chrome Web Store (not the `-firefox` one).
 
 1. Register (free) in [Partner Center](https://partner.microsoft.com/dashboard/microsoftedge/overview) for the Microsoft Edge program.
 2. **Create new extension** and upload the zip.
@@ -57,20 +60,36 @@ Free, and it takes the same zip.
 
 Opera users can also install straight from the Chrome Web Store, so this one is optional.
 
-## 6. Firefox
+## 6. Firefox Add-ons
 
-Firefox needs a small port before it can be submitted: its own background setup in the manifest, an add-on id, and testing in Firefox. It isn't done yet.
+Free. Upload `true-shuffle-for-youtube-firefox-vX.Y.Z.zip`.
+
+Before the first upload, decide on two things in `manifest.json`, because AMO keeps them:
+
+- **Add-on ID** `true-shuffle-for-youtube@lorenzogt2007` (`browser_specific_settings.gecko.id`). It can never change after the first upload, so edit it now if you want another one: letters, digits, `-`, `.` and `_` around a single `@` (or a `{GUID}`), up to 80 characters.
+- **Data collection** `"required": ["none"]`. Firefox shows this at install. The extension sends nothing to you or anyone else; its only requests go to youtube.com, the same ones YouTube's page makes, with the sign-in header YouTube's page uses. If a reviewer counts that as collecting, switch to `["authenticationInfo"]`.
+
+1. Sign in at the [Add-on Developer Hub](https://addons.mozilla.org/developers/) and accept the distribution agreement.
+2. **Submit a New Add-on**, choose **On this site**, and upload the Firefox zip. Tick **Firefox** only: the scripts run on www.youtube.com, and Firefox for Android uses m.youtube.com.
+3. Asked whether a code generator, minifier or other tool made the files: **No**. They are hand-written, so no source code upload is needed.
+4. Expect two harmless validation warnings: Firefox ignores `background.service_worker` (it runs `background.scripts`), and the minimum version doesn't cover Firefox for Android.
+5. Listing: the same text and images as above, the privacy policy URL below, homepage and support URLs as for Chrome.
+6. **Notes to Reviewer** (paste):
+
+   ```
+   True Shuffle only runs on www.youtube.com. To read a whole playlist it calls youtube.com's own endpoint /youtubei/v1/browse from the page (src/page.js), the same request YouTube's page makes. When the user is signed in, those requests carry the SAPISIDHASH authorization header YouTube's web client computes from the user's YouTube cookie (needed for private playlists, Watch later and Liked videos); it is built in the tab and sent only to youtube.com. Nothing goes to the developer or anyone else. unlimitedStorage: the video lists of big playlists are kept to resume a shuffle. scripting: injects the extension's own files into YouTube tabs already open on install or update. All code is in the package, unminified, with no remote code and no eval.
+   ```
 
 ## Updating later
 
-1. Make your changes and raise `"version"` in `manifest.json` (for example `1.0.1`).
+1. Make your changes, raise `"version"` in `manifest.json` (for example `1.0.1`) and update the zip name in the main README's Install section.
 2. Commit, then tag and push:
    ```sh
    git tag v1.0.1
    git push origin main --tags
    ```
-   The release workflow builds `true-shuffle-for-youtube-v1.0.1.zip` and attaches it to a new release.
-3. In each dashboard open the item, upload the new zip (Chrome: **Package → Upload new package**), and submit for review.
+   The release workflow builds `true-shuffle-for-youtube-v1.0.1.zip` and `true-shuffle-for-youtube-firefox-v1.0.1.zip` and attaches them to a new release.
+3. In each dashboard open the item, upload the new zip (Chrome: **Package → Upload new package**; Firefox Add-ons takes the `-firefox` one), and submit for review.
 
 ---
 
@@ -108,6 +127,8 @@ HOW IT WORKS
 • Your place is saved, so it survives reloads and browser restarts.
 • Private playlists, Watch later and Liked videos work while you're signed in to YouTube.
 • The toolbar button shows the same controls plus settings.
+• Optional: hide the videos you've already watched on Home, Subscriptions, channels, search and playlists, with one switch or Alt+Shift+U.
+• Search and sort any playlist, Watch Later included, by title, duration, channel or unwatched first. Only the view changes, never your playlist.
 
 GOOD TO KNOW
 Mixes (YouTube's endless auto-generated lists) can't be shuffled. Save the songs to a playlist instead.

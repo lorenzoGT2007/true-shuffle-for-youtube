@@ -449,5 +449,5 @@ button:focus-visible { outline: 2px solid var(--brass); outline-offset: 2px; }
     return { host, render };
   }
 
-  root.TrueShuffleUI = { create };
+  root.TrueShuffleUI = { create, h }; // h: the element builder, also used by the playlist tools
 })(globalThis);

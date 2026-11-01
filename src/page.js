@@ -33,7 +33,7 @@
       case 'fetchPlaylist':
         return fetchPlaylist(msg.listId, (loaded, total) => post({ type: 'progress', reqId: msg.reqId, loaded, total }));
       case 'navigate':
-        return navigate(msg.videoId, msg.listId);
+        return navigate(msg.videoId, msg.listId, msg.app);
       case 'setActive':
         setActive(!!msg.active);
         return true;
@@ -183,14 +183,17 @@
 
   // ---------------------------------------------------------------- navigation
 
-  /** Asks YouTube's app to open a video the same way its own links do (no page reload). */
-  function navigate(videoId, listId) {
+  /**
+   * Asks YouTube's app to open a video the same way its own links do (no page reload).
+   * `appSelector` comes from content.js (selectors.js only loads in its world).
+   */
+  function navigate(videoId, listId, appSelector) {
     const url = '/watch?v=' + encodeURIComponent(videoId) + (listId ? '&list=' + encodeURIComponent(listId) : '');
     const endpoint = {
       commandMetadata: { webCommandMetadata: { url, webPageType: 'WEB_PAGE_TYPE_WATCH', rootVe: 3832 } },
       watchEndpoint: listId ? { videoId, playlistId: listId } : { videoId },
     };
-    const app = document.querySelector('ytd-app');
+    const app = document.querySelector(appSelector);
     if (!app) return { method: 'none' };
     try {
       if (typeof app.fire === 'function') app.fire('yt-navigate', { endpoint });

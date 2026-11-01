@@ -88,6 +88,11 @@ async function refresh() {
   } catch (_) {
     status = null;
   }
+  // TEMP debug: what the page watcher sees in the tab.
+  const debugLine = document.getElementById('debug-page');
+  const dp = status && status.ok && status.debugPage;
+  debugLine.hidden = !dp;
+  if (dp) debugLine.textContent = `Debug: page ${dp.type || 'unknown'}, ${fmt(dp.videos)} videos seen`;
   if (!status || !status.ok) return show(isYouTube(tab.url) ? 'reload' : 'none');
   return render(status);
 }
@@ -95,6 +100,11 @@ async function refresh() {
 async function act(type) {
   if (LINKS[type]) {
     await chrome.tabs.create({ url: LINKS[type] });
+    window.close();
+    return;
+  }
+  if (type === 'options') {
+    await chrome.runtime.openOptionsPage();
     window.close();
     return;
   }
@@ -127,6 +137,16 @@ async function initSettings() {
   auto.addEventListener('change', () => save({ autoStart: auto.checked }));
   spread.addEventListener('change', () => save({ spread: spread.checked }));
   button.addEventListener('change', () => save({ showButton: button.checked }));
+  // The unwatched filter keeps its own storage key; read it fresh so the options page's values stay.
+  const unwatched = document.getElementById('set-unwatched');
+  const filter = async () => (await chrome.storage.local.get('unwatched')).unwatched || {};
+  unwatched.checked = !!(await filter()).enabled;
+  unwatched.addEventListener('change', async () => {
+    chrome.storage.local.set({ unwatched: { ...(await filter()), enabled: unwatched.checked } });
+  });
+  chrome.storage.onChanged.addListener((changes, area) => {
+    if (area === 'local' && changes.unwatched) unwatched.checked = !!(changes.unwatched.newValue || {}).enabled;
+  });
   for (const name of ['onFinish', 'corner']) {
     for (const input of document.querySelectorAll(`input[name="${name}"]`)) {
       input.checked = input.value === settings[name];
