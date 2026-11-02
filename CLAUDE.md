@@ -57,7 +57,7 @@ repo, MIT. `README.md` is the user guide, `PRIVACY.md` the privacy policy, `stor
 | `src/ui.js` | `TrueShuffleUI.create(onAction)` → `{host, render(viewModel)}`: round button, card, "Up next" list and its search (`content.js` `upNext` matches the whole deck); `h()` |
 | `src/background.js` | Service worker (Firefox: event page): injects the scripts into open tabs on install/update; Alt+Shift+U; opens `welcome/welcome.html` on install, `whats-new.html` (background tab) once per `WHATS_NEW` |
 | `popup/` | Popup: `popup.js` fills static `popup.html`, polls the tab every 800 ms with `chrome.tabs.sendMessage({type})` (`type` = the `data-act` names: `status`, `start`, `next`…), answered by `status()`. `settings.js` binds the settings controls of the popup and options page; `popup.css` styles every extension page (`body.page`) |
-| `options/` (opens in a tab), `welcome/` | Options page: every setting; Alerts history (loads `src/removed.js`) with CSV export; About. Welcome and What's new pages (`.shot` placeholders await screenshots) |
+| `options/` (opens in a tab), `welcome/` | Options page: every setting; Alerts history (loads `src/removed.js`) with CSV export; About. Welcome and What's new pages (screenshots in `welcome/shots/`, WebP) |
 | `test/` | `node --test`: `shuffle` (with the 1.0.0 spread as an oracle), `watcher`, `unwatched`, `playlist-tools`, `removed`, `i18n` |
 | `store/`, `.github/workflows/release.yml` | `pack.js` builds the zips; store guide and images (not shipped). On a `v*` tag equal to `v` + manifest version, `release.yml` runs `pack.js` and publishes a release |
 

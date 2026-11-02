@@ -871,10 +871,6 @@
     "message": "The True Shuffle card on a YouTube video page, with the Up next list open",
     "description": "Welcome page: screen-reader description of a screenshot. 'Up next' is the card's list: use the same words as the card."
   },
-  "newsShotSoon": {
-    "message": "Screenshot coming soon",
-    "description": "Welcome and What's new pages: shown in an empty box where a screenshot will go. Short."
-  },
   "welcomeAlsoHeading": {
     "message": "Also in True Shuffle",
     "description": "Welcome page: heading of a short list of the extension's other features."

@@ -31,7 +31,7 @@ node store/pack.js
 | `promo-small.png` | 440×280 | Small promo tile (Chrome, Edge) |
 | `promo-marquee.png` | 1400×560 | Marquee promo tile (Chrome, optional: used if the store features the extension) |
 
-Screenshots 2 to 5 and the marquee show the real extension on youtube.com, with NASA's public Artemis playlists; the two alerts in screenshot 3 are sample data. For the Chrome Web Store, [`listing.html`](listing.html) (open it in your browser) has every field to paste, with copy buttons, and these images in order.
+All five screenshots and the marquee show the real extension on youtube.com, with NASA's public Artemis playlists; the two alerts in screenshot 3 are sample data. For the Chrome Web Store, [`listing.html`](listing.html) (open it in your browser) has every field to paste, with copy buttons, and these images in order.
 
 ## 3. Chrome Web Store
 
