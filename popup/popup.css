@@ -87,9 +87,6 @@ button:focus-visible, .btn:focus-visible { outline: 2px solid var(--brass-hi); o
 .alert .what { color: var(--brass); }
 .btn:disabled { opacity: 0.45; cursor: default; }
 
-/* TEMP debug line */
-.debug { margin: 0; padding: 6px 16px; border-top: 1px solid var(--line); color: var(--ivory-2); font: 11px/1.4 Consolas, ui-monospace, monospace; }
-
 .settings { padding: 12px 16px 8px; border-top: 1px solid var(--line); background: var(--felt); }
 .settings h2 { margin: 2px 0 6px; font-size: 13px; font-weight: 600; color: var(--ivory-2); }
 .switch {

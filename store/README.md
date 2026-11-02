@@ -24,11 +24,11 @@ node store/pack.js
 | `store-icon.png` | 128×128 | Store icon (Chrome): 96×96 artwork with 16px transparent padding, as Google's guidelines ask |
 | `../icons/icon128.png` | 128×128 | Extension logo (Edge, Opera) |
 | `screenshot-1.png` | 1280×800 | Screenshot: the card and the Up next list |
-| `screenshot-2.png` | 1280×800 | Screenshot: the toolbar popup |
+| `screenshot-2.png` | 1280×800 | Screenshot: the toolbar popup (from 1.0.0: retake it, the popup now has "Hide watched videos" and "All settings") |
 | `screenshot-3.png` | 1280×800 | Screenshot: reading a long playlist |
 | `promo-small.png` | 440×280 | Small promo tile (Chrome, Edge) |
 
-A real screenshot of the extension on a YouTube video page helps too. Take one at 1280×800 and upload it first.
+A real screenshot of the extension on a YouTube video page helps too. Take one at 1280×800 and upload it first. For 1.1.0, add one of a playlist page with the search and sort bar and the removed-video notice: none of the images shows the new features yet.
 
 ## 3. Chrome Web Store
 
@@ -50,7 +50,7 @@ Free, and it takes the same zip as the Chrome Web Store (not the `-firefox` one)
 2. **Create new extension** and upload the zip.
 3. **Availability**: Public, all markets.
 4. **Properties**: category **Entertainment**, privacy policy URL below, website `https://github.com/lorenzoGT2007/true-shuffle-for-youtube`.
-5. **Store listings** (English): the description below, the logo (the 128×128 icon), the screenshots and the small promo tile.
+5. **Store listings**: Partner Center shows one row per language in the package (English, Spanish, Italian, Portuguese (Brazil)) and needs a description (at least 250 characters) and a logo for each row it keeps. Fill in English: the description below, the logo (the 128×128 icon, "Duplicate this logo for all languages"), the screenshots and the small promo tile. Then click **Remove** on the other three rows, unless you add translated descriptions.
 6. **Submit**. Edge reviews take up to about a week.
 
 ## 5. Opera add-ons
@@ -77,18 +77,18 @@ Before the first upload, decide on two things in `manifest.json`, because AMO ke
 6. **Notes to Reviewer** (paste):
 
    ```
-   True Shuffle only runs on www.youtube.com. To read a whole playlist it calls youtube.com's own endpoint /youtubei/v1/browse from the page (src/page.js), the same request YouTube's page makes. When the user is signed in, those requests carry the SAPISIDHASH authorization header YouTube's web client computes from the user's YouTube cookie (needed for private playlists, Watch later and Liked videos); it is built in the tab and sent only to youtube.com. Nothing goes to the developer or anyone else. unlimitedStorage: the video lists of big playlists are kept to resume a shuffle. scripting: injects the extension's own files into YouTube tabs already open on install or update. All code is in the package, unminified, with no remote code and no eval.
+   True Shuffle only runs on www.youtube.com. To read a whole playlist it calls youtube.com's own endpoint /youtubei/v1/browse from the page (src/page.js), the same request YouTube's page makes. When the user is signed in, those requests carry the SAPISIDHASH authorization header YouTube's web client computes from the user's YouTube cookie (needed for private playlists, Watch later and Liked videos); it is built in the tab and sent only to youtube.com. Nothing goes to the developer or anyone else. The content scripts also hide videos the user has watched on YouTube's Home, Subscriptions, channel, search and playlist pages (only when switched on), add a search and sort bar to playlist pages (its "Load all" button scrolls the list only when clicked), and keep a list of each opened playlist's videos to tell the user later which ones were removed. unlimitedStorage: the video lists of big playlists are kept to resume a shuffle, and those playlist lists (capped at 20 MB in all). scripting: injects the extension's own files into YouTube tabs already open on install or update. On install the background script opens the extension's welcome page, and once after an update its What's new page. All code is in the package, unminified, with no remote code and no eval.
    ```
 
 ## Updating later
 
-1. Make your changes, raise `"version"` in `manifest.json` (for example `1.0.1`) and update the zip name in the main README's Install section.
+1. Make your changes, raise `"version"` in `manifest.json` (for example `1.1.1`) and update the zip name in the main README's Install section.
 2. Commit, then tag and push:
    ```sh
-   git tag v1.0.1
+   git tag v1.1.1
    git push origin main --tags
    ```
-   The release workflow builds `true-shuffle-for-youtube-v1.0.1.zip` and `true-shuffle-for-youtube-firefox-v1.0.1.zip` and attaches them to a new release.
+   The release workflow builds `true-shuffle-for-youtube-v1.1.1.zip` and `true-shuffle-for-youtube-firefox-v1.1.1.zip` and attaches them to a new release.
 3. In each dashboard open the item, upload the new zip (Chrome: **Package → Upload new package**; Firefox Add-ons takes the `-firefox` one), and submit for review.
 
 ---
@@ -109,35 +109,36 @@ Shuffles a whole YouTube playlist like a deck of cards: every video plays once, 
 
 ### Description
 
-```
-True Shuffle plays a YouTube playlist like a shuffled deck of cards: every video plays exactly once, in a truly random order, before anything repeats.
+No word appears more than five times (store spam rules), web addresses included.
 
-WHY IT'S MORE RANDOM THAN YOUTUBE'S SHUFFLE
-• It reads the whole playlist. YouTube's own shuffle only mixes the part of a long playlist it has loaded.
-• One shuffled deck per round: nothing repeats until every video has played.
-• A uniform Fisher-Yates shuffle using the browser's cryptographic random generator.
-• Optional: never the same channel twice in a row.
-• When a new round starts, the last songs you heard are kept away from the start of it.
+```
+True Shuffle plays a whole YouTube playlist like a deck of cards: every video comes up exactly once, in a truly random order, before anything repeats. It also helps you keep track of your library.
+
+WHY IT'S MORE RANDOM
+• It reads the entire list, while YouTube's own shuffle only mixes the part of a long playlist it has loaded.
+• One deck per round: nothing comes back until everything has had its turn.
+• A uniform Fisher-Yates algorithm with the browser's cryptographic random generator.
+• Optional: avoids the same channel twice in a row whenever it can.
+• When a new round starts, the songs you just heard stay away from its beginning.
 
 HOW IT WORKS
-• Play any video from a playlist and the shuffle turns on by itself. The round button at the bottom right shows your progress; click it to open the card.
-• When a video ends, the next one comes from the shuffle. The player's Next and Previous buttons, Shift+N / Shift+P and your keyboard's media keys follow it too.
-• The card shows how far you are, what plays next, and an "Up next" list you can jump around in.
-• Pick a video yourself from the playlist and it counts as played.
-• Your place is saved, so it survives reloads and browser restarts.
-• Private playlists, Watch later and Liked videos work while you're signed in to YouTube.
-• The toolbar button shows the same controls plus settings.
-• Optional: hide the videos you've already watched on Home, Subscriptions, channels, search and playlists, with one switch or Alt+Shift+U.
-• Search and sort any playlist, Watch Later included, by title, duration, channel or unwatched first, then play or shuffle just the videos shown. Only the view changes, never your playlist.
-• Find out when videos vanish: next time you open a playlist, a small notice names the ones that were removed or became private or deleted, with their old titles. History and CSV export in the options.
-• Every setting in one place on the options page.
-• In English, Italian, Portuguese and Spanish.
+• Start any clip from a list and it turns on by itself. A round button at the bottom right shows your progress; click it for the card with what's next and an "Up next" queue.
+• The player's Next and Previous buttons, Shift+N / Shift+P and your keyboard's media keys follow the deck.
+• Your place is saved across reloads and browser restarts.
+• Private lists, Watch later and Liked videos work while you're signed in.
+
+ORGANIZE YOUR LIBRARY
+• Hide what you've already seen on Home, Subscriptions, a channel's Videos tab, search results and lists, with one switch or Alt+Shift+U.
+• Search any playlist (Watch later too) by title or channel, sort it by title, duration, channel, date added (when shown) or unwatched first, then play or mix just the items shown. Only the view changes, never the playlist itself.
+• Find out when items vanish: next time you open a playlist (not Watch later or Liked videos; on long ones press "Load all" first), a small notice names the ones that were removed or became private or deleted, with their old titles. History and CSV export in the options.
+• Every setting in one place, on the options page.
 
 GOOD TO KNOW
-Mixes (YouTube's endless auto-generated lists) can't be shuffled. Save the songs to a playlist instead.
+• Available in English, Italian, Portuguese (Brazil) and Spanish.
+• Mixes (the endless auto-generated ones) aren't supported: save the songs to one of your own lists instead.
 
 PRIVACY
-Nothing leaves your browser. True Shuffle only talks to youtube.com and has no servers, no analytics and no ads.
+Nothing is sent to the developer or anyone else: True Shuffle only connects to youtube.com and has no servers, no analytics and no ads.
 
 Free and open source: https://github.com/lorenzoGT2007/true-shuffle-for-youtube
 Enjoying it? Buy me a coffee: https://buymeacoffee.com/lorenzogt
@@ -145,22 +146,29 @@ Enjoying it? Buy me a coffee: https://buymeacoffee.com/lorenzogt
 True Shuffle is an independent project, not affiliated with or endorsed by YouTube or Google.
 ```
 
+### What's new in 1.1.0 (Firefox Add-ons "Release notes"; anywhere a store asks)
+
+```
+New: hide videos you've watched, search and sort any playlist then play or shuffle just what's shown, and alerts when videos vanish from your playlists.
+Also: every setting on one options page, a welcome page, and Italian, Portuguese (Brazil) and Spanish translations.
+```
+
 ### Privacy answers
 
 **Single purpose**
 
 ```
-Shuffles YouTube playlists so that every video plays exactly once, in a random order, before any video repeats.
+Organize and play your YouTube playlists and Watch later: shuffle a playlist so every video plays once before any repeats, search and sort it, get told when videos disappear from it, and hide videos you've already watched from YouTube's lists (Home, Subscriptions, channels, search, playlists).
 ```
 
 **Permission justifications**
 
 | Permission | Justification |
 | --- | --- |
-| `storage` | `Saves the user's settings and, for each shuffled playlist, the shuffled order, the user's place in it and the playlist's video list, so the shuffle survives reloads and browser restarts.` |
-| `unlimitedStorage` | `Playlists can hold thousands of videos, and the shuffles of up to 40 playlists are remembered. Their saved video lists can exceed the default 10 MB extension storage limit.` |
+| `storage` | `Saves the user's settings; for each shuffled playlist, the shuffled order, the user's place in it and the playlist's video list, so the shuffle survives reloads and browser restarts; and for playlists the user opens, a list of their videos, to tell the user later which ones disappeared (with a history of those alerts).` |
+| `unlimitedStorage` | `Playlists can hold thousands of videos: the shuffles of up to 40 playlists and the video lists of opened playlists (capped at 20 MB in all) can exceed the default 10 MB extension storage limit.` |
 | `scripting` | `Only right after the extension is installed or updated: injects the extension's own packaged scripts into YouTube tabs that were already open, so the user doesn't have to reload them. No other use.` |
-| Host permission `https://www.youtube.com/*` | `The extension works only on YouTube. It reads the playlist being played (using the same requests YouTube's own page makes), follows which video is playing, and starts the next video of the shuffle.` |
+| Host permission `https://www.youtube.com/*` | `The extension works only on YouTube. It reads the playlist being played (using the same requests YouTube's own page makes), follows which video is playing and starts the next video of the shuffle. When the user switches it on, it hides already-watched videos in YouTube's video lists. On playlist pages it adds a search and sort bar (its "Load all" button scrolls the list only when clicked) and compares the videos with the last visit to tell the user which ones disappeared. After an install or update it finds the YouTube tabs already open to add its scripts.` |
 
 **Remote code**: No, I am not using remote code.
 
@@ -168,10 +176,11 @@ Shuffles YouTube playlists so that every video plays exactly once, in a random o
 All JavaScript is packaged in the extension. It loads no remote scripts and uses no eval.
 ```
 
-**Data usage**: tick these two boxes (the store counts data handled only on the user's device too):
+**Data usage**: tick these three boxes (the store counts data handled only on the user's device too):
 
 - **Authentication information**: requests that read private playlists carry the sign-in header YouTube's page creates from the user's YouTube cookie. It is sent only to youtube.com and never stored.
 - **Website content**: playlist titles, video titles and channel names, stored on the user's device to run the shuffle and to tell the user when videos disappear from a playlist they open.
+- **Web history**: which playlists the user shuffled or opened, their titles and when, and which of their videos played, kept only on the user's device to resume the shuffle and to compare a playlist with the last visit.
 
 Then tick all three certifications:
 
@@ -179,8 +188,8 @@ Then tick all three certifications:
 - I do not use or transfer user data for purposes that are unrelated to my item's single purpose
 - I do not use or transfer user data to determine creditworthiness or for lending purposes
 
-**Privacy policy URL**
+**Privacy policy URL** (the GitHub Pages copy of `PRIVACY.md`, from `docs/privacy.html`; turn Pages on first: repo **Settings → Pages → Deploy from a branch → main, /docs**)
 
 ```
-https://github.com/lorenzoGT2007/true-shuffle-for-youtube/blob/main/PRIVACY.md
+https://lorenzogt2007.github.io/true-shuffle-for-youtube/privacy.html
 ```

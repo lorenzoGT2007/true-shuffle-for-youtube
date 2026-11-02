@@ -1,0 +1,85 @@
+<!doctype html>
+<!-- The privacy policy the stores link to, served by GitHub Pages from /docs. Keep it in step with PRIVACY.md. -->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>True Shuffle privacy policy</title>
+  <meta name="description" content="True Shuffle for YouTube keeps your data on your device: it sends nothing to the developer or anyone else, and has no servers, no analytics, no ads and no tracking.">
+  <style>
+    :root {
+      --bg: #f6f2e8; --card: #fffdf8; --text: #1d1a14; --muted: #5d5649; --line: #e3dccb; --accent: #13382c; --link: #0f5a43;
+      color-scheme: light dark;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root { --bg: #0d2820; --card: #13382c; --text: #f3ecdd; --muted: #c9c0ad; --line: #2a5446; --accent: #e2b04f; --link: #f1c877; }
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; padding: 32px 16px 56px;
+      background: var(--bg); color: var(--text);
+      font: 16px/1.6 "Segoe UI", Roboto, system-ui, -apple-system, sans-serif;
+    }
+    main { max-width: 720px; margin: 0 auto; }
+    h1 { margin: 0 0 4px; font-size: 28px; line-height: 1.25; }
+    .updated { margin: 0 0 24px; color: var(--muted); font-size: 14px; }
+    .promise {
+      margin: 0 0 28px; padding: 18px 20px;
+      border: 1px solid var(--line); border-radius: 12px; background: var(--card);
+      font-size: 18px;
+    }
+    .promise strong { display: block; margin-bottom: 4px; font-size: 20px; }
+    h2 { margin: 32px 0 8px; font-size: 20px; }
+    ul { padding-left: 22px; }
+    li { margin: 6px 0; }
+    a { color: var(--link); }
+    a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 3px; }
+    footer { margin-top: 40px; padding-top: 16px; border-top: 1px solid var(--line); color: var(--muted); font-size: 14px; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>True Shuffle for YouTube: privacy policy</h1>
+    <p class="updated">Last updated 2 November 2026 · version 1.1.0</p>
+
+    <p class="promise"><strong>Your data stays on your device.</strong>
+      True Shuffle never sends anything to the developer or to anyone else, and it does not sell or share any of your data. It has no servers, no analytics, no ads and no tracking. Its only requests go to youtube.com: the same ones YouTube's own page makes, to read the playlist you play.</p>
+
+    <h2>What it reads</h2>
+    <p>The extension runs only on <code>https://www.youtube.com/</code>. There it reads:</p>
+    <ul>
+      <li><strong>The page you're on</strong>: which playlist and which video are playing, so it can pick the next video.</li>
+      <li><strong>How much of each video on the page you've watched</strong>, from YouTube's red progress bars and "Watched" labels: while "Hide watched videos" is on, to hide those videos, and when you sort a playlist by "Unwatched first", to sort it. The progress itself is never stored.</li>
+      <li><strong>The videos on a playlist page you open</strong> (not Watch later or Liked videos): their ids, titles and channels, the playlist's name and YouTube's "N unavailable videos are hidden" note, to spot videos removed since your last visit (saved as described below). The search box and sort menu read the same details and keep nothing.</li>
+      <li><strong>The playlist you shuffle</strong>: video ids, titles, channel names and durations. To get every video (not just the first 200 YouTube loads), it asks YouTube for the rest of the playlist with the same requests YouTube's own page makes. These requests go only to youtube.com.</li>
+      <li><strong>Your YouTube sign-in</strong>: so that private playlists, Watch later and Liked videos work, the extension reads your YouTube sign-in cookie inside the YouTube tab and builds from it the same sign-in header YouTube's own page builds. That header is sent only to youtube.com, with those requests. The cookie and the header are never stored or sent anywhere else.</li>
+    </ul>
+
+    <h2>What it stores, on your device only</h2>
+    <p>All of this stays in your browser's extension storage:</p>
+    <ul>
+      <li>your settings, and whether the What's new page was already shown;</li>
+      <li>for up to 40 playlists you shuffled: the playlist's title and video list (ids, titles, channels, durations), the shuffled order and how far you got;</li>
+      <li>for playlists you open (not Watch later or Liked videos): a snapshot of their videos (ids, titles, channels and the date each was last seen), so it can tell you next time which ones were removed or became private or deleted; and the list of those alerts (at most 500), each with the playlist's name and the video's id, title and channel. The snapshots are limited in size, and the oldest are dropped first.</li>
+    </ul>
+    <p>In the YouTube tab's session storage it also notes which playlist that tab is shuffling, which playlists you switched off in that tab, and the video it is about to open. That is cleared when the tab closes.</p>
+    <p>Removing the extension deletes everything it stored in the browser's extension storage.</p>
+
+    <h2>What it shares</h2>
+    <p>Nothing. No data is sent to the developer or to anyone else, and none is used for advertising, profiling or any purpose other than the extension's own features. The links to GitHub and Buy Me a Coffee in the extension's pages open those sites only when you click them, and send nothing with them.</p>
+
+    <h2>Permissions</h2>
+    <ul>
+      <li><strong>Access to youtube.com</strong>: to run on YouTube pages and read the playlist you're playing.</li>
+      <li><strong>Storage</strong> and <strong>unlimited storage</strong>: to keep your settings, your place in each playlist and the playlist snapshots. Playlists with thousands of videos can exceed the browser's default storage limit.</li>
+      <li><strong>Scripting</strong>: right after the extension is installed or updated, to add its own scripts to YouTube tabs that are already open, so you don't have to reload them.</li>
+    </ul>
+
+    <h2>Contact</h2>
+    <p>Questions about this policy: <a href="https://github.com/lorenzoGT2007/true-shuffle-for-youtube/issues">open an issue on GitHub</a>.</p>
+
+    <footer>True Shuffle is free and open source: <a href="https://github.com/lorenzoGT2007/true-shuffle-for-youtube">github.com/lorenzoGT2007/true-shuffle-for-youtube</a>.
+      It is an independent project, not affiliated with or endorsed by YouTube or Google.</footer>
+  </main>
+</body>
+</html>

@@ -89,11 +89,6 @@ async function refresh() {
   } catch (_) {
     status = null;
   }
-  // TEMP debug: what the page watcher sees in the tab.
-  const debugLine = document.getElementById('debug-page');
-  const dp = status && status.ok && status.debugPage;
-  debugLine.hidden = !dp;
-  if (dp) debugLine.textContent = `Debug: page ${dp.type || 'unknown'}, ${fmt(dp.videos)} videos seen`;
   if (!status || !status.ok) return show(isYouTube(tab.url) ? 'reload' : 'none');
   return render(status);
 }

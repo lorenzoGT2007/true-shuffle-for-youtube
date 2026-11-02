@@ -32,13 +32,12 @@ repo, MIT. `README.md` is the user guide, `PRIVACY.md` the privacy policy, `stor
    only if `isSession` passes; bumping `SESSION_VERSION` silently drops everyone's saved place.
 10. **Kept in sync by hand:** `DEFAULTS` (`content.js` and `unwatched.js` vs `popup/settings.js`); the host pattern
     (manifest, `background.js`, `popup.js` `isYouTube`); `store/pack.js`'s shipped folders (miss one and Chrome refuses it).
-11. **Docs follow the code:** a new permission, or reading or storing something new, updates `PRIVACY.md` and the store
-    answers in `store/README.md`; a behaviour change updates `README.md` and the store description. Comments give the reason.
+11. **Docs follow the code:** new permissions, reads or stored data update `PRIVACY.md` + `docs/privacy.html` (its Pages copy)
+    and `store/README.md`'s answers; behaviour changes update `README.md` and the store description. Comments give the reason.
     **Visible strings are messages** in `_locales/{en,it,es,pt_BR}/messages.json` (`t()`/`parts()` of `src/i18n.js`, `data-i18n*`
     in pages), each in all four with the same placeholders (`test/i18n.test.js`); they use `’`, README/PRIVACY/store plain `'`.
 12. **Features hook in through `TrueShuffleWatcher.watch({pages, enter, videos, changed, leave})`**, never their own
-    observers or location listeners, and `content.js` starts and stops them (so they retire with it). The popup's
-    "Debug:" line is temporary: every piece is marked `TEMP debug`.
+    observers or location listeners, and `content.js` starts and stops them (so they retire with it).
 
 ## Where things are
 

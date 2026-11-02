@@ -63,8 +63,6 @@
     startToken: 0,
     mediaOn: null, // unknown at first: page.js may still hold the media keys for a copy from before an update
     ui: null,
-    debugPage: { type: null, videos: 0 }, // TEMP debug: the popup's page line (see init)
-    stopDebugWatch: null,
     stopUnwatched: null, // the unwatched filter, started in init
     stopPlaylistTools: null, // search and sort on playlist pages, started in init
     stopRemoved: null, // the removed-video check, started in init
@@ -745,7 +743,6 @@
     clearInterval(st.tickTimer);
     cancelTakeover();
     syncMediaKeys(); // page.js outlives this copy: give the media keys back
-    if (st.stopDebugWatch) st.stopDebugWatch();
     if (st.stopUnwatched) st.stopUnwatched();
     if (st.stopPlaylistTools) st.stopPlaylistTools();
     if (st.stopRemoved) st.stopRemoved();
@@ -1091,7 +1088,6 @@
       error: st.error,
       saved: st.listId ? null : st.saved,
       settings: st.settings,
-      debugPage: { ...st.debugPage }, // TEMP debug
     };
   }
 
@@ -1152,12 +1148,6 @@
     st.ui = globalThis.TrueShuffleUI.create(onUiAction);
     document.documentElement.appendChild(st.ui.host);
     hideStrays();
-    // TEMP debug: follows the page watcher for the popup's debug line. Remove this, st.debugPage,
-    // st.stopDebugWatch, debugPage in status() and #debug-page in the popup together.
-    st.stopDebugWatch = globalThis.TrueShuffleWatcher.watch({
-      enter(page) { st.debugPage = { type: page.type, videos: 0 }; },
-      videos(cards) { st.debugPage.videos += cards.length; },
-    });
     st.stopUnwatched = globalThis.TrueShuffleUnwatched.start();
     st.stopPlaylistTools = globalThis.TrueShufflePlaylistTools.start({ play: playView });
     st.stopRemoved = globalThis.TrueShuffleRemoved.start();
