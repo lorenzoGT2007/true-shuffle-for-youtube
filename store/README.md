@@ -39,7 +39,7 @@ Brave, Vivaldi, Arc and other Chromium browsers install from the Chrome Web Stor
 
 1. Go to the [Chrome Web Store Developer Dashboard](https://chrome.google.com/webstore/devconsole) and sign in with the Google account you want to publish under. Pay the one-time **$5** registration fee and verify your contact email. 2-Step Verification has to be on for that account.
 2. Click **New item** and upload the zip.
-3. **Store listing** tab: paste the description below, pick the category **Entertainment** and the language **English** (the package also has Italian, Portuguese (Brazil) and Spanish: the name and summary come translated from it, and the dashboard lets you add a description per language), then upload `store-icon.png`, the screenshots and the small promo tile. Under **Additional fields**, leave Official URL on None, set Homepage URL to `https://github.com/lorenzoGT2007/true-shuffle-for-youtube` and Support URL to `https://github.com/lorenzoGT2007/true-shuffle-for-youtube/issues`, and leave Mature content off.
+3. **Store listing** tab: paste the description below, pick the category **Entertainment** and the language **English** (the package also has Italian, Portuguese (Brazil) and Spanish: the name and summary come translated from it; switch the form's language menu to each of them and paste its translated description below, or the review flags "Mismatching metadata"), then upload `store-icon.png`, the screenshots and the small promo tile. Under **Additional fields**, leave Official URL on None, set Homepage URL to `https://github.com/lorenzoGT2007/true-shuffle-for-youtube` and Support URL to `https://github.com/lorenzoGT2007/true-shuffle-for-youtube/issues`, and leave Mature content off.
 4. **Privacy** tab: fill it in from [Privacy answers](#privacy-answers) below.
 5. **Distribution** tab: **Public**, all regions.
 6. Click **Submit for review**. Review usually takes a few days. You get an email when it's published.
@@ -53,7 +53,7 @@ Free, and it takes the same zip as the Chrome Web Store (not the `-firefox` one)
 2. **Create new extension** and upload the zip.
 3. **Availability**: Public, all markets.
 4. **Properties**: category **Entertainment**, privacy policy URL below, website `https://github.com/lorenzoGT2007/true-shuffle-for-youtube`.
-5. **Store listings**: Partner Center shows one row per language in the package (English, Spanish, Italian, Portuguese (Brazil)) and needs a description (at least 250 characters) and a logo for each row it keeps. Fill in English: the description below, the logo (the 128×128 icon, "Duplicate this logo for all languages"), the screenshots and the small promo tile. Then click **Remove** on the other three rows, unless you add translated descriptions.
+5. **Store listings**: Partner Center shows one row per language in the package (English, Spanish, Italian, Portuguese (Brazil)) and needs a description (at least 250 characters) and a logo for each row it keeps. Fill in English: the description below, the logo (the 128×128 icon, "Duplicate this logo for all languages"), the screenshots and the small promo tile. Then fill in the other three rows with their translated descriptions below (same logo and screenshots).
 6. **Submit**. Edge reviews take up to about a week.
 
 ## 5. Opera add-ons
@@ -148,6 +148,122 @@ Free and open source: https://github.com/lorenzoGT2007/true-shuffle-for-youtube
 Enjoying it? Buy me a coffee: https://buymeacoffee.com/lorenzogt
 
 True Shuffle is an independent project, not affiliated with or endorsed by YouTube or Google.
+```
+
+The same description in the package's other languages (paste each into its language in the dashboard, or the review flags "Mismatching metadata"):
+
+### Description (Italian)
+
+```
+True Shuffle mescola un'intera playlist di YouTube come un mazzo di carte: ogni video viene riprodotto esattamente una volta, in ordine davvero casuale, prima che se ne ripeta uno. Ti aiuta anche a tenere d'occhio la tua raccolta.
+
+PERCHÉ È PIÙ CASUALE
+• Legge l'intero elenco, mentre la riproduzione casuale di YouTube mescola solo la parte già caricata di una playlist lunga.
+• Un mazzo per ogni giro: niente ritorna finché tutto non ha avuto il suo turno.
+• Un algoritmo Fisher-Yates uniforme, con il generatore crittografico di numeri casuali del browser.
+• Facoltativo: evita lo stesso canale due volte di fila, quando possibile.
+• Quando parte un nuovo giro, i brani appena ascoltati restano lontani dall'inizio.
+
+COME FUNZIONA
+• Avvia qualsiasi clip da una lista e si attiva in automatico. Un pulsante rotondo in basso a destra mostra i tuoi progressi; fai clic per aprire il riquadro, con quello che viene dopo e un elenco "A seguire" in cui puoi cercare il video da scegliere.
+• I pulsanti Successivo e Precedente del player, Shift+N / Shift+P e i tasti multimediali della tastiera seguono l'ordine del mazzo.
+• Il punto a cui sei arrivato resta salvato anche ricaricando la pagina o riavviando il browser.
+• Continua nel miniplayer mentre navighi.
+• Le liste private, Guarda più tardi e Video piaciuti funzionano quando hai eseguito l'accesso.
+
+ORGANIZZA LA TUA RACCOLTA
+• Nascondi ciò che hai già guardato nella Home, nelle Iscrizioni, nella scheda Video di un canale, nei risultati di ricerca e nelle liste, con un interruttore o con Alt+Shift+U.
+• Cerca in qualsiasi playlist (anche in Guarda più tardi) per titolo o canale, ordinala per titolo, durata, canale, data di aggiunta (se visibile) o prima i non guardati, poi riproduci o mescola solo gli elementi mostrati. Cambia solo ciò che vedi, mai la playlist in sé. Dopo un "Carica tutti", la ricerca continua a coprire ogni elemento.
+• Scopri quando spariscono degli elementi: la volta successiva che apri una playlist (in quelle lunghe premi prima "Carica tutti"), un piccolo avviso indica quelli rimossi o diventati privati o eliminati, con i loro vecchi titoli. Cronologia ed esportazione CSV nelle opzioni.
+• Tutte le impostazioni in un unico posto, nella pagina delle opzioni.
+
+BUONO A SAPERSI
+• Disponibile in inglese, italiano, portoghese (Brasile) e spagnolo.
+• I Mix (quelli infiniti generati in automatico) non sono supportati: salva invece i brani in una delle tue liste.
+
+PRIVACY
+Niente viene inviato allo sviluppatore né ad altri: True Shuffle si collega solo a youtube.com e non ha server, né statistiche d'uso, né pubblicità.
+
+Gratuito e open source: https://github.com/lorenzoGT2007/true-shuffle-for-youtube
+Ti piace? Offrimi un caffè: https://buymeacoffee.com/lorenzogt
+
+True Shuffle è un progetto indipendente, non affiliato a YouTube o Google né approvato da loro.
+```
+
+### Description (Spanish)
+
+```
+True Shuffle reproduce toda una playlist de YouTube como una baraja de cartas: cada video sale exactamente una vez, en un orden realmente aleatorio, antes de que se repita ninguno. También te ayuda a llevar el control de tu biblioteca.
+
+POR QUÉ ES MÁS ALEATORIO
+• Lee la lista completa, mientras que el modo aleatorio de YouTube solo mezcla la parte de una playlist larga que ya tiene cargada.
+• Una baraja por ronda: nada vuelve a salir hasta que todo haya tenido su turno.
+• Un algoritmo Fisher-Yates uniforme, con el generador criptográfico de números aleatorios del navegador.
+• Opcional: evita el mismo canal dos veces seguidas siempre que puede.
+• Cuando empieza una nueva ronda, las canciones que acabas de escuchar quedan lejos del principio.
+
+CÓMO FUNCIONA
+• Pon cualquier clip de una lista y la mezcla se activa sola. Un botón redondo abajo a la derecha muestra tu progreso; haz clic en él para abrir la tarjeta con lo que viene después y una cola "A continuación" en la que puedes buscar para elegir un video.
+• Los botones Siguiente y Anterior del reproductor, Shift+N / Shift+P y las teclas multimedia de tu teclado siguen el orden de la baraja.
+• Se guarda por dónde ibas, aunque recargues la página o reinicies el navegador.
+• Sigue funcionando en el minirreproductor mientras navegas.
+• Las listas privadas, Ver más tarde y Videos que me gustan funcionan con la sesión iniciada.
+
+ORGANIZA TU BIBLIOTECA
+• Oculta lo que ya has visto en Inicio, Suscripciones, la pestaña Videos de un canal, los resultados de búsqueda y las listas, con un interruptor o Alt+Shift+U.
+• Busca en cualquier playlist (también en Ver más tarde) por título o canal, ordénala por título, duración, canal, fecha de adición (cuando se muestra) o sin ver primero, y luego reproduce o mezcla solo los elementos mostrados. Lo que cambia es la vista, nunca la playlist en sí. Tras usar "Cargar todo" una vez, la búsqueda sigue abarcando cada elemento.
+• Entérate cuando desaparezcan elementos: la próxima vez que abras una playlist (en las largas, haz clic primero en "Cargar todo"), un pequeño aviso nombra los que se quitaron, se hicieron privados o se eliminaron, con sus títulos de antes. Historial y exportación CSV en las opciones.
+• Toda la configuración en un único lugar: la página de opciones.
+
+CONVIENE SABER
+• Disponible en inglés, italiano, portugués (Brasil) y español.
+• Los Mix (los infinitos, generados automáticamente) no son compatibles: en su lugar, guarda las canciones en una de tus propias listas.
+
+PRIVACIDAD
+No se envía nada al desarrollador ni a nadie más: True Shuffle solo se conecta a youtube.com y no tiene servidores, ni analíticas, ni anuncios.
+
+Gratis y de código abierto: https://github.com/lorenzoGT2007/true-shuffle-for-youtube
+¿Te gusta? Invítame a un café: https://buymeacoffee.com/lorenzogt
+
+True Shuffle es un proyecto independiente: no está afiliado a YouTube ni a Google, ni cuenta con su respaldo.
+```
+
+### Description (Portuguese, Brazil)
+
+```
+O True Shuffle embaralha uma playlist inteira do YouTube como um baralho de cartas: cada vídeo toca exatamente uma vez, em ordem realmente aleatória, antes de qualquer repetição. Também ajuda a manter o controle da sua biblioteca.
+
+POR QUE É MAIS ALEATÓRIO
+• Lê a lista inteira, enquanto a ordem aleatória do próprio YouTube apenas mistura a parte de uma playlist longa que já foi carregada.
+• Um baralho por rodada: nada volta até que tudo tenha tocado.
+• Um algoritmo Fisher-Yates uniforme com o gerador criptográfico de números aleatórios do navegador.
+• Opcional: evita o mesmo canal duas vezes seguidas sempre que possível.
+• Quando uma nova rodada começa, as músicas que você acabou de ouvir ficam longe do início dela.
+
+COMO FUNCIONA
+• Inicie qualquer vídeo de uma lista e a extensão liga sozinha. Um botão redondo no canto inferior direito mostra o seu progresso; clique nele para abrir o painel com o que vem depois e uma fila "A seguir" em que dá para buscar e escolher um vídeo.
+• Os botões Próximo e Anterior do player, Shift+N / Shift+P e as teclas de mídia do seu teclado seguem o baralho.
+• Sua posição fica salva mesmo ao recarregar a página ou reiniciar o navegador.
+• Continua tocando no miniplayer enquanto você navega.
+• Listas privadas, Assistir mais tarde e Vídeos curtidos funcionam quando você está conectado à sua conta.
+
+ORGANIZE SUA BIBLIOTECA
+• Oculte o que você já viu no Início, em Inscrições, na guia Vídeos de um canal, nos resultados de pesquisa e nas listas, com um único botão ou Alt+Shift+U.
+• Pesquise qualquer playlist (Assistir mais tarde também) por título ou canal, ordene por título, duração, canal, data de adição (se aparecer) ou não assistidos primeiro, e depois reproduza ou embaralhe só os itens mostrados. Só o que você vê muda, nunca a própria playlist. Depois de um "Carregar todos", a busca continua incluindo todos os itens.
+• Saiba quando itens somem: ao reabrir uma playlist (nas longas, clique antes em "Carregar todos"), um pequeno aviso mostra quais foram removidos, ficaram privados ou foram excluídos, com os títulos antigos. Histórico e exportação em CSV nas opções.
+• Todas as configurações em um só lugar, na página de opções.
+
+BOM SABER
+• Disponível em inglês, italiano, português (Brasil) e espanhol.
+• Mixes (aqueles sem fim, gerados automaticamente) não são compatíveis: em vez disso, salve as músicas em uma das suas próprias listas.
+
+PRIVACIDADE
+Nada é enviado ao desenvolvedor nem a ninguém: o True Shuffle se conecta apenas ao youtube.com e não tem servidores, nem ferramentas de análise, nem anúncios.
+
+Gratuito e de código aberto: https://github.com/lorenzoGT2007/true-shuffle-for-youtube
+Está gostando? Me pague um café: https://buymeacoffee.com/lorenzogt
+
+O True Shuffle é um projeto independente, não afiliado ao YouTube ou ao Google, nem endossado por eles.
 ```
 
 ### What's new in 1.1.0 (Firefox Add-ons "Release notes"; anywhere a store asks)
