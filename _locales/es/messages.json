@@ -400,6 +400,24 @@
   "toolsStatusOnlyLoaded": {
     "message": "solo cuentan los cargados"
   },
+  "toolsStatusSaved": {
+    "message": "la búsqueda incluye también los guardados antes ($COUNT$)",
+    "placeholders": {
+      "count": { "content": "$1", "example": "40" }
+    }
+  },
+  "toolsSavedHeading": {
+    "message": "Guardados en visitas anteriores, no cargados en la página ($COUNT$):",
+    "placeholders": {
+      "count": { "content": "$1", "example": "12" }
+    }
+  },
+  "toolsSavedMore": {
+    "message": "…y $COUNT$ más.",
+    "placeholders": {
+      "count": { "content": "$1", "example": "30" }
+    }
+  },
   "toolsStopLoading": {
     "message": "Detener carga"
   },
@@ -423,6 +441,12 @@
   },
   "removedWhatUnavailable": {
     "message": "ahora privado o eliminado"
+  },
+  "removedWas": {
+    "message": "Era: $TITLE$",
+    "placeholders": {
+      "title": { "content": "$1", "example": "Halo (Beyoncé)" }
+    }
   },
   "removedCsvFound": {
     "message": "Detectado"
@@ -705,7 +729,7 @@
     "message": "En cualquier página de lista de reproducción (también en Ver más tarde), un cuadro de búsqueda encima de la lista filtra por título o canal mientras escribes. Un menú ordena por título, duración, canal, fecha de adición (cuando YouTube la muestra), sin ver primero o el orden propio de la lista de reproducción."
   },
   "newsToolsView": {
-    "message": "Solo cambia lo que ves: tu lista de reproducción se queda exactamente como está. En una lista de reproducción larga, haz clic primero en «Cargar todo» para buscar y ordenar entre todos los videos."
+    "message": "Solo cambia lo que ves: tu lista de reproducción se queda exactamente como está. En una lista de reproducción larga, haz clic primero en «Cargar todo» para buscar y ordenar entre todos los videos; la búsqueda los recuerda también la próxima vez."
   },
   "newsShotTools": {
     "message": "Una página de lista de reproducción con el cuadro de búsqueda y el menú de orden encima de la lista"
@@ -729,7 +753,7 @@
     "message": "Cuando abres una lista de reproducción, True Shuffle recuerda sus videos. La próxima vez, si algunos se quitaron, se hicieron privados o se eliminaron, un pequeño aviso encima de la lista los nombra con sus títulos de antes, hasta que hagas clic en «Entendido»."
   },
   "newsRemovedMore": {
-    "message": "El historial, con exportación a CSV, está en las opciones. En una lista de reproducción larga, usa «Cargar todo» para que True Shuffle vea la lista entera. Ver más tarde y Videos que me gustan no se revisan, porque ahí eres tú quien pone y quita los videos."
+    "message": "El historial, con exportación a CSV, está en las opciones. En una lista de reproducción larga, usa «Cargar todo» para que True Shuffle vea la lista entera. En Ver más tarde y Videos que me gustan solo se avisa de los videos que pasaron a privados o se eliminaron, porque los demás los pones y quitas tú."
   },
   "newsShotRemoved": {
     "message": "El aviso encima de una lista de reproducción que nombra los videos desaparecidos"

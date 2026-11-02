@@ -400,6 +400,24 @@
   "toolsStatusOnlyLoaded": {
     "message": "contano solo quelli caricati"
   },
+  "toolsStatusSaved": {
+    "message": "la ricerca include anche quelli salvati prima ($COUNT$)",
+    "placeholders": {
+      "count": { "content": "$1", "example": "40" }
+    }
+  },
+  "toolsSavedHeading": {
+    "message": "Salvati nelle visite precedenti, non caricati nella pagina ($COUNT$):",
+    "placeholders": {
+      "count": { "content": "$1", "example": "12" }
+    }
+  },
+  "toolsSavedMore": {
+    "message": "…e altri $COUNT$.",
+    "placeholders": {
+      "count": { "content": "$1", "example": "30" }
+    }
+  },
   "toolsStopLoading": {
     "message": "Interrompi caricamento"
   },
@@ -423,6 +441,12 @@
   },
   "removedWhatUnavailable": {
     "message": "diventato privato o eliminato"
+  },
+  "removedWas": {
+    "message": "Era: $TITLE$",
+    "placeholders": {
+      "title": { "content": "$1", "example": "Halo (Beyoncé)" }
+    }
   },
   "removedCsvFound": {
     "message": "Rilevato"
@@ -705,7 +729,7 @@
     "message": "In qualsiasi pagina di playlist (anche Guarda più tardi), una casella di ricerca sopra l’elenco filtra per titolo o canale mentre scrivi. Un menu ordina per titolo, durata, canale, data di aggiunta (quando YouTube la mostra), prima i non guardati, oppure secondo l’ordine della playlist."
   },
   "newsToolsView": {
-    "message": "Cambia solo ciò che vedi: la tua playlist resta esattamente com’è. In una playlist lunga, premi prima «Carica tutti», così ricerca e ordinamento coprono tutti i video."
+    "message": "Cambia solo ciò che vedi: la tua playlist resta esattamente com’è. In una playlist lunga, premi prima «Carica tutti», così ricerca e ordinamento coprono tutti i video; la ricerca li ricorda anche la volta dopo."
   },
   "newsShotTools": {
     "message": "Una pagina di playlist con la casella di ricerca e il menu di ordinamento sopra l’elenco"
@@ -729,7 +753,7 @@
     "message": "Quando apri una playlist, True Shuffle ne memorizza i video. La volta dopo, se alcuni sono stati rimossi, resi privati o eliminati, un piccolo avviso sopra l’elenco li indica con i loro vecchi titoli, finché non premi «Visto»."
   },
   "newsRemovedMore": {
-    "message": "La cronologia, con l’esportazione CSV, è nelle opzioni. In una playlist lunga, usa «Carica tutti» così True Shuffle vede l’elenco completo. Guarda più tardi e Video piaciuti non vengono controllati, perché lì sei tu a far entrare e uscire i video."
+    "message": "La cronologia, con l’esportazione CSV, è nelle opzioni. In una playlist lunga, usa «Carica tutti» così True Shuffle vede l’elenco completo. In Guarda più tardi e Video piaciuti vengono segnalati solo i video diventati privati o eliminati, perché gli altri li aggiungi e togli tu."
   },
   "newsShotRemoved": {
     "message": "L’avviso sopra una playlist con i video spariti"

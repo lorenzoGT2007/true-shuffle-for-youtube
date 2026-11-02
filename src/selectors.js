@@ -67,6 +67,8 @@
     playlistRow: 'ytd-playlist-video-renderer, yt-item-section-renderer > #contents > :has(> yt-lockup-view-model)',
     playlistList: 'ytd-playlist-video-list-renderer, yt-section-list-renderer',
     rowTitle: '#video-title, h3 a',
+    // A row's heading (both layouts): an unavailable video's old title is shown at its end.
+    rowHeading: 'h3',
     rowChannel: 'ytd-channel-name a, #channel-name a, #byline a, yt-content-metadata-view-model .ytContentMetadataViewModelMetadataRow',
     rowMetaText: '#video-info span, #metadata-line span, yt-content-metadata-view-model .ytContentMetadataViewModelMetadataText',
     // The header's "1,234 videos", read for the playlist's length.

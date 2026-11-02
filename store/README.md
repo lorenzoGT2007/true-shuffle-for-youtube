@@ -133,8 +133,8 @@ HOW IT WORKS
 
 ORGANIZE YOUR LIBRARY
 • Hide what you've already seen on Home, Subscriptions, a channel's Videos tab, search results and lists, with one switch or Alt+Shift+U.
-• Search any playlist (Watch later too) by title or channel, sort it by title, duration, channel, date added (when shown) or unwatched first, then play or mix just the items shown. Only the view changes, never the playlist itself.
-• Find out when items vanish: next time you open a playlist (not Watch later or Liked videos; on long ones press "Load all" first), a small notice names the ones that were removed or became private or deleted, with their old titles. History and CSV export in the options.
+• Search any playlist (Watch later too) by title or channel, sort it by title, duration, channel, date added (when shown) or unwatched first, then play or mix just the items shown. Only the view changes, never the playlist itself. After one "Load all", search keeps covering every item.
+• Find out when items vanish: next time you open a playlist (on long ones press "Load all" first), a small notice names the ones that were removed or became private or deleted, with their old titles. History and CSV export in the options.
 • Every setting in one place, on the options page.
 
 GOOD TO KNOW
@@ -183,7 +183,7 @@ All JavaScript is packaged in the extension. It loads no remote scripts and uses
 **Data usage**: tick these three boxes (the store counts data handled only on the user's device too):
 
 - **Authentication information**: requests that read private playlists carry the sign-in header YouTube's page creates from the user's YouTube cookie. It is sent only to youtube.com and never stored.
-- **Website content**: playlist titles, video titles and channel names, stored on the user's device to run the shuffle and to tell the user when videos disappear from a playlist they open.
+- **Website content**: playlist titles, video titles and channel names, stored on the user's device to run the shuffle, to tell the user when videos disappear from a playlist they open, and to search it.
 - **Web history**: which playlists the user shuffled or opened, their titles and when, and which of their videos played, kept only on the user's device to resume the shuffle and to compare a playlist with the last visit.
 
 Then tick all three certifications:

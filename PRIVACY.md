@@ -10,7 +10,7 @@ The extension runs only on `https://www.youtube.com/`. There it reads:
 
 - **The page you're on**: which playlist and which video are playing, so it can pick the next video.
 - **How much of each video on the page you've watched**, from YouTube's red progress bars and "Watched" labels: while "Hide watched videos" is on, to hide those videos, and when you sort a playlist by "Unwatched first", to sort it. The progress itself is never stored.
-- **The videos on a playlist page you open** (not Watch later or Liked videos): their ids, titles and channels, the playlist's name and YouTube's "N unavailable videos are hidden" note, to spot videos removed since your last visit (saved as described below). The search box and sort menu read the same details and keep nothing.
+- **The videos on a playlist page you open** (Watch later and Liked videos too): their ids, titles and channels, the playlist's name and YouTube's "N unavailable videos are hidden" note, to spot videos removed since your last visit or since you last shuffled the playlist (saved as described below). The search box and sort menu read the same details; the search also looks through the saved snapshot, to find videos not loaded on the page.
 - **The playlist you shuffle**: video ids, titles, channel names and durations. To get every video (not just the first 200 YouTube loads), it asks YouTube for the rest of the playlist with the same requests YouTube's own page makes. These requests go only to youtube.com.
 - **Your YouTube sign-in**: so that private playlists, Watch later and Liked videos work, the extension reads your YouTube sign-in cookie inside the YouTube tab and builds from it the same sign-in header YouTube's own page builds. That header is sent only to youtube.com, with those requests. The cookie and the header are never stored or sent anywhere else.
 
@@ -20,7 +20,7 @@ All of this stays on your device, in the browser's extension storage:
 
 - your settings, and whether the What's new page was already shown;
 - for up to 40 playlists you shuffled: the playlist's title and video list (ids, titles, channels, durations), the shuffled order and how far you got;
-- for playlists you open (not Watch later or Liked videos): a snapshot of their videos (ids, titles, channels and the date each was last seen), so it can tell you next time which ones were removed or became private or deleted; and the list of those alerts (at most 500), each with the playlist's name and the video's id, title and channel. The snapshots are limited in size, and the oldest are dropped first.
+- for playlists you open (Watch later and Liked videos too): a snapshot of their videos (ids, titles, channels and the date each was last seen), so it can tell you next time which ones were removed or became private or deleted (in Watch later and Liked videos, only those that became private or deleted), and so the search can find videos not loaded on the page; and the list of those alerts (at most 500), each with the playlist's name and the video's id, title and channel. The snapshots are limited in size, and the oldest are dropped first.
 
 In the YouTube tab's session storage it also notes which playlist that tab is shuffling, which playlists you switched off in that tab, and the video it is about to open. That is cleared when the tab closes.
 

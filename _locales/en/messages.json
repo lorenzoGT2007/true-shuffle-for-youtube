@@ -509,6 +509,27 @@
     "message": "only the loaded ones count",
     "description": "Playlist page toolbar: added after the status line, following a ' · ', while a search or sort is on and part of the playlist isn't loaded yet: the search and sort only see the videos already on the page. Lowercase: it follows the ' · '."
   },
+  "toolsStatusSaved": {
+    "message": "search also covers those saved earlier ($COUNT$)",
+    "description": "Playlist page toolbar: added after the status line, following a ' · ', while part of the playlist isn't loaded on the page but the extension saved those videos on earlier visits: the search box finds them too. COUNT is how many (an already formatted number). Lowercase: it follows the ' · '.",
+    "placeholders": {
+      "count": { "content": "$1", "example": "40" }
+    }
+  },
+  "toolsSavedHeading": {
+    "message": "Saved from earlier visits, not loaded on the page ($COUNT$):",
+    "description": "Playlist page, under the toolbar while searching: heading of the list of matching videos that aren't loaded on the page, found in the copy the extension saved on earlier visits. COUNT is how many match (an already formatted number).",
+    "placeholders": {
+      "count": { "content": "$1", "example": "12" }
+    }
+  },
+  "toolsSavedMore": {
+    "message": "…and $COUNT$ more.",
+    "description": "Playlist page, under that list of saved matches: how many more match than the list shows (Play and Shuffle include them). COUNT is that number (an already formatted number).",
+    "placeholders": {
+      "count": { "content": "$1", "example": "30" }
+    }
+  },
   "toolsStopLoading": {
     "message": "Stop loading",
     "description": "Playlist page toolbar: the Load all button while it is loading the rest of the playlist; clicking it stops. Short."
@@ -539,6 +560,13 @@
   "removedWhatUnavailable": {
     "message": "became private or deleted",
     "description": "What happened to a video still in a playlist that YouTube now shows as a private or deleted video. In the notice on the playlist page, the Alert history and the CSV export. Lowercase: it follows the video's title and a ' · '."
+  },
+  "removedWas": {
+    "message": "Was: $TITLE$",
+    "description": "Playlist page: shown in the empty title of a video YouTube now lists as unavailable (deleted or private), when the extension remembers what it was. TITLE is the old title, with the channel in brackets.",
+    "placeholders": {
+      "title": { "content": "$1", "example": "Halo (Beyoncé)" }
+    }
   },
   "removedCsvFound": {
     "message": "Found",
@@ -904,7 +932,7 @@
     "description": "What's new page, search and sort. Use YouTube's own name for Watch later in your language; use the same words for the sort choices as the sort menu."
   },
   "newsToolsView": {
-    "message": "Only what you see changes: your playlist stays exactly as it is. On a long playlist, press “Load all” first, so search and sort cover every video.",
+    "message": "Only what you see changes: your playlist stays exactly as it is. On a long playlist, press “Load all” first, so search and sort cover every video; the search remembers them next time too.",
     "description": "What's new page, search and sort. 'Load all' is the name of the playlist tools' button: use the same words as that button, and your language's quotation marks."
   },
   "newsShotTools": {
@@ -936,7 +964,7 @@
     "description": "What's new page, vanished videos. 'Seen it' is the notice's button: use the same words as that button, and your language's quotation marks."
   },
   "newsRemovedMore": {
-    "message": "The history, with a CSV export, is in the options. On a long playlist, use “Load all” so True Shuffle sees the whole list. Watch later and Liked videos aren’t checked, since videos come and go there because of you.",
+    "message": "The history, with a CSV export, is in the options. On a long playlist, use “Load all” so True Shuffle sees the whole list. In Watch later and Liked videos only videos that became private or deleted are told, since the others come and go because of you.",
     "description": "What's new page, vanished videos. 'Load all' is the playlist tools' button: use the same words. Use YouTube's own names for Watch later and Liked videos in your language."
   },
   "newsShotRemoved": {

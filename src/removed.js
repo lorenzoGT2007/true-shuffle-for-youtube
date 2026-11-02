@@ -7,7 +7,10 @@
  * It only reads the page. A video counts as gone only when the whole playlist is on the page (no
  * "load more" spinner); a partly loaded one only reveals rows that now show "[Private video]" and the
  * like. YouTube's own "N unavailable videos are hidden" note tells removed videos from hidden ones.
- * Watch Later and Liked videos are skipped: videos come and go there because of you.
+ * Before the first snapshot, the shuffle's copy of the playlist (if you shuffled it) stands in for one.
+ * Watch Later and Liked videos are kept too (the playlist tools search the snapshot), but only videos
+ * that turn unavailable there are told: the others come and go because of you. An unavailable row
+ * shows the title it had, when known.
  *
  * Isolated world, after watcher.js and ui.js; content.js starts it. The helpers above start() are pure
  * (the options page loads this file for them too), so Node can test them.
@@ -24,7 +27,9 @@
   const MAX_TOTAL_BYTES = 20000000; // all snapshots together: the least recently checked go first
   const MAX_ALERTS = 500; // history kept (unlimited history is for later)
   const SETTLE_MS = 2000; // check once the rows stop arriving
-  const SKIP = /^(WL|LL|RD|TL)/; // Watch Later, Liked videos, mixes and temporary lists
+  const SKIP = /^(RD|TL)/; // mixes and temporary lists
+  const QUIET = /^(WL|LL)$/; // Watch Later, Liked videos: videos leave because of you; only unavailable ones are told
+  const WAS = '--true-shuffle-was'; // on an unavailable row: the title it had, shown in its empty heading
 
   // Message keys, translated on use: Node loads this file without chrome.i18n.
   const WHAT = {
@@ -74,11 +79,32 @@
       for (const id of gone) {
         const [title, channel, seen] = before[id];
         found.push({ id, title, channel, seen, kind });
+        if (kind !== 'removed') videos[id] = [title, channel, seen, 1]; // maybe only hidden by YouTube: its title stays known
       }
     }
     // The hidden count is only a fair baseline once the whole list was read.
     const baseline = complete || !before ? hidden : saved.hidden === undefined ? 0 : saved.hidden;
     return { found, snapshot: { v: SNAPSHOT_VERSION, at: now, complete: !!complete, hidden: baseline, videos } };
+  }
+
+  /**
+   * The snapshot to compare with, helped by the shuffle's copy of the playlist (catalog `c:`, items
+   * [id, title, channel, seconds], read when it was last shuffled): it fills titles the snapshot lacks
+   * (a video already unavailable when first seen) and, before any snapshot, stands in for one.
+   */
+  function withCatalog(saved, catalog) {
+    const items = (catalog && Array.isArray(catalog.items) && catalog.items) || [];
+    if (!items.length) return saved;
+    if (!saved || saved.v !== SNAPSHOT_VERSION || !saved.videos) {
+      const at = catalog.fetchedAt || 0;
+      return { v: SNAPSHOT_VERSION, at, complete: false, hidden: null, videos: Object.fromEntries(items.map(([id, title, channel]) => [id, [title, channel, at, 0]])) };
+    }
+    const videos = { ...saved.videos };
+    for (const [id, title, channel] of items) {
+      const v = videos[id];
+      if (v && !v[0] && title) videos[id] = [title, channel, v[2], v[3]];
+    }
+    return { ...saved, videos };
   }
 
   /** The history with these findings added (newest last, at most MAX_ALERTS). */
@@ -168,6 +194,11 @@ button:hover { background: #f1c877; }
     let stopped = false;
     let listId = null;
 
+    // Written each time: a copy from before an update may have left an older rule in the page.
+    const style = document.getElementById('true-shuffle-removed-style') || Object.assign(document.createElement('style'), { id: 'true-shuffle-removed-style' });
+    style.textContent = `:is(${SEL.playlistRow}) :is(${SEL.rowHeading})::after { content: var(${WAS}, none); display: block; font-style: italic; opacity: .75; }`;
+    if (!style.isConnected) (document.head || document.documentElement).appendChild(style);
+
     const host = document.createElement('div');
     host.id = 'true-shuffle-removed';
     const shadow = host.attachShadow({ mode: 'open' });
@@ -193,7 +224,7 @@ button:hover { background: #f1c877; }
       const list = activeList();
       if (stopped || !list || !listId) return;
       const rowEls = [...list.querySelectorAll(SEL.playlistRow)];
-      const rows = rowEls.map(read).filter((r) => r.id);
+      const rows = rowEls.map((el) => ({ el, ...read(el) })).filter((r) => r.id);
       if (!rows.length) return;
       let hidden = 0;
       for (const el of document.querySelectorAll(SEL.playlistAlert)) {
@@ -203,7 +234,15 @@ button:hover { background: #f1c877; }
       }
       const id = listId;
       const now = Date.now();
-      const { found, snapshot } = compare(await sget('p:' + id), rows, { complete: !rowEls[0].parentElement.querySelector(SEL.continuation), hidden, now });
+      const saved = withCatalog(await sget('p:' + id), await sget('c:' + id));
+      const compared = compare(saved, rows, { complete: !rowEls[0].parentElement.querySelector(SEL.continuation), hidden, now });
+      const { snapshot } = compared;
+      const found = QUIET.test(id) ? compared.found.filter((f) => f.kind === 'unavailable') : compared.found;
+      for (const r of rows) { // what an unavailable row was, when known
+        const v = r.unavailable && snapshot.videos[r.id];
+        if (v && v[0]) r.el.style.setProperty(WAS, JSON.stringify(t('removedWas', v[1] ? `${v[0]} (${v[1]})` : v[0])));
+        else r.el.style.removeProperty(WAS);
+      }
       const index = (await sget('snaps')) || {};
       const bytes = JSON.stringify(snapshot).length;
       const room = budget(index, id, bytes);
@@ -245,9 +284,7 @@ button:hover { background: #f1c877; }
           h('span', { class: 'where', text: t('removedWhere') })));
       [...shadow.children].filter((el) => el !== css).forEach((el) => el.remove());
       shadow.append(note);
-      const anchor = list.closest(SEL.playlistList) || list;
-      const tools = anchor.previousElementSibling; // the playlist tools sit right above the list: go above them
-      if (!host.isConnected) (tools && tools.id === 'true-shuffle-playlist-tools' ? tools : anchor).before(host);
+      if (!host.isConnected) (list.closest(SEL.playlistList) || list).before(host); // above the list, and the tools in it
     }
 
     function schedule() {
@@ -255,7 +292,7 @@ button:hover { background: #f1c877; }
       timer = setTimeout(() => { check().catch(() => {}); }, SETTLE_MS);
     }
     const stopWatch = root.TrueShuffleWatcher.watch({
-      pages: ['playlist'],
+      pages: ['playlist', 'watchLater'],
       enter(page) {
         const id = new URL(page.url).searchParams.get('list');
         listId = id && !SKIP.test(id) ? id : null;
@@ -276,5 +313,5 @@ button:hover { background: #f1c877; }
     };
   }
 
-  return { MAX_SNAPSHOT_BYTES, MAX_TOTAL_BYTES, MAX_ALERTS, WHAT, compare, addAlerts, unavailableRow, hiddenCount, budget, field, stamp, toCsv, start };
+  return { MAX_SNAPSHOT_BYTES, MAX_TOTAL_BYTES, MAX_ALERTS, WHAT, compare, withCatalog, addAlerts, unavailableRow, hiddenCount, budget, field, stamp, toCsv, start };
 });

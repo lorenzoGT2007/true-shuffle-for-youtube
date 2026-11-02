@@ -400,6 +400,24 @@
   "toolsStatusOnlyLoaded": {
     "message": "só os carregados contam"
   },
+  "toolsStatusSaved": {
+    "message": "a busca também inclui os salvos antes ($COUNT$)",
+    "placeholders": {
+      "count": { "content": "$1", "example": "40" }
+    }
+  },
+  "toolsSavedHeading": {
+    "message": "Salvos em visitas anteriores, não carregados na página ($COUNT$):",
+    "placeholders": {
+      "count": { "content": "$1", "example": "12" }
+    }
+  },
+  "toolsSavedMore": {
+    "message": "…e mais $COUNT$.",
+    "placeholders": {
+      "count": { "content": "$1", "example": "30" }
+    }
+  },
   "toolsStopLoading": {
     "message": "Parar de carregar"
   },
@@ -423,6 +441,12 @@
   },
   "removedWhatUnavailable": {
     "message": "ficou privado ou foi excluído"
+  },
+  "removedWas": {
+    "message": "Era: $TITLE$",
+    "placeholders": {
+      "title": { "content": "$1", "example": "Halo (Beyoncé)" }
+    }
   },
   "removedCsvFound": {
     "message": "Encontrado"
@@ -705,7 +729,7 @@
     "message": "Em qualquer página de playlist (Assistir mais tarde também), uma caixa de pesquisa acima da lista filtra por título ou canal enquanto você digita. Um menu ordena por título, duração, canal, data de adição (quando o YouTube a mostra), não assistidos primeiro ou pela ordem da própria playlist."
   },
   "newsToolsView": {
-    "message": "Só o que você vê muda: sua playlist continua exatamente como está. Em uma playlist longa, clique em “Carregar todos” antes, para que a pesquisa e a ordenação incluam todos os vídeos."
+    "message": "Só o que você vê muda: sua playlist continua exatamente como está. Em uma playlist longa, clique em “Carregar todos” antes, para que a pesquisa e a ordenação incluam todos os vídeos; a pesquisa se lembra deles na próxima vez também."
   },
   "newsShotTools": {
     "message": "Uma página de playlist com a caixa de pesquisa e o menu de ordenação acima da lista"
@@ -729,7 +753,7 @@
     "message": "Quando você abre uma playlist, o True Shuffle memoriza os vídeos dela. Da próxima vez, se alguns foram removidos, ficaram privados ou foram excluídos, um pequeno aviso acima da lista mostra quais são, com os títulos antigos, até você clicar em “Já vi”."
   },
   "newsRemovedMore": {
-    "message": "O histórico, com exportação em CSV, fica nas opções. Em uma playlist longa, use “Carregar todos” para que o True Shuffle veja a lista inteira. Assistir mais tarde e Vídeos curtidos não são verificados, já que lá é você quem coloca e tira os vídeos."
+    "message": "O histórico, com exportação em CSV, fica nas opções. Em uma playlist longa, use “Carregar todos” para que o True Shuffle veja a lista inteira. Em Assistir mais tarde e Vídeos curtidos, só são avisados os vídeos que ficaram privados ou foram excluídos, já que os outros é você quem coloca e tira."
   },
   "newsShotRemoved": {
     "message": "O aviso acima de uma playlist mostrando os vídeos que sumiram"

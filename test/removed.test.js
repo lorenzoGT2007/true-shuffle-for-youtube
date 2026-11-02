@@ -70,6 +70,13 @@ test('YouTube\'s "N unavailable videos are hidden": gone videos explained by new
   assert.equal(kinds(R.compare(unknown, [row('a'), row('b')], ctx(0)).found), 'c:removed d:removed');
   // A partial read keeps "unknown" as the baseline.
   assert.equal(R.compare(unknown, [row('a')], { complete: false, hidden: 2, now: T1 }).snapshot.hidden, null);
+  // Maybe only hidden: kept as unavailable with its title (told once; "Show unavailable videos" can label its row)...
+  const hid = R.compare(saved, [row('a'), row('b')], ctx(3)).snapshot;
+  assert.deepEqual(hid.videos.c, ['Title c', 'Channel', T0, 1]);
+  assert.deepEqual(R.compare(hid, [row('a'), row('b')], ctx(3)).found, []);
+  assert.deepEqual(R.compare(hid, [row('a'), row('b'), row('c', '', '', true)], ctx(2)).found, []);
+  // ...while a removed one is forgotten.
+  assert.equal(R.compare(saved, [row('a'), row('b')], ctx(1)).snapshot.videos.c, undefined);
 });
 
 test('the hidden count becomes the baseline only from a fully loaded visit', () => {
@@ -93,6 +100,27 @@ test('addAlerts appends with the playlist, unseen, and keeps the newest MAX_ALER
   assert.equal(capped.length, R.MAX_ALERTS);
   assert.equal(capped[0].id, 'old1');
   assert.equal(capped[capped.length - 1].id, 'b');
+});
+
+test('withCatalog: the shuffle\'s copy stands in for a first snapshot and fills missing titles', () => {
+  const cat = { fetchedAt: T0, items: [['a', 'Alpha', 'Chan A', 60], ['b', 'Beta', 'Chan B', 90]] };
+  // No snapshot yet: the copy is the "last time", so a video that turned unavailable since is told by its title.
+  const base = R.withCatalog(undefined, cat);
+  assert.deepEqual(base.videos.a, ['Alpha', 'Chan A', T0, 0]);
+  assert.equal(base.hidden, null); // the hidden count then is unknown
+  const now = [row('a', '', '', true)];
+  assert.deepEqual(R.compare(base, now, { complete: false, now: T1 }).found, [{ id: 'a', title: 'Alpha', channel: 'Chan A', seen: T0, kind: 'unavailable' }]);
+  // A whole list without b: told as removed (no hidden note), or unclear (some hidden, the count before unknown).
+  assert.equal(kinds(R.compare(base, [row('a')], { complete: true, hidden: 0, now: T1 }).found), 'b:removed');
+  assert.equal(kinds(R.compare(base, [row('a')], { complete: true, hidden: 1, now: T1 }).found), 'b:unclear');
+  // A snapshot: kept as it is, only empty titles filled.
+  const saved = first([row('a', '', '', true), row('c')]);
+  const filled = R.withCatalog(saved, cat);
+  assert.deepEqual(filled.videos.a, ['Alpha', 'Chan A', T0, 1]);
+  assert.deepEqual(filled.videos.c, saved.videos.c);
+  assert.equal(filled.videos.b, undefined); // only titles: the copy adds no videos to a snapshot
+  assert.equal(R.withCatalog(saved, null), saved);
+  assert.equal(R.withCatalog(undefined, { items: [] }), undefined);
 });
 
 test('unavailableRow: "[Private video]" with no channel, or (2026 layout) no title at all', () => {

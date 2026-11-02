@@ -6,6 +6,8 @@
  * It only changes what's shown: rows never move in the page (CSS `order` sorts them), the real playlist
  * is untouched, and YouTube's drag handles hide while the order on screen isn't the real one. When more
  * of the playlist can load, "Load all" scrolls to YouTube's spinner at a person's pace until it's all in.
+ * The search also looks through the videos saved on earlier visits (the removed-video check's snapshot):
+ * those not loaded on the page are listed under the bar, and Play and Shuffle take them too.
  * Isolated world, after watcher.js and unwatched.js; content.js starts it. The helpers above start()
  * are pure, so Node can test them.
  */
@@ -116,8 +118,20 @@
 }
 .play:hover:not(:disabled) { background: rgba(243, 236, 221, 0.1); }
 .play:disabled { opacity: 0.45; cursor: default; }
+.saved {
+  margin-top: 6px; padding: 10px 14px; border-radius: 12px;
+  background: #0d2820; color: #f3ecdd;
+  font: 400 13px/1.4 Roboto, "YouTube Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
+}
+.saved p { margin: 0; color: rgba(243, 236, 221, 0.75); }
+.saved ul { margin: 6px 0; padding-left: 18px; }
+.saved li { margin: 3px 0; }
+.saved a { color: #f1c877; text-decoration: none; }
+.saved a:hover { text-decoration: underline; }
+.saved span { color: rgba(243, 236, 221, 0.66); }
 :focus-visible { outline: 2px solid #e2b04f; outline-offset: 2px; }
 `;
+  const SAVED_SHOWN = 50; // saved matches listed under the bar (Play and Shuffle take them all)
 
   /** `play(ids, ordered)`: content.js's Play/Shuffle for the videos shown (the existing shuffle engine). */
   function start({ play } = {}) {
@@ -159,8 +173,9 @@
     const loadBtn = h('button', { class: 'load', type: 'button', hidden: true });
     const playBtn = h('button', { class: 'play', type: 'button', title: t('toolsPlayTitle') }, t('toolsPlay'));
     const shuffleBtn = h('button', { class: 'play', type: 'button', title: t('toolsShuffleTitle') }, t('toolsShuffle'));
+    const savedBox = h('div', { class: 'saved', hidden: true });
     shadow.append(css, h('div', { class: 'bar', role: 'search', 'aria-label': t('toolsLabel') },
-      search, sort, playBtn, shuffleBtn, status, loadBtn));
+      search, sort, playBtn, shuffleBtn, status, loadBtn), savedBox);
     // YouTube's keyboard shortcuts listen on the page: what you type here stays here.
     for (const type of ['keydown', 'keypress', 'keyup']) host.addEventListener(type, (e) => e.stopPropagation());
 
@@ -168,6 +183,12 @@
     let sortKey = 'original';
     let list = null; // the element that holds the rows
     let loading = false;
+    let listId = null;
+    // The removed-video check's snapshot of this playlist ({id: [title, channel, seen, unavailable]}): every video
+    // seen on earlier visits, so a search also finds those not loaded on the page now.
+    let saved = null;
+    let extra = []; // saved videos not on the page that match the search: [{id, title, channel}]
+    let savedKey = '';
 
     const rowsOf = () => (list ? [...list.children].filter((el) => el.matches(SEL.playlistRow)) : []);
     const textOf = (el, attr) => (el ? ((attr && el.getAttribute(attr)) || el.textContent || '').trim() : '');
@@ -197,7 +218,9 @@
         added = addedAge(span.textContent);
         if (added != null) break;
       }
-      it = { key, title, channel, duration, added, text: fold(title + ' ' + channel) };
+      let id = null;
+      try { id = key ? new URL(key, location.href).searchParams.get('v') : null; } catch (_) { /* no id */ }
+      it = { key, id, title, channel, duration, added, text: fold(title + ' ' + channel) };
       cache.set(row, it);
       return it;
     }
@@ -225,15 +248,48 @@
       addedOption.hidden = !infos.some((it) => it.added != null); // only when YouTube shows it
       const more = !!moreToLoad();
       const all = total();
+      // Saved videos not on the page (none once the whole list is: those left the playlist), unavailable ones aside.
+      const onPage = new Set(infos.map((it) => it.id));
+      const rest = more && saved && saved.videos ? Object.entries(saved.videos).filter(([id, v]) => !onPage.has(id) && !v[3]) : [];
+      extra = query ? order(rest.map(([id, v]) => ({ id, title: v[0], channel: v[1] })).filter((it) => matches(fold(it.title + ' ' + it.channel), query)), sortKey) : [];
       let line = query ? t('toolsStatusMatch', fmt(shown), fmt(rows.length))
         : more ? (all ? t('toolsStatusLoadedOf', fmt(rows.length), fmt(all)) : t('toolsStatusLoadedMore', fmt(rows.length)))
           : t('toolsStatusAll', fmt(rows.length));
-      if (more && !loading && (query || sortKey !== 'original')) line += ' · ' + t('toolsStatusOnlyLoaded');
+      if (more && !loading && (sortKey !== 'original' || (query && !rest.length))) line += ' · ' + t('toolsStatusOnlyLoaded');
+      else if (rest.length && !query && !loading) line += ' · ' + t('toolsStatusSaved', fmt(rest.length));
       status.textContent = line;
       loadBtn.hidden = !more && !loading;
-      playBtn.disabled = shuffleBtn.disabled = !shown;
+      playBtn.disabled = shuffleBtn.disabled = !shown && !extra.length;
+      showSaved();
       loadBtn.textContent = loading ? t('toolsStopLoading') : all ? t('toolsLoadAllCount', fmt(all)) : t('toolsLoadAll');
     }
+
+    /** Under the bar: the search's matches among the saved videos not loaded on the page, each a link to play it. */
+    function showSaved() {
+      const key = extra.length + ' ' + extra.slice(0, SAVED_SHOWN).map((it) => it.id).join(' ');
+      if (key === savedKey) return;
+      savedKey = key;
+      savedBox.hidden = !extra.length;
+      savedBox.replaceChildren(...(extra.length ? [
+        h('p', { text: t('toolsSavedHeading', fmt(extra.length)) }),
+        h('ul', null, ...extra.slice(0, SAVED_SHOWN).map((it) => h('li', null,
+          h('a', { href: `/watch?v=${encodeURIComponent(it.id)}&list=${encodeURIComponent(listId)}` }, it.title || it.id),
+          it.channel ? h('span', { text: ' · ' + it.channel }) : null))),
+        extra.length > SAVED_SHOWN ? h('p', { text: t('toolsSavedMore', fmt(extra.length - SAVED_SHOWN)) }) : null,
+      ].filter(Boolean) : []));
+    }
+
+    /** The saved snapshot of this playlist, now and whenever the removed-video check saves it again. */
+    function loadSaved() {
+      const key = 'p:' + listId;
+      try {
+        chrome.storage.local.get(key).then((r) => { if ('p:' + listId === key) { saved = r[key] || null; apply(); } }, () => {});
+      } catch (_) { /* the extension was reloaded: this copy is about to retire */ }
+    }
+    const onStore = (changes, area) => {
+      const c = area === 'local' && listId && changes['p:' + listId];
+      if (c) { saved = c.newValue || null; apply(); }
+    };
 
     /** Scrolls to YouTube's spinner, a step at a time, until the whole playlist is in (or you stop it). */
     async function loadAll() {
@@ -254,33 +310,44 @@
       if (host.isConnected) host.scrollIntoView({ block: 'start' }); // back to the tools, at the top of the result
     }
 
-    /** Puts the tools above the list that holds these rows. */
+    /**
+     * Puts the tools right above the rows, inside the list's own box: YouTube clears the page column of anything
+     * else when it builds a new list (its "Show unavailable videos" does), but a new list brings new rows, and the
+     * tools (with the search and sort) move to it.
+     */
     function mount(rows) {
-      if (!list || !list.isConnected) {
-        reset();
-        if (!rows[0] || !rows[0].parentElement) return;
-        list = rows[0].parentElement;
+      const at = rows[0] && rows[0].parentElement;
+      if (!at) return;
+      if (at !== list) {
+        unmark();
+        list = at;
       }
-      const anchor = list.closest(SEL.playlistList) || list;
-      if (!host.isConnected || host.nextElementSibling !== anchor) anchor.before(host);
+      if (!host.isConnected || host.nextElementSibling !== list) list.before(host);
+    }
+
+    function unmark() {
+      if (!list) return;
+      list.removeAttribute(VIEW);
+      list.removeAttribute(LOADING);
+      for (const row of rowsOf()) {
+        row.removeAttribute(MISS);
+        row.style.removeProperty('order');
+      }
     }
 
     /** Back to YouTube's own view: no search, playlist order, no tools on the page. */
     function reset() {
       loading = false;
-      if (list) {
-        list.removeAttribute(VIEW);
-        list.removeAttribute(LOADING);
-        for (const row of rowsOf()) {
-          row.removeAttribute(MISS);
-          row.style.removeProperty('order');
-        }
-      }
+      unmark();
       list = null;
+      listId = null;
+      saved = null;
+      extra = [];
       query = '';
       sortKey = 'original';
       search.value = '';
       sort.value = 'original';
+      showSaved();
       host.remove();
     }
 
@@ -293,16 +360,22 @@
         try { return link ? new URL(link.getAttribute('href'), location.href).searchParams.get('v') : null; } catch (_) { return null; }
       }).filter(Boolean);
     }
-    playBtn.addEventListener('click', () => { if (play) play(shownIds(), true); });
-    shuffleBtn.addEventListener('click', () => { if (play) play(shownIds(), false); });
+    // The saved matches listed under the bar come after the rows shown.
+    playBtn.addEventListener('click', () => { if (play) play([...shownIds(), ...extra.map((it) => it.id)], true); });
+    shuffleBtn.addEventListener('click', () => { if (play) play([...shownIds(), ...extra.map((it) => it.id)], false); });
 
     search.addEventListener('input', () => { query = search.value.trim(); apply(); });
     sort.addEventListener('change', () => { sortKey = sort.value; apply(); });
     loadBtn.addEventListener('click', loadAll);
 
+    try { chrome.storage.onChanged.addListener(onStore); } catch (_) { /* the extension was reloaded */ }
     const stopWatch = root.TrueShuffleWatcher.watch({
       pages: PAGES,
-      enter: reset,
+      enter(page) {
+        reset();
+        listId = new URL(page.url).searchParams.get('list');
+        loadSaved();
+      },
       videos(cards) {
         const rows = cards.map((el) => el.closest(SEL.playlistRow)).filter(Boolean); // the 2026 rows wrap their card
         if (rows.length) mount(rows);
@@ -316,6 +389,7 @@
     });
     return () => {
       stopWatch();
+      try { chrome.storage.onChanged.removeListener(onStore); } catch (_) { /* the extension was reloaded */ }
       reset();
     };
   }
