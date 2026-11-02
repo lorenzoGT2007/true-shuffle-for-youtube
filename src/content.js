@@ -45,6 +45,7 @@
     error: null,
     saved: null, // progress saved for the playlist on screen, when not shuffling
     loc: { path: '', v: null, list: null },
+    watchList: null, // the list of the last watch page: the one a miniplayer plays on
     expected: null, // { id, at, tries }: where we asked YouTube to go
     landed: null, // { id, at }: the last of those that showed up
     dealing: 0, // moves of ours still being worked out (their navigation isn't requested yet)
@@ -75,9 +76,45 @@
 
   const fmt = (n) => Number(n || 0).toLocaleString();
 
+  /**
+   * Where the shuffle stands: the address, or, while YouTube's miniplayer plays a video of the playlist being
+   * shuffled (the address then names the page you browse), that video as if on its watch page. So the end of
+   * a video, Next/Previous and the media keys keep following the deck there, and its videos open in it.
+   */
   function readLoc() {
     const u = new URL(location.href);
-    return { path: u.pathname, v: u.searchParams.get('v'), list: u.searchParams.get('list') };
+    const loc = { path: u.pathname, v: u.searchParams.get('v'), list: u.searchParams.get('list') };
+    if (loc.path === '/watch') {
+      st.watchList = loc.list; // the miniplayer goes on with the list of the last watch page
+      return loc;
+    }
+    const listId = st.listId || (st.phase === 'loading' ? st.starting : null); // also while it's being read
+    if (!listId || st.watchList !== listId || !miniplayerBox()) return loc;
+    const player = document.querySelector(SEL.player);
+    const v = player && isAd(player) ? null : miniplayerVideo(); // during an ad the media info names the ad
+    // An ad, the moment between two videos, or a glimpse of another one while ours loads or just after: as it was.
+    const settling = !!st.expected || (!!st.landed && performance.now() - st.landed.at < LATE_AUTOPLAY_MS);
+    const want = st.expected ? st.expected.id : st.loc.v;
+    if (st.loc.mini && (!v || (settling && v !== want))) return st.loc;
+    return v && st.catalog && st.catalog.meta.has(v) ? { path: '/watch', v, list: listId, mini: true } : loc;
+  }
+
+  /** YouTube's miniplayer box on screen, or null (the player may stay inside it after you close it). */
+  function miniplayerBox() {
+    const on = [document.querySelector(SEL.app), document.querySelector(SEL.player)].some((el) => el && el.matches(SEL.miniplayer));
+    const box = on && document.querySelector(SEL.miniplayerBox);
+    const r = box && box.getBoundingClientRect();
+    return r && r.height > 0 ? r : null;
+  }
+
+  /** The miniplayer's video, from the media info YouTube gives the browser: its artwork is the video's thumbnail. */
+  function miniplayerVideo() {
+    const m = navigator.mediaSession && navigator.mediaSession.metadata;
+    for (const art of (m && m.artwork) || []) {
+      const id = /\/vi(?:_webp)?\/([\w-]{11})\//.exec(art.src || '');
+      if (id) return id[1];
+    }
+    return null;
   }
 
   const isShufflableList = (id) => typeof id === 'string' && id.length >= 2 && !/^(RD|TL)/.test(id);
@@ -623,6 +660,12 @@
     clearTimeout(st.navTimer);
     const check = () => {
       if (!st.expected || st.expected.id !== id || readLoc().v === id) return;
+      // An ad before it, or the miniplayer playing it in place (the address stays): wait, never reload the page.
+      const player = document.querySelector(SEL.player);
+      if ((player && isAd(player)) || st.loc.mini) {
+        if (performance.now() - at < 60000) st.navTimer = setTimeout(check, 1000); else st.expected = null;
+        return;
+      }
       const started = st.navStartedAt > at;
       if (!started || performance.now() - at > 15000) hardNavigate(id);
       else st.navTimer = setTimeout(check, 1000);
@@ -639,8 +682,8 @@
   function checkLocation(reason) {
     const cur = readLoc();
     const prev = st.loc;
+    st.loc = cur; // also when only the miniplayer flag changed: readLoc goes by it
     if (cur.path === prev.path && cur.v === prev.v && cur.list === prev.list) return;
-    st.loc = cur;
     onLocationChange(prev, cur, reason);
   }
 
@@ -660,6 +703,10 @@
     if (st.phase === 'loading' || st.phase === 'error') { render(); return; }
     if (!onOurWatchPage(cur)) {
       if (st.phase === 'active') st.phase = 'paused';
+      if (prev.mini) { // you closed the miniplayer: a video on its way there doesn't pull you back
+        st.expected = null;
+        clearTimeout(st.navTimer);
+      }
       st.queueOpen = false;
       syncMediaKeys();
       render();
@@ -728,7 +775,18 @@
       }
     }
     if (st.ui && !st.ui.host.isConnected) document.documentElement.appendChild(st.ui.host);
+    liftAboveMiniplayer(); // it can appear, change size or go at any time
     hideStrays();
+  }
+
+  /** Raises the button and card above YouTube's miniplayer while it sits in their corner. */
+  function liftAboveMiniplayer() {
+    if (!st.ui) return;
+    const r = miniplayerBox();
+    const mine = r && r.bottom > innerHeight - 120 && (st.settings.corner === 'left' ? r.left < 400 : r.right > innerWidth - 400);
+    // Never so high that the card leaves the screen: over the miniplayer is better than off screen.
+    const lift = mine ? Math.min(Math.round(innerHeight - r.top), Math.max(0, innerHeight - 260)) : 0;
+    st.ui.host.style.setProperty('--ts-lift', lift + 'px');
   }
 
   /** Stands this copy down for good (see RETIRE_EVENT): no more takeovers, no button. */
@@ -1020,6 +1078,7 @@
 
   function render() {
     if (st.ui) st.ui.render(viewModel());
+    liftAboveMiniplayer();
     if (debug) {
       const s = currentSession();
       document.documentElement.dataset.trueShuffleDebug = JSON.stringify({

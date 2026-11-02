@@ -62,6 +62,14 @@ test('YouTube\'s "N unavailable videos are hidden": gone videos explained by new
   assert.equal(kinds(R.compare(saved, [row('a'), row('b')], ctx(2)).found), 'c:unclear d:unclear'); // 1 more for 2 gone
   assert.equal(kinds(R.compare(saved, [row('a'), row('b')], ctx(1)).found), 'c:removed d:removed'); // none more
   assert.equal(kinds(R.compare(saved, [row('a'), row('b')], ctx(0)).found), 'c:removed d:removed');
+  // YouTube's note without a number (2026): it can't tell removed from hidden.
+  assert.equal(kinds(R.compare(saved, [row('a'), row('b')], ctx(null)).found), 'c:unclear d:unclear');
+  // Saved with no number, then shown with one: the count before is unknown, so still unclear (none hidden now: removed).
+  const unknown = first([row('a'), row('b'), row('c'), row('d')], { hidden: null });
+  assert.equal(kinds(R.compare(unknown, [row('a'), row('b')], ctx(3)).found), 'c:unclear d:unclear');
+  assert.equal(kinds(R.compare(unknown, [row('a'), row('b')], ctx(0)).found), 'c:removed d:removed');
+  // A partial read keeps "unknown" as the baseline.
+  assert.equal(R.compare(unknown, [row('a')], { complete: false, hidden: 2, now: T1 }).snapshot.hidden, null);
 });
 
 test('the hidden count becomes the baseline only from a fully loaded visit', () => {
@@ -92,6 +100,7 @@ test('hiddenCount reads YouTube\'s note', () => {
   assert.equal(R.hiddenCount('Some text. 12 unavailable videos are hidden Show'), 12);
   assert.equal(R.hiddenCount('1,204 unavailable videos are hidden'), 1204);
   assert.equal(R.hiddenCount('Nothing to see'), 0);
+  assert.equal(R.hiddenCount('Unavailable videos are hidden'), null); // YouTube since 2026: no number
 });
 
 test('budget: a too-big snapshot isn\'t saved; the oldest snapshots go when all of them would not fit', () => {

@@ -39,7 +39,7 @@
   /**
    * Compares the playlist on the page with the snapshot saved last time.
    * rows: [{id, title, channel, unavailable}] in page order. ctx: {complete, hidden, now}:
-   * complete = the whole playlist is loaded; hidden = YouTube's "N unavailable videos are hidden".
+   * complete = the whole playlist is loaded; hidden = YouTube's "N unavailable videos are hidden" (null: some, no number).
    * Returns {found: [{id, title, channel, seen, kind}], snapshot} (kind: a key of WHAT).
    * Snapshot videos are [title, channel, last seen (ms), 1 once reported unavailable].
    */
@@ -67,16 +67,17 @@
         if (!complete || before[id][3]) videos[id] = before[id];
         else gone.push(id);
       }
-      // Videos YouTube started hiding since last time explain that many of the gone ones.
-      const newlyHidden = Math.max(0, hidden - (saved.hidden || 0));
-      const kind = !newlyHidden ? 'removed' : newlyHidden >= gone.length ? 'hidden' : 'unclear';
+      // Videos YouTube started hiding since last time explain that many of the gone ones (no number shown: can't tell).
+      const was = saved.hidden === undefined ? 0 : saved.hidden; // null: some were hidden, number not shown
+      const newlyHidden = hidden == null || (was == null && hidden > 0) ? null : Math.max(0, hidden - (was || 0));
+      const kind = newlyHidden == null ? 'unclear' : !newlyHidden ? 'removed' : newlyHidden >= gone.length ? 'hidden' : 'unclear';
       for (const id of gone) {
         const [title, channel, seen] = before[id];
         found.push({ id, title, channel, seen, kind });
       }
     }
     // The hidden count is only a fair baseline once the whole list was read.
-    const baseline = complete || !before ? hidden : saved.hidden || 0;
+    const baseline = complete || !before ? hidden : saved.hidden === undefined ? 0 : saved.hidden;
     return { found, snapshot: { v: SNAPSHOT_VERSION, at: now, complete: !!complete, hidden: baseline, videos } };
   }
 
@@ -86,10 +87,11 @@
     return [...(history || []), ...added].slice(-MAX_ALERTS);
   }
 
-  /** The number in YouTube's "2 unavailable videos are hidden", or 0. */
+  /** The number in YouTube's "2 unavailable videos are hidden"; null for its "Unavailable videos are hidden" (some); 0 without the note. */
   function hiddenCount(text) {
-    const m = /(\d[\d.,  ]*)\s+unavailable\s+videos?\s+(?:is|are)\s+hidden/i.exec(text || '');
-    return m ? parseInt(m[1].replace(/\D/g, ''), 10) || 0 : 0;
+    const m = /(\d[\d.,  ]*\s+)?unavailable\s+videos?\s+(?:is|are)\s+hidden/i.exec(text || '');
+    if (!m) return 0;
+    return m[1] ? parseInt(m[1].replace(/\D/g, ''), 10) || 0 : null;
   }
 
   /** Whether a snapshot this big may be saved, and which saved ones to drop so all of them fit. */
@@ -168,7 +170,7 @@ button:hover { background: #f1c877; }
     shadow.append(css);
 
     const sget = async (key) => (await chrome.storage.local.get(key))[key];
-    const activeList = () => [...document.querySelectorAll(SEL.playlistList)].find((el) => !el.closest(SEL.hidden)) || null;
+    const activeList = () => [...document.querySelectorAll(SEL.playlistList)].find((el) => !el.closest(SEL.hidden) && el.querySelector(SEL.playlistRow)) || null;
     const textOf = (el, attr) => (el ? ((attr && el.getAttribute(attr)) || el.textContent || '').trim() : '');
     function read(row) {
       const link = row.querySelector(SEL.cardLink);
@@ -184,13 +186,18 @@ button:hover { background: #f1c877; }
       timer = 0;
       const list = activeList();
       if (stopped || !list || !listId) return;
-      const rows = [...list.querySelectorAll(SEL.playlistRow)].map(read).filter((r) => r.id);
+      const rowEls = [...list.querySelectorAll(SEL.playlistRow)];
+      const rows = rowEls.map(read).filter((r) => r.id);
       if (!rows.length) return;
       let hidden = 0;
-      for (const el of document.querySelectorAll(SEL.playlistAlert)) if (!el.closest(SEL.hidden)) hidden += hiddenCount(el.textContent);
+      for (const el of document.querySelectorAll(SEL.playlistAlert)) {
+        if (el.closest(SEL.hidden)) continue;
+        const n = hiddenCount(el.textContent);
+        hidden = hidden == null || n == null ? null : hidden + n;
+      }
       const id = listId;
       const now = Date.now();
-      const { found, snapshot } = compare(await sget('p:' + id), rows, { complete: !list.querySelector(SEL.continuation), hidden, now });
+      const { found, snapshot } = compare(await sget('p:' + id), rows, { complete: !rowEls[0].parentElement.querySelector(SEL.continuation), hidden, now });
       const index = (await sget('snaps')) || {};
       const bytes = JSON.stringify(snapshot).length;
       const room = budget(index, id, bytes);

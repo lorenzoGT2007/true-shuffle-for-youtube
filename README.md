@@ -44,7 +44,7 @@ Firefox only keeps add-ons signed by Mozilla, so there it comes from Firefox Add
 ## Good to know
 
 - Mixes (YouTube's endless auto-generated lists) can't be shuffled. Save the songs to a playlist instead.
-- If you browse other pages while the miniplayer plays, YouTube's own order takes over until you come back to the video page. The card then offers "Resume shuffle".
+- The shuffle keeps going in YouTube's miniplayer: shrink the video and browse, and when it ends the next shuffled video plays right there. The round button and card move up out of its way.
 - Private playlists, Watch later and Liked videos work while you're signed in to YouTube.
 - True Shuffle speaks English, Italian, Portuguese (Brazil) and Spanish, following your browser's language.
 - Right after you install it, a welcome page explains the basics. After an update with new features, a What's new page opens once, in a tab behind the one you're on.

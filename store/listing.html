@@ -1,0 +1,147 @@
+<!doctype html>
+<!-- Made from store/README.md and _locales/en/messages.json: change the text there, then rebuild this page. -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>True Shuffle: Chrome Web Store listing</title>
+<style>
+  :root { --bg: #f6f2e8; --card: #fffdf8; --text: #1d1a14; --muted: #5d5649; --line: #e3dccb; --accent: #13382c; --button: #13382c; --button-text: #f3ecdd; color-scheme: light dark; }
+  @media (prefers-color-scheme: dark) { :root { --bg: #0d2820; --card: #13382c; --text: #f3ecdd; --muted: #c9c0ad; --line: #2a5446; --accent: #e2b04f; --button: #e2b04f; --button-text: #241a06; } }
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 32px 16px 64px; background: var(--bg); color: var(--text); font: 15px/1.55 "Segoe UI", Roboto, system-ui, sans-serif; }
+  main { max-width: 900px; margin: 0 auto; }
+  h1 { margin: 0 0 6px; font-size: 26px; }
+  h2 { margin: 36px 0 4px; font-size: 20px; }
+  .lead, .tab { color: var(--muted); margin: 0 0 14px; }
+  section { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 18px 20px; margin: 12px 0; }
+  .field { margin: 14px 0 18px; }
+  .label { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 6px; font-weight: 600; }
+  input, textarea { width: 100%; padding: 10px 12px; border: 1px solid var(--line); border-radius: 10px; background: var(--bg); color: var(--text); font: 14px/1.5 Consolas, ui-monospace, monospace; resize: vertical; }
+  button { padding: 6px 16px; border: 0; border-radius: 999px; background: var(--button); color: var(--button-text); font: inherit; font-weight: 600; cursor: pointer; }
+  button:focus-visible, input:focus-visible, textarea:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .choice { margin: 0; padding: 8px 12px; border-left: 0; background: var(--bg); border: 1px dashed var(--line); border-radius: 10px; }
+  .note { margin: 6px 0 0; color: var(--muted); font-size: 13.5px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
+  figure { margin: 0; }
+  figure img { width: 100%; height: auto; border-radius: 10px; border: 1px solid var(--line); display: block; }
+  figure img[src="store-icon.png"] { width: 128px; } /* shown at its real size */
+  figcaption { margin-top: 6px; font-size: 13px; color: var(--muted); }
+  ul { padding-left: 20px; } li { margin: 6px 0; }
+  code { font-family: Consolas, ui-monospace, monospace; font-size: 0.92em; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Chrome Web Store listing · True Shuffle 1.1.0</h1>
+  <p class="lead">Open the <a href="https://chrome.google.com/webstore/devconsole">Developer Dashboard</a>, pick True Shuffle, and go down this page tab by tab. Every text has a Copy button. The images are the files next to this page, in this folder (<code>store/</code>).</p>
+
+  <h2>1. Package</h2>
+  <section>
+    <div class="field"><div class="label"><span>Upload new package</span></div><p class="choice"><code>dist/true-shuffle-for-youtube-v1.1.0.zip</code> (the one <strong>without</strong> “firefox” in its name)</p><p class="note">Package tab → Upload new package. Build it with <code>node store/pack.js dist</code> after the last commit.</p></div>
+    <div class="field"><div class="label"><span>Title (from the package)</span></div><p class="choice">True Shuffle for YouTube</p><p class="note">Not typed in the dashboard: it comes from the package, in every language.</p></div>
+    <div class="field"><div class="label"><span>Summary (from the package)</span></div><p class="choice">Shuffles a whole YouTube playlist like a deck of cards: every video plays once, in a truly random order, before anything repeats.</p><p class="note">Also from the package, translated into Italian, Portuguese (Brazil) and Spanish.</p></div>
+  </section>
+
+  <h2>2. Store listing</h2>
+  <section>
+    <div class="field"><div class="label"><span>Description</span><button type="button" data-copy="f1">Copy</button></div><textarea id="f1" readonly rows="24">True Shuffle plays a whole YouTube playlist like a deck of cards: every video comes up exactly once, in a truly random order, before anything repeats. It also helps you keep track of your library.
+
+WHY IT'S MORE RANDOM
+• It reads the entire list, while YouTube's own shuffle only mixes the part of a long playlist it has loaded.
+• One deck per round: nothing comes back until everything has had its turn.
+• A uniform Fisher-Yates algorithm with the browser's cryptographic random generator.
+• Optional: avoids the same channel twice in a row whenever it can.
+• When a new round starts, the songs you just heard stay away from its beginning.
+
+HOW IT WORKS
+• Start any clip from a list and it turns on by itself. A round button at the bottom right shows your progress; click it for the card with what's next and an &quot;Up next&quot; queue.
+• The player's Next and Previous buttons, Shift+N / Shift+P and your keyboard's media keys follow the deck.
+• Your place is saved across reloads and browser restarts.
+• Keeps going in the miniplayer while you browse.
+• Private lists, Watch later and Liked videos work while you're signed in.
+
+ORGANIZE YOUR LIBRARY
+• Hide what you've already seen on Home, Subscriptions, a channel's Videos tab, search results and lists, with one switch or Alt+Shift+U.
+• Search any playlist (Watch later too) by title or channel, sort it by title, duration, channel, date added (when shown) or unwatched first, then play or mix just the items shown. Only the view changes, never the playlist itself.
+• Find out when items vanish: next time you open a playlist (not Watch later or Liked videos; on long ones press &quot;Load all&quot; first), a small notice names the ones that were removed or became private or deleted, with their old titles. History and CSV export in the options.
+• Every setting in one place, on the options page.
+
+GOOD TO KNOW
+• Available in English, Italian, Portuguese (Brazil) and Spanish.
+• Mixes (the endless auto-generated ones) aren't supported: save the songs to one of your own lists instead.
+
+PRIVACY
+Nothing is sent to the developer or anyone else: True Shuffle only connects to youtube.com and has no servers, no analytics and no ads.
+
+Free and open source: https://github.com/lorenzoGT2007/true-shuffle-for-youtube
+Enjoying it? Buy me a coffee: https://buymeacoffee.com/lorenzogt
+
+True Shuffle is an independent project, not affiliated with or endorsed by YouTube or Google.</textarea><p class="note">No word appears more than five times, web addresses included.</p></div>
+    <div class="field"><div class="label"><span>Category</span></div><p class="choice">Entertainment</p></div>
+    <div class="field"><div class="label"><span>Language</span></div><p class="choice">English</p></div>
+  </section>
+  <section>
+    <p class="tab">Graphic assets: upload each file from this folder, in this order.</p>
+    <div class="grid">
+      <figure><img src="store-icon.png" alt="Store icon" loading="lazy"><figcaption><strong>Store icon</strong> · <code>store-icon.png</code> · 128×128</figcaption></figure>
+      <figure><img src="screenshot-1.png" alt="Screenshot 1" loading="lazy"><figcaption><strong>Screenshot 1</strong> · <code>screenshot-1.png</code> · 1280×800 · the card and Up next</figcaption></figure>
+      <figure><img src="screenshot-2.png" alt="Screenshot 2" loading="lazy"><figcaption><strong>Screenshot 2</strong> · <code>screenshot-2.png</code> · 1280×800 · search and sort</figcaption></figure>
+      <figure><img src="screenshot-3.png" alt="Screenshot 3" loading="lazy"><figcaption><strong>Screenshot 3</strong> · <code>screenshot-3.png</code> · 1280×800 · videos that vanish</figcaption></figure>
+      <figure><img src="screenshot-4.png" alt="Screenshot 4" loading="lazy"><figcaption><strong>Screenshot 4</strong> · <code>screenshot-4.png</code> · 1280×800 · the popup, hide watched videos</figcaption></figure>
+      <figure><img src="screenshot-5.png" alt="Screenshot 5" loading="lazy"><figcaption><strong>Screenshot 5</strong> · <code>screenshot-5.png</code> · 1280×800 · the miniplayer</figcaption></figure>
+      <figure><img src="promo-small.png" alt="Small promo tile" loading="lazy"><figcaption><strong>Small promo tile</strong> · <code>promo-small.png</code> · 440×280</figcaption></figure>
+      <figure><img src="promo-marquee.png" alt="Marquee promo tile" loading="lazy"><figcaption><strong>Marquee promo tile</strong> · <code>promo-marquee.png</code> · 1400×560 · optional</figcaption></figure>
+    </div>
+  </section>
+  <section>
+    <p class="tab">Additional fields</p>
+    <div class="field"><div class="label"><span>Official URL</span></div><p class="choice">None</p></div>
+    <div class="field"><div class="label"><span>Homepage URL</span><button type="button" data-copy="f2">Copy</button></div><input id="f2" readonly value="https://github.com/lorenzoGT2007/true-shuffle-for-youtube"></div>
+    <div class="field"><div class="label"><span>Support URL</span><button type="button" data-copy="f3">Copy</button></div><input id="f3" readonly value="https://github.com/lorenzoGT2007/true-shuffle-for-youtube/issues"></div>
+    <div class="field"><div class="label"><span>Mature content</span></div><p class="choice">No (leave it off)</p></div>
+  </section>
+
+  <h2>3. Privacy</h2>
+  <section>
+    <div class="field"><div class="label"><span>Single purpose description</span><button type="button" data-copy="f4">Copy</button></div><textarea id="f4" readonly rows="4">Organize and play your YouTube playlists and Watch later: shuffle a playlist so every video plays once before any repeats, search and sort it, get told when videos disappear from it, and hide videos you've already watched from YouTube's lists (Home, Subscriptions, channels, search, playlists).</textarea></div>
+    <div class="field"><div class="label"><span>Permission justification: <code>storage</code></span><button type="button" data-copy="f5">Copy</button></div><textarea id="f5" readonly rows="4">Saves the user's settings; for each shuffled playlist, the shuffled order, the user's place in it and the playlist's video list, so the shuffle survives reloads and browser restarts; and for playlists the user opens, a list of their videos, to tell the user later which ones disappeared (with a history of those alerts).</textarea></div>
+    <div class="field"><div class="label"><span>Permission justification: <code>unlimitedStorage</code></span><button type="button" data-copy="f6">Copy</button></div><textarea id="f6" readonly rows="3">Playlists can hold thousands of videos: the shuffles of up to 40 playlists and the video lists of opened playlists (capped at 20 MB in all) can exceed the default 10 MB extension storage limit.</textarea></div>
+    <div class="field"><div class="label"><span>Permission justification: <code>scripting</code></span><button type="button" data-copy="f7">Copy</button></div><textarea id="f7" readonly rows="3">Only right after the extension is installed or updated: injects the extension's own packaged scripts into YouTube tabs that were already open, so the user doesn't have to reload them. No other use.</textarea></div>
+    <div class="field"><div class="label"><span>Permission justification: <code>Host permission https://www.youtube.com/*</code></span><button type="button" data-copy="f8">Copy</button></div><textarea id="f8" readonly rows="6">The extension works only on YouTube. It reads the playlist being played (using the same requests YouTube's own page makes), follows which video is playing and starts the next video of the shuffle. When the user switches it on, it hides already-watched videos in YouTube's video lists. On playlist pages it adds a search and sort bar (its &quot;Load all&quot; button scrolls the list only when clicked) and compares the videos with the last visit to tell the user which ones disappeared. After an install or update it finds the YouTube tabs already open to add its scripts.</textarea></div>
+    <div class="field"><div class="label"><span>Are you using remote code?</span></div><p class="choice">No, I am not using remote code.</p></div>
+    <div class="field"><div class="label"><span>Remote code: justification</span><button type="button" data-copy="f9">Copy</button></div><input id="f9" readonly value="All JavaScript is packaged in the extension. It loads no remote scripts and uses no eval."></div>
+  </section>
+  <section>
+    <p class="tab">Data usage: tick these three boxes (the store counts data kept only on the user’s device too).</p>
+    <ul><li><strong>Authentication information</strong>: requests that read private playlists carry the sign-in header YouTube's page creates from the user's YouTube cookie. It is sent only to youtube.com and never stored.</li><li><strong>Website content</strong>: playlist titles, video titles and channel names, stored on the user's device to run the shuffle and to tell the user when videos disappear from a playlist they open.</li><li><strong>Web history</strong>: which playlists the user shuffled or opened, their titles and when, and which of their videos played, kept only on the user's device to resume the shuffle and to compare a playlist with the last visit.</li></ul>
+    <p class="tab">Then tick the three certifications:</p>
+    <ul><li>I do not sell or transfer user data to third parties, outside of the approved use cases</li><li>I do not use or transfer user data for purposes that are unrelated to my item's single purpose</li><li>I do not use or transfer user data to determine creditworthiness or for lending purposes</li></ul>
+    <div class="field"><div class="label"><span>Privacy policy URL</span><button type="button" data-copy="f10">Copy</button></div><input id="f10" readonly value="https://lorenzogt2007.github.io/true-shuffle-for-youtube/privacy.html"><p class="note">First turn GitHub Pages on: repo Settings → Pages → Deploy from a branch → <code>main</code>, <code>/docs</code>. Open the link once to check it works before you paste it.</p></div>
+  </section>
+
+  <h2>4. Distribution</h2>
+  <section>
+    <div class="field"><div class="label"><span>Visibility</span></div><p class="choice">Public</p></div>
+    <div class="field"><div class="label"><span>Regions</span></div><p class="choice">All regions</p></div>
+  </section>
+
+  <h2>What’s new in 1.1.0</h2>
+  <section>
+    <div class="field"><div class="label"><span>Two lines, for any “what’s new” or release notes box (Firefox Add-ons has one; the Chrome Web Store doesn’t)</span><button type="button" data-copy="f11">Copy</button></div><textarea id="f11" readonly rows="5">New: hide videos you've watched, search and sort any playlist then play or shuffle just what's shown, and alerts when videos vanish from your playlists.
+Also: the shuffle keeps going in YouTube's miniplayer, every setting is on one options page, and it speaks Italian, Portuguese (Brazil) and Spanish.</textarea></div>
+  </section>
+  <p class="lead">Then press <strong>Submit for review</strong>.</p>
+</main>
+<script>
+  document.addEventListener('click', async (e) => {
+    const b = e.target.closest('button[data-copy]');
+    if (!b) return;
+    const box = document.getElementById(b.dataset.copy);
+    try { await navigator.clipboard.writeText(box.value); } catch (_) { box.select(); document.execCommand('copy'); }
+    b.textContent = 'Copied';
+    setTimeout(() => { b.textContent = 'Copy'; }, 1500);
+  });
+</script>
+</body>
+</html>

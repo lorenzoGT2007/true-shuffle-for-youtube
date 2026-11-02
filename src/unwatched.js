@@ -75,8 +75,10 @@
       try { return link ? new URL(link.getAttribute('href'), location.href).searchParams.get('v') : null; } catch (_) { return null; }
     }
     function apply(card) {
-      card.removeAttribute(ATTR); // a hidden card has no size, and a bar without a set width gets measured
-      if (hides(progressOf(card, SEL), cfg) && videoOf(card) !== watching) card.setAttribute(ATTR, ''); // same task: no flicker
+      const p = card.parentElement; // a 2026 playlist row is a wrapper of just this card: it goes with it
+      const box = p && p.childElementCount === 1 && p.matches(SEL.playlistRow) ? p : card;
+      box.removeAttribute(ATTR); // a hidden card has no size, and a bar without a set width gets measured
+      if (hides(progressOf(card, SEL), cfg) && videoOf(card) !== watching) box.setAttribute(ATTR, ''); // same task: no flicker
     }
     function showAll() {
       for (const el of document.querySelectorAll(`[${ATTR}]`)) el.removeAttribute(ATTR);

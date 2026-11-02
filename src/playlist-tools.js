@@ -131,19 +131,17 @@
     const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
     const cache = new WeakMap(); // row -> what it shows, until YouTube reuses the row for another video
 
-    if (!document.getElementById('true-shuffle-playlist-tools-style')) {
-      const style = document.createElement('style');
-      style.id = 'true-shuffle-playlist-tools-style';
-      style.textContent = [
-        `[${VIEW}] { display: flex !important; flex-direction: column; }`, // lets CSS order sort the rows
-        `[${VIEW}] > :is(${SEL.continuation}) { order: 2147483647; }`, // the spinner stays last
-        // No loading by surprise under a search or sort: more comes in through "Load all".
-        `[${VIEW}]:not([${LOADING}]) > :is(${SEL.continuation}) { display: none !important; }`,
-        `[${VIEW}] :is(${SEL.reorderHandle}) { visibility: hidden !important; }`, // no dragging a shown-only order
-        `[${MISS}] { display: none !important; }`,
-      ].join('\n');
-      (document.head || document.documentElement).appendChild(style);
-    }
+    // Written each time: a copy from before an update may have left older rules in the page.
+    const style = document.getElementById('true-shuffle-playlist-tools-style') || Object.assign(document.createElement('style'), { id: 'true-shuffle-playlist-tools-style' });
+    style.textContent = [
+      `[${VIEW}] { display: flex !important; flex-direction: column; }`, // lets CSS order sort the rows
+      // No loading by surprise under a search or sort: more comes in through "Load all". (The spinner sits among
+      // the rows; the 2026 layout also leaves an empty one after the list: both are inside playlistList.)
+      `:is(${SEL.playlistList}):has([${VIEW}]):not(:has([${LOADING}])) :is(${SEL.continuation}) { display: none !important; }`,
+      `[${VIEW}] :is(${SEL.reorderHandle}) { visibility: hidden !important; }`, // no dragging a shown-only order
+      `[${MISS}] { display: none !important; }`,
+    ].join('\n');
+    if (!style.isConnected) (document.head || document.documentElement).appendChild(style);
 
     const host = document.createElement('div');
     host.id = 'true-shuffle-playlist-tools';
@@ -173,10 +171,8 @@
 
     const rowsOf = () => (list ? [...list.children].filter((el) => el.matches(SEL.playlistRow)) : []);
     const textOf = (el, attr) => (el ? ((attr && el.getAttribute(attr)) || el.textContent || '').trim() : '');
-    function moreToLoad() {
-      const scope = list && (list.closest(SEL.playlistList) || list);
-      return scope ? scope.querySelector(SEL.continuation) : null;
-    }
+    // Only the spinner among the rows: YouTube's 2026 layout leaves another one after the list on every playlist.
+    const moreToLoad = () => (list ? list.querySelector(SEL.continuation) : null);
     function total() {
       for (const el of document.querySelectorAll(SEL.playlistHeader)) {
         if (!el.closest(SEL.hidden)) return countIn(el.textContent);
@@ -223,7 +219,8 @@
       } else {
         if (sortKey === 'unwatched') infos.forEach((it, i) => { it.watched = root.TrueShuffleUnwatched.progressOf(rows[i], SEL); });
         const rank = new Map(order(infos, sortKey).map((it, r) => [it, r]));
-        rows.forEach((row, i) => row.style.setProperty('order', String(rank.get(infos[i]))));
+        // Below zero: the spinner (or its 2026 wrapper) keeps order 0, so it stays last without a rule.
+        rows.forEach((row, i) => row.style.setProperty('order', String(rank.get(infos[i]) - rows.length)));
       }
       addedOption.hidden = !infos.some((it) => it.added != null); // only when YouTube shows it
       const more = !!moreToLoad();
@@ -307,12 +304,12 @@
       pages: PAGES,
       enter: reset,
       videos(cards) {
-        const rows = cards.filter((el) => el.matches(SEL.playlistRow));
+        const rows = cards.map((el) => el.closest(SEL.playlistRow)).filter(Boolean); // the 2026 rows wrap their card
         if (rows.length) mount(rows);
         apply();
       },
       changed(cards) {
-        for (const el of cards) cache.delete(el); // late titles or durations: read again
+        for (const el of cards) cache.delete(el.closest(SEL.playlistRow) || el); // late titles or durations: read again
         apply();
       },
       leave: reset,

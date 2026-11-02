@@ -23,12 +23,15 @@ node store/pack.js
 | --- | --- | --- |
 | `store-icon.png` | 128×128 | Store icon (Chrome): 96×96 artwork with 16px transparent padding, as Google's guidelines ask |
 | `../icons/icon128.png` | 128×128 | Extension logo (Edge, Opera) |
-| `screenshot-1.png` | 1280×800 | Screenshot: the card and the Up next list |
-| `screenshot-2.png` | 1280×800 | Screenshot: the toolbar popup (from 1.0.0: retake it, the popup now has "Hide watched videos" and "All settings") |
-| `screenshot-3.png` | 1280×800 | Screenshot: reading a long playlist |
+| `screenshot-1.png` | 1280×800 | Screenshot 1: the card and the Up next list |
+| `screenshot-2.png` | 1280×800 | Screenshot 2: search and sort on a playlist page |
+| `screenshot-3.png` | 1280×800 | Screenshot 3: the notice about videos that vanished |
+| `screenshot-4.png` | 1280×800 | Screenshot 4: the toolbar popup, with "Hide watched videos" |
+| `screenshot-5.png` | 1280×800 | Screenshot 5: the shuffle going on in YouTube's miniplayer |
 | `promo-small.png` | 440×280 | Small promo tile (Chrome, Edge) |
+| `promo-marquee.png` | 1400×560 | Marquee promo tile (Chrome, optional: used if the store features the extension) |
 
-A real screenshot of the extension on a YouTube video page helps too. Take one at 1280×800 and upload it first. For 1.1.0, add one of a playlist page with the search and sort bar and the removed-video notice: none of the images shows the new features yet.
+Screenshots 2 to 5 and the marquee show the real extension on youtube.com, with NASA's public Artemis playlists; the two alerts in screenshot 3 are sample data. For the Chrome Web Store, [`listing.html`](listing.html) (open it in your browser) has every field to paste, with copy buttons, and these images in order.
 
 ## 3. Chrome Web Store
 
@@ -125,6 +128,7 @@ HOW IT WORKS
 • Start any clip from a list and it turns on by itself. A round button at the bottom right shows your progress; click it for the card with what's next and an "Up next" queue.
 • The player's Next and Previous buttons, Shift+N / Shift+P and your keyboard's media keys follow the deck.
 • Your place is saved across reloads and browser restarts.
+• Keeps going in the miniplayer while you browse.
 • Private lists, Watch later and Liked videos work while you're signed in.
 
 ORGANIZE YOUR LIBRARY
@@ -150,7 +154,7 @@ True Shuffle is an independent project, not affiliated with or endorsed by YouTu
 
 ```
 New: hide videos you've watched, search and sort any playlist then play or shuffle just what's shown, and alerts when videos vanish from your playlists.
-Also: every setting on one options page, a welcome page, and Italian, Portuguese (Brazil) and Spanish translations.
+Also: the shuffle keeps going in YouTube's miniplayer, every setting is on one options page, and it speaks Italian, Portuguese (Brazil) and Spanish.
 ```
 
 ### Privacy answers

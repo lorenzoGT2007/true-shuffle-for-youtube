@@ -74,7 +74,8 @@ repo, MIT. `README.md` is the user guide, `PRIVACY.md` the privacy policy, `stor
   none); `advance` deals `order[pos + 1]`, `retreat` steps back, a video you pick (`noteWatching`) is dealt next. A view
   (`s.view = {ids, ordered}`, the tools' Play/Shuffle) deals only its ids (`poolOf`), in order if `ordered`, is never
   reconciled, and replaces the list's session; `restart` ("Shuffle whole playlist") goes back to all of it.
-- **Takeover**, only while attached (phase `active` on `/watch?v=…&list=<our list>`), never for loops or ads: 0.15 s before
+- **Takeover**, only while attached (phase `active` on `/watch?v=…&list=<our list>`, or the miniplayer playing one of its videos:
+  `readLoc` reads it from `mediaSession` artwork; `yt-navigate` plays in the miniplayer), never for loops or ads: 0.15 s before
   the end it pauses and deals the next video, so YouTube never sees the end; seeking to the end skips, a held time bar
   waits, a player error for 4 s skips. Player Next/Prev, Shift+N/P and media keys follow the deck.
 - **Navigating:** `yt-navigate` on `ytd-app`, else `location.assign`. A navigation onto our list is your pick, unless (no
@@ -107,11 +108,11 @@ repo, MIT. `README.md` is the user guide, `PRIVACY.md` the privacy policy, `stor
 - **Load:** Chrome/Edge `chrome://extensions` → Developer mode → **Load unpacked** → this folder (one harmless warning:
   `background.scripts` is for Firefox); Firefox `about:debugging#/runtime/this-firefox` → **Load Temporary Add-on…**.
   After an edit reload the extension, and the YouTube tab too after editing `page.js` or `yt-api.js`.
-- **Debug:** `localStorage.setItem('trueShuffle.debug', '1')` in the YouTube tab, reload, read `data-true-shuffle-debug`;
-  `chrome-extension://<id>/popup/popup.html?tab=<numeric tab id>` opens the popup aimed at that tab.
-- **Tests:** `node --test` (Node 24, nothing to install). Browser checks: headless Chrome with `--headless=new
-  --remote-debugging-pipe --enable-unsafe-extension-debugging`, `Extensions.loadUnpacked`, a fake youtube.com via
-  `Fetch.fulfillRequest`, trusted input (`Input.dispatch*Event`); the card ignores clicks for 450 ms after it switches.
+- **Debug:** `localStorage.setItem('trueShuffle.debug', '1')`, reload, read `data-true-shuffle-debug`; `popup.html?tab=<id>` aims the popup.
+- **Tests:** `node --test` (Node 24, nothing to install). Browser checks: headless Chrome (`Extensions.loadUnpacked`, a fake
+  youtube.com via `Fetch.fulfillRequest`, trusted `Input.dispatch*Event`; the card ignores clicks for 450 ms after it switches).
+  Fakes drift from YouTube: check selectors on real youtube.com too (headless, cookie `SOCS=CAI` skips the consent page;
+  NASA's videos play there, label music doesn't).
 - **Build:** `node store/pack.js` packs the last commit into `true-shuffle-for-youtube-vX.Y.Z.zip` (Chrome, Edge, Opera:
   manifest minus `background.scripts` and `browser_specific_settings`, which Edge's store rejects) and the `-firefox` zip
   (`npx addons-linter@10.15.0 <zip>`: 0 errors, 2 known warnings).

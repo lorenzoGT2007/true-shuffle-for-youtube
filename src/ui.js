@@ -91,7 +91,7 @@
   --shadow: 0 14px 34px rgba(0, 0, 0, 0.38), 0 2px 8px rgba(0, 0, 0, 0.28);
   position: fixed;
   right: 20px;
-  bottom: 20px;
+  bottom: calc(20px + var(--ts-lift, 0px)); /* content.js: above YouTube's miniplayer in this corner */
   z-index: 2147482000;
   display: flex;
   flex-direction: column;
@@ -221,7 +221,7 @@ button { font: inherit; color: inherit; }
 /* Up-next list */
 .queue {
   width: 348px; max-width: 100%;
-  max-height: min(60vh, 440px);
+  max-height: max(120px, min(60vh, 440px, calc(100vh - 200px - var(--ts-lift, 0px))));
   display: flex; flex-direction: column;
   background: var(--felt-deep);
   border: 1px solid var(--line);

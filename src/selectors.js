@@ -21,6 +21,12 @@
     // Classes on the player while an ad plays: an ad ending is never taken for the video ending.
     ad: '.ad-showing, .ad-interrupting',
 
+    // YouTube's miniplayer: the video plays on in a corner while you browse other pages, and the address
+    // no longer names it. The app's attribute, or the player moved into the miniplayer (either may come first).
+    miniplayer: 'ytd-app[miniplayer-is-active], ytd-miniplayer #movie_player',
+    // Its box on screen (video and title; the size follows the video): the button and card stay clear of it.
+    miniplayerBox: 'ytd-miniplayer',
+
     // A video that can't play: the player's own error overlay, or the watch page's error screen
     // (which only counts while the message inside it shows).
     playerError: '.ytp-error',
@@ -53,20 +59,24 @@
     // A card's link to its video: the watch URL carries the video id.
     cardLink: 'a[href*="/watch?v="]',
 
-    // Playlist pages, for the playlist tools: the rows, the list that holds them (the tools sit right
-    // above it), and each row's title, channel and metadata line (where "Added …" can show).
-    playlistRow: 'ytd-playlist-video-renderer',
-    playlistList: 'ytd-playlist-video-list-renderer',
+    // Playlist pages, for the playlist tools: the rows, the list that holds them and its spinner (the tools
+    // sit right above it), and each row's title, channel and metadata line (where "Added …" can show).
+    // Two layouts: the classic one, then the 2026 one (checked on youtube.com, November 2026), where each row
+    // is a plain wrapper around a yt-lockup-view-model in the section list's #contents, and the spinner sits
+    // next to that section; its channel is the first metadata row (a link, or plain text for several artists).
+    playlistRow: 'ytd-playlist-video-renderer, yt-item-section-renderer > #contents > :has(> yt-lockup-view-model)',
+    playlistList: 'ytd-playlist-video-list-renderer, yt-section-list-renderer',
     rowTitle: '#video-title, h3 a',
-    rowChannel: 'ytd-channel-name a, #channel-name a, #byline a',
-    rowMetaText: '#video-info span, #metadata-line span',
+    rowChannel: 'ytd-channel-name a, #channel-name a, #byline a, yt-content-metadata-view-model .ytContentMetadataViewModelMetadataRow',
+    rowMetaText: '#video-info span, #metadata-line span, yt-content-metadata-view-model .ytContentMetadataViewModelMetadataText',
     // The header's "1,234 videos", read for the playlist's length.
     playlistHeader: 'ytd-playlist-header-renderer, yt-page-header-view-model, ytd-playlist-sidebar-renderer',
     // The spinner at the end of a list while more can load: scrolling to it loads the next part.
-    continuation: 'ytd-continuation-item-renderer, ytd-continuation-item-view-model',
+    continuation: 'ytd-continuation-item-renderer, ytd-continuation-item-view-model, yt-continuation-item-view-model',
     // The drag handle on rows of playlists you own: hidden while the tools show their own order.
     reorderHandle: '#reorder',
-    // The note YouTube shows over a playlist when it hides unavailable videos ("2 unavailable videos are hidden").
+    // The note YouTube shows over a playlist when it hides unavailable videos ("2 unavailable videos are hidden",
+    // or since 2026 just "Unavailable videos are hidden").
     playlistAlert: 'ytd-alert-with-button-renderer, ytd-alert-renderer, yt-alert-with-actions-renderer, yt-alert-view-model',
 
     // Places inside the player that open another video (end-screen cards, the video wall, autoplay's
