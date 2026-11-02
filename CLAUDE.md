@@ -50,11 +50,11 @@ repo, MIT. `README.md` is the user guide, `PRIVACY.md` the privacy policy, `stor
 | `src/yt-api.js` | `TrueShuffleYT`: parses `/youtubei/v1/browse`, builds the sign-in header (pure) |
 | `src/page.js` | Page world: downloads the playlist, navigates with `yt-navigate`, takes over the media keys |
 | `src/content.js` | Controller: state, storage, takeover (video end, autoplay, Next/Prev, Shift+N/P), popup messages, mounts the UI |
-| `src/watcher.js` | `TrueShuffleWatcher`: page type (pure `pageType`), in-page navigation and new video cards, for features |
+| `src/watcher.js` | `TrueShuffleWatcher`: page type (pure `pageType`), in-page navigation and new video cards (also when YouTube un-hides a page it built hidden), for features |
 | `src/unwatched.js` | The unwatched filter: hides cards by progress bar width or "Watched" label |
 | `src/playlist-tools.js` | Search and sort on playlist pages: CSS `order` only, rows never move; "Load all" scrolls; Play/Shuffle hand the shown ids to `content.js` `playView` |
-| `src/removed.js` | Removed-video check on playlist pages (not WL/LL): snapshot, pure `compare` (needs the whole list loaded to call a video gone; reads YouTube's "N unavailable videos are hidden"), notice, `toCsv` |
-| `src/ui.js` | `TrueShuffleUI.create(onAction)` → `{host, render(viewModel)}`: round button, card, "Up next" list; `h()` |
+| `src/removed.js` | Removed-video check on playlist pages (not WL/LL): snapshot, pure `compare` (needs the whole list loaded to call a video gone; reads YouTube's "N unavailable videos are hidden"; an unavailable row is "[Private video]" or, since 2026, untitled), notice, `toCsv` |
+| `src/ui.js` | `TrueShuffleUI.create(onAction)` → `{host, render(viewModel)}`: round button, card, "Up next" list and its search (`content.js` `upNext` matches the whole deck); `h()` |
 | `src/background.js` | Service worker (Firefox: event page): injects the scripts into open tabs on install/update; Alt+Shift+U; opens `welcome/welcome.html` on install, `whats-new.html` (background tab) once per `WHATS_NEW` |
 | `popup/` | Popup: `popup.js` fills static `popup.html`, polls the tab every 800 ms with `chrome.tabs.sendMessage({type})` (`type` = the `data-act` names: `status`, `start`, `next`…), answered by `status()`. `settings.js` binds the settings controls of the popup and options page; `popup.css` styles every extension page (`body.page`) |
 | `options/` (opens in a tab), `welcome/` | Options page: every setting; Alerts history (loads `src/removed.js`) with CSV export; About. Welcome and What's new pages (`.shot` placeholders await screenshots) |

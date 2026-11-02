@@ -50,6 +50,16 @@
     return svg;
   }
 
+  /** While the playlist is read: a short line that runs laps round the logo (lengths in hundredths of a lap). */
+  function lap() {
+    const svg = document.createElementNS(SVG_NS, 'svg');
+    const rect = document.createElementNS(SVG_NS, 'rect');
+    for (const [k, v] of Object.entries({ class: 'lap', viewBox: '0 0 40 40', 'aria-hidden': 'true' })) svg.setAttribute(k, v);
+    for (const [k, v] of Object.entries({ x: 1, y: 1, width: 38, height: 38, rx: 12, pathLength: 100 })) rect.setAttribute(k, String(v));
+    svg.appendChild(rect);
+    return svg;
+  }
+
   /** Tiny element builder: h('div', {class: 'x', dataset: {act: 'next'}}, child, 'text'). */
   function h(tag, attrs, ...children) {
     const el = document.createElement(tag);
@@ -171,12 +181,12 @@ button { font: inherit; color: inherit; }
   display: grid; place-items: center;
 }
 .mark svg { width: 19px; height: 19px; stroke-width: 2.4; }
-.mark.spin::after {
-  content: ""; position: absolute; inset: -4px; border-radius: 13px;
-  border: 2px solid transparent; border-top-color: var(--brass-hi);
-  animation: spin .9s linear infinite;
+.mark .lap { position: absolute; inset: -4px; width: 40px; height: 40px; overflow: visible; }
+.lap rect {
+  fill: none; stroke: var(--brass-hi); stroke-width: 2; stroke-linecap: round;
+  stroke-dasharray: 22 78; animation: lap 1.2s linear infinite;
 }
-@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes lap { to { stroke-dashoffset: -100; } }
 .count { font-size: 14px; color: var(--ivory-2); font-variant-numeric: tabular-nums; white-space: nowrap; }
 .count strong { font-size: 17px; font-weight: 600; color: var(--ivory); margin-right: 2px; }
 .msg { min-width: 0; display: flex; flex-direction: column; }
@@ -251,11 +261,19 @@ button { font: inherit; color: inherit; }
 .qc { color: var(--ivory-2); font-size: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .qfoot { display: flex; gap: 8px; padding: 10px 12px 12px; border-top: 1px solid var(--line); }
 .qempty { padding: 6px 14px 14px; color: var(--ivory-2); }
+.qfind { padding: 0 12px 8px; }
+.qsearch {
+  width: 100%; box-sizing: border-box; padding: 7px 12px;
+  border: 1px solid rgba(243, 236, 221, 0.22); border-radius: 999px;
+  background: var(--felt); color: inherit; font: inherit;
+}
+.qsearch::placeholder { color: var(--ivory-2); }
+.qbody { display: flex; flex-direction: column; min-height: 0; }
 
-button:focus-visible { outline: 2px solid var(--brass); outline-offset: 2px; }
+button:focus-visible, input:focus-visible { outline: 2px solid var(--brass); outline-offset: 2px; }
 @media (prefers-reduced-motion: reduce) {
   .card, .queue { animation: none; }
-  .mark.spin::after, .bar.busy i { animation: none; }
+  .lap rect, .bar.busy i { animation: none; }
   .fab, .bar i { transition: none; }
 }
 `;
@@ -270,6 +288,18 @@ button:focus-visible { outline: 2px solid var(--brass); outline-offset: 2px; }
     shadow.append(style, stack);
 
     const queue = h('section', { class: 'queue', hidden: true, 'aria-label': t('cardUpNext') });
+    // Its search box is built once, so what you type keeps its place while the list under it changes.
+    const qsearch = h('input', {
+      class: 'qsearch', type: 'search', placeholder: t('toolsSearchPlaceholder'),
+      'aria-label': t('toolsSearchLabel'), autocomplete: 'off', spellcheck: 'false',
+    });
+    const qhead = h('div', { class: 'qhead' });
+    const qbody = h('div', { class: 'qbody' });
+    const qfoot = h('div', { class: 'qfoot' });
+    queue.append(qhead, h('div', { class: 'qfind' }, qsearch), qbody, qfoot);
+    qsearch.addEventListener('input', () => onAction('search', qsearch.value));
+    // YouTube's keyboard shortcuts listen on the page: what you type here stays here.
+    for (const type of ['keydown', 'keypress', 'keyup']) qsearch.addEventListener(type, (e) => e.stopPropagation());
     const card = h('div', { class: 'card', hidden: true });
     const fabRing = h('span', { class: 'ring', hidden: true });
     const fabTip = h('span', { class: 'tip' });
@@ -291,6 +321,7 @@ button:focus-visible { outline: 2px solid var(--brass); outline-offset: 2px; }
       e.preventDefault();
       e.stopPropagation();
       if (performance.now() < guardUntil) return;
+      if (target.dataset.act === 'play') qsearch.blur(); // you picked: Space pauses the video again
       onAction(target.dataset.act, target.dataset.id || null);
     });
 
@@ -329,7 +360,7 @@ button:focus-visible { outline: 2px solid var(--brass); outline-offset: 2px; }
       const msgText = h('span');
       refs.msgTitle = msgTitle;
       refs.msgText = msgText;
-      const mark = h('div', { class: mode === 'loading' ? 'mark spin' : 'mark' }, icon('shuffle'));
+      const mark = h('div', { class: 'mark' }, icon('shuffle'), mode === 'loading' ? lap() : null);
       const top = h('div', { class: 'top' }, mark, h('div', { class: 'msg' }, msgTitle, msgText),
         h('div', { class: 'ctl' }, iconButton(mode === 'loading' ? 'cancel' : 'stop', 'close',
           t(mode === 'loading' ? 'cardCancel' : 'cardClose'))));
@@ -357,8 +388,9 @@ button:focus-visible { outline: 2px solid var(--brass); outline-offset: 2px; }
         queueKey = '';
         return;
       }
-      const key = JSON.stringify([q.round, q.left, q.view, q.items.map((i) => i.id)]);
+      const key = JSON.stringify([q.round, q.left, q.view, q.query, q.items.map((i) => i.id)]);
       queue.hidden = false;
+      if (qsearch.value !== q.query) qsearch.value = q.query; // a list opened again starts with no search
       if (key === queueKey) return;
       queueKey = key;
       const list = h('ol', { class: 'qlist' });
@@ -370,16 +402,14 @@ button:focus-visible { outline: 2px solid var(--brass); outline-offset: 2px; }
               h('span', { class: 'qt', text: it.title || it.id }),
               it.channel ? h('span', { class: 'qc', text: it.channel }) : null))));
       }
-      queue.replaceChildren(
-        h('div', { class: 'qhead' },
-          h('strong', { text: t('cardUpNext') }),
-          h('span', { text: q.left === 1 ? t('cardLeftOne', q.round) : t('cardLeftMany', fmt(q.left), q.round) })),
-        q.items.length ? list : h('div', { class: 'qempty', text: t('cardQueueEmpty') }),
-        h('div', { class: 'qfoot' },
-          h('button', { class: 'pill', type: 'button', dataset: { act: 'reshuffle' } }, t('cardReshuffle')),
-          // A view (the playlist tools' Play/Shuffle) starts over as a shuffle of the whole playlist.
-          h('button', { class: 'pill', type: 'button', dataset: { act: 'restart' } }, t(q.view ? 'cardShuffleWhole' : 'cardStartOver'))),
-      );
+      qhead.replaceChildren(
+        h('strong', { text: t('cardUpNext') }),
+        h('span', { text: q.left === 1 ? t('cardLeftOne', q.round) : t('cardLeftMany', fmt(q.left), q.round) }));
+      qbody.replaceChildren(q.items.length ? list : h('div', { class: 'qempty', text: t(q.query.trim() ? 'cardSearchNone' : 'cardQueueEmpty') }));
+      qfoot.replaceChildren(
+        h('button', { class: 'pill', type: 'button', dataset: { act: 'reshuffle' } }, t('cardReshuffle')),
+        // A view (the playlist tools' Play/Shuffle) starts over as a shuffle of the whole playlist.
+        h('button', { class: 'pill', type: 'button', dataset: { act: 'restart' } }, t(q.view ? 'cardShuffleWhole' : 'cardStartOver')));
     }
 
     function render(vm) {

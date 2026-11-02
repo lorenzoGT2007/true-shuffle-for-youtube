@@ -191,6 +191,9 @@
   "cardQueueEmpty": {
     "message": "Questo è l’ultimo video del giro."
   },
+  "cardSearchNone": {
+    "message": "Nessun video corrisponde."
+  },
   "cardReshuffle": {
     "message": "Rimescola i restanti"
   },

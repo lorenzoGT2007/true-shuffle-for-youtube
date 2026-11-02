@@ -125,7 +125,7 @@ WHY IT'S MORE RANDOM
 • When a new round starts, the songs you just heard stay away from its beginning.
 
 HOW IT WORKS
-• Start any clip from a list and it turns on by itself. A round button at the bottom right shows your progress; click it for the card with what's next and an "Up next" queue.
+• Start any clip from a list and it turns on by itself. A round button at the bottom right shows your progress; click it for the card with what's next and an "Up next" queue you can search to pick a video.
 • The player's Next and Previous buttons, Shift+N / Shift+P and your keyboard's media keys follow the deck.
 • Your place is saved across reloads and browser restarts.
 • Keeps going in the miniplayer while you browse.

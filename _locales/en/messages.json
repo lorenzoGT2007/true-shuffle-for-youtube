@@ -247,6 +247,10 @@
     "message": "This is the last video of the round.",
     "description": "Up next list on YouTube: shown instead of the list when no video is left after the one playing."
   },
+  "cardSearchNone": {
+    "message": "No video matches.",
+    "description": "Up next list on YouTube: shown instead of the list when no video of the shuffle matches what you typed in its search box."
+  },
   "cardReshuffle": {
     "message": "Reshuffle what’s left",
     "description": "Up next list on YouTube: button that shuffles again the videos not played yet in this round. Short."
@@ -421,11 +425,11 @@
   },
   "toolsSearchPlaceholder": {
     "message": "Search title or channel",
-    "description": "Playlist page toolbar: grey hint inside the empty search box. Short."
+    "description": "Playlist page toolbar, and the Up next list on YouTube: grey hint inside the empty search box. Short."
   },
   "toolsSearchLabel": {
     "message": "Search this playlist by title or channel",
-    "description": "Playlist page toolbar: screen-reader name of the search box that filters the playlist's videos as you type."
+    "description": "Playlist page toolbar, and the Up next list on YouTube: screen-reader name of the search box that filters the playlist's videos as you type."
   },
   "toolsSortLabel": {
     "message": "Show the playlist in this order",

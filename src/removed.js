@@ -87,6 +87,12 @@
     return [...(history || []), ...added].slice(-MAX_ALERTS);
   }
 
+  /**
+   * Whether a playlist row shows an unavailable video: "[Private video]", "[Deleted video]" (in your language)
+   * with no channel, or no title at all (the 2026 layout, which shows its views, "0", where the channel goes).
+   */
+  const unavailableRow = (title, channel) => !title || (/^\[.+\]$/.test(title) && !channel);
+
   /** The number in YouTube's "2 unavailable videos are hidden"; null for its "Unavailable videos are hidden" (some); 0 without the note. */
   function hiddenCount(text) {
     const m = /(\d[\d.,  ]*\s+)?unavailable\s+videos?\s+(?:is|are)\s+hidden/i.exec(text || '');
@@ -178,8 +184,8 @@ button:hover { background: #f1c877; }
       try { id = link ? new URL(link.getAttribute('href'), location.href).searchParams.get('v') : null; } catch (_) { /* no id */ }
       const title = textOf(row.querySelector(SEL.rowTitle), 'title');
       const channel = textOf(row.querySelector(SEL.rowChannel));
-      // YouTube shows unavailable videos as "[Private video]", "[Deleted video]" (in your language), with no channel.
-      return { id, title, channel, unavailable: /^\[.+\]$/.test(title) && !channel };
+      const unavailable = unavailableRow(title, channel);
+      return { id, title, channel: unavailable ? '' : channel, unavailable };
     }
 
     async function check() {
@@ -270,5 +276,5 @@ button:hover { background: #f1c877; }
     };
   }
 
-  return { MAX_SNAPSHOT_BYTES, MAX_TOTAL_BYTES, MAX_ALERTS, WHAT, compare, addAlerts, hiddenCount, budget, field, stamp, toCsv, start };
+  return { MAX_SNAPSHOT_BYTES, MAX_TOTAL_BYTES, MAX_ALERTS, WHAT, compare, addAlerts, unavailableRow, hiddenCount, budget, field, stamp, toCsv, start };
 });

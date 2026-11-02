@@ -95,6 +95,14 @@ test('addAlerts appends with the playlist, unseen, and keeps the newest MAX_ALER
   assert.equal(capped[capped.length - 1].id, 'b');
 });
 
+test('unavailableRow: "[Private video]" with no channel, or (2026 layout) no title at all', () => {
+  assert.equal(R.unavailableRow('[Private video]', ''), true);
+  assert.equal(R.unavailableRow('[Video eliminato]', ''), true);
+  assert.equal(R.unavailableRow('', '0'), true); // 2026: empty title, the views where the channel goes
+  assert.equal(R.unavailableRow('Halo [with lyrics]', 'Chan'), false);
+  assert.equal(R.unavailableRow('[Official video]', 'Chan'), false); // brackets, but a channel: a real video
+});
+
 test('hiddenCount reads YouTube\'s note', () => {
   assert.equal(R.hiddenCount('1 unavailable video is hidden'), 1);
   assert.equal(R.hiddenCount('Some text. 12 unavailable videos are hidden Show'), 12);

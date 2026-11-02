@@ -191,6 +191,9 @@
   "cardQueueEmpty": {
     "message": "Este es el último video de la ronda."
   },
+  "cardSearchNone": {
+    "message": "Ningún video coincide."
+  },
   "cardReshuffle": {
     "message": "Mezclar de nuevo el resto"
   },

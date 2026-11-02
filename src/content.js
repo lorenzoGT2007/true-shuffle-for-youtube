@@ -18,6 +18,7 @@
   document.addEventListener(RETIRE_EVENT, () => retire());
 
   const TS = globalThis.TrueShuffle;
+  const { fold, matches } = globalThis.TrueShufflePlaylistTools; // its search, also in the Up next list
   const SEL = globalThis.TrueShuffleSelectors;
   const { t } = globalThis.TrueShuffleI18n;
   const UPDATED_TEXT = t('errUpdated'); // looked up now: it's shown once the extension (and chrome.i18n) is gone
@@ -60,6 +61,7 @@
     scrubbing: false, // you're holding the time bar
     held: null, // { id, play }: video kept short of its end until you let go of the time bar
     queueOpen: false,
+    queueQuery: '', // what's typed in the Up next list's search box
     syncing: null, // the quiet re-read of the playlist in progress (a promise)
     startToken: 0,
     mediaOn: null, // unknown at first: page.js may still hold the media keys for a copy from before an update
@@ -1059,9 +1061,7 @@
           ...base, mode: 'active', position: sum.position, total: sum.total, round: sum.round,
           onFinish: st.settings.onFinish,
           next: nextId ? meta(nextId) : null,
-          queue: st.queueOpen
-            ? { round: sum.round, left: sum.left, view: !!s.view, items: TS.upcoming(s, QUEUE_SIZE).map((id, i) => ({ ...meta(id), n: sum.position + 1 + i })) }
-            : null,
+          queue: st.queueOpen ? upNext(s, sum) : null,
         };
       }
       default: {
@@ -1074,6 +1074,15 @@
         };
       }
     }
+  }
+
+  /** The Up next list: the next videos or, while you search it, the videos of the whole deck that match (n: place in the round). */
+  function upNext(s, sum) {
+    const query = st.queueQuery.trim();
+    const items = query
+      ? s.order.map((id, i) => ({ ...meta(id), n: i + 1 })).filter((it) => matches(fold(it.title + ' ' + it.channel), query)).slice(0, QUEUE_SIZE)
+      : TS.upcoming(s, QUEUE_SIZE).map((id, i) => ({ ...meta(id), n: sum.position + 1 + i }));
+    return { round: sum.round, left: sum.left, view: !!s.view, query: st.queueQuery, items };
   }
 
   function render() {
@@ -1098,7 +1107,8 @@
       case 'collapse': st.queueOpen = false; setSetting({ collapsed: true }); break;
       case 'next': goNext('ui'); break;
       case 'prev': goPrev(); break;
-      case 'queue': st.queueOpen = !st.queueOpen; render(); break;
+      case 'queue': st.queueOpen = !st.queueOpen; st.queueQuery = ''; render(); break;
+      case 'search': st.queueQuery = id || ''; render(); break; // id: the text typed in the Up next list
       case 'play': if (id) playNow(id); break;
       case 'reshuffle': reshuffleRest(); break;
       case 'restart': restart(); break;

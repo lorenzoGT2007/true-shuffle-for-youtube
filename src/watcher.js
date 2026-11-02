@@ -119,10 +119,14 @@
   function start() {
     SEL = root.TrueShuffleSelectors;
     observer = new MutationObserver((records) => {
-      for (const r of records) for (const n of r.addedNodes) if (n.nodeType === 1) pending.push(n);
+      for (const r of records) {
+        // YouTube builds the next page while it's hidden and shows it later: its cards count from then.
+        if (r.type === 'attributes') { if (!r.target.hasAttribute('hidden')) pending.push(r.target); } // SEL.hidden
+        else for (const n of r.addedNodes) if (n.nodeType === 1) pending.push(n);
+      }
       if (pending.length) schedule();
     });
-    observer.observe(document.documentElement, { childList: true, subtree: true });
+    observer.observe(document.documentElement, { childList: true, subtree: true, attributes: true, attributeFilter: ['hidden'] });
     document.addEventListener('yt-navigate-finish', onNavigate, true);
     window.addEventListener('popstate', onNavigate, true);
   }

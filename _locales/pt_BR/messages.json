@@ -191,6 +191,9 @@
   "cardQueueEmpty": {
     "message": "Este é o último vídeo da rodada."
   },
+  "cardSearchNone": {
+    "message": "Nenhum vídeo corresponde."
+  },
   "cardReshuffle": {
     "message": "Reembaralhar o que falta"
   },
